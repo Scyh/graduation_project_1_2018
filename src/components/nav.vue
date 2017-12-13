@@ -1,0 +1,252 @@
+<template>  
+  <nav class="nav">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-8 col-md-8 col-lg-8">
+          <nav class="navbar navbar-default cus-nav" role="navigation">  
+            <div class="container-fluid">  
+              <!-- Brand and toggle get grouped for better mobile display -->  
+              <div class="navbar-header">  
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">  
+                  <span class="sr-only">Toggle navigation</span>  
+                  <span class="icon-bar"></span>  
+                  <span class="icon-bar"></span>  
+                  <span class="icon-bar"></span>  
+                </button>  
+                <a class="navbar-brand" href="javascript:void(0)">Scy</a>  
+              </div>  
+              <!-- Collect the nav links, forms, and other content for toggling -->  
+              <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">  
+                <ul class="nav navbar-nav">  
+                  <li><router-link :class="{active: currentRoute=='articles'}" to="/articles">文章</router-link></li>
+                  <li><router-link :class="{active: currentRoute=='questions'}"  to="/questions">问答</router-link></li>
+                  <li><router-link :class="{active: currentRoute=='video'}"  to="/video">视频</router-link></li>
+                  <li><a href="#">专栏</a></li>
+                  <li><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">发现<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                      <li><a href="#">技术圈</a></li>
+                      <li><a href="#">开发手册</a></li>
+                      <li><a href="#">广告链接</a></li>
+                      <li><a href="#"></a></li>
+                    </ul>
+                  </li>
+                </ul>
+              <span class="search-img"><input type="text" class="search" placeholder="搜索问题或关键字"></span>
+              </div><!-- /.navbar-collapse -->  
+            </div><!-- /.container-fluid -->  
+          </nav>  
+        </div>
+        <div class="col-sm-4 col-md-4 col-lg-4">
+          <div class="nav-form">
+            
+            <template v-if="!hasLogIn">
+              <button data-toggle="modal" data-target="#modalLogin" class="btn btn-login">立即登录</button>
+              <button data-toggle="modal" data-target="#modalRegister" class="btn btn-reg">免费注册</button>
+            </template>
+
+            <template v-else>
+              <button class="btn btn-home">{{ username }}</button>
+              <button class="btn btn-logOut" @click="logOut">退出登录</button>
+            </template>
+
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-12">
+          <ul class="nav-label">
+            <li><a href="#">全部</a></li>
+            <li><a href="#">html</a></li>
+            <li><a href="#">css</a></li>
+            <li><a href="#">javascript</a></li>
+            <li><a href="#">css3</a></li>
+            <li><a href="#">html5</a></li>
+            <li><a href="#">jquery</a></li>
+            <li><a href="#">bootstrap</a></li>
+            <li><a href="#">webpack</a></li>
+            <li><a href="#">vue</a></li>
+            <li><a href="#">react</a></li>
+            <li><a href="#">nodejs</a></li>
+            <li><a href="#">mongodb</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- 登录模态框 -->
+    <scyLogin></scyLogin>
+     
+    <!-- 注册模态框 -->
+    <scyRegister></scyRegister>
+  </nav>
+</template>
+
+<script>
+import $ from 'jquery'
+import scyLogin from './login.vue'
+import scyRegister from './register.vue'
+import { mapGetters } from 'vuex'
+
+export default {
+  data () {
+    return {
+      currentRoute: '',
+      username: ''
+    }
+  },
+  mounted: function () {
+      if (sessionStorage.username == undefined || sessionStorage.username == '' || sessionStorage.username == 'undefined')  {
+        console.log(sessionStorage.username)
+        console.log("未登录");
+        this.$store.dispatch('logOut');
+      } else {
+        console.log("已登录")
+        console.log(sessionStorage.username);
+        this.username = sessionStorage.username;
+        this.$store.dispatch('logIn');
+      }
+    this.currentRoute = this.$route.path.slice(1);
+  },
+  computed: {
+    ...mapGetters([
+        'hasLogIn'
+    ])
+  },
+  watch: {
+    $route () {
+      // 当前路由页
+      this.currentRoute = this.$route.path.slice(1);
+    }
+  },
+  methods: {
+    logOut: function() {
+      console.log("退出")
+      sessionStorage.username = undefined;
+      this.$router.push({path: '/'});
+      location.reload();
+      this.$store.dispatch('logOut');
+    },
+  },
+  components: {
+    scyLogin,
+    scyRegister
+  }
+}
+</script>
+
+<style scoped>
+  nav.nav {
+    border-bottom: #D7D7D7;
+    box-shadow: 0 2px 5px #D7D7D7;
+    min-width: 768px;
+  }
+  .cus-nav,
+  .nav-form {
+    padding: 10px 0;
+    margin-bottom: 0;
+    border: none;
+    background-color: #FFF;
+  }
+  .container>.row {
+    border-bottom: 1px solid #EEE;
+  }
+  .navbar-brand {
+    font-size: 30px;
+    color: #000;
+  }
+  ul.navbar-nav {
+    font-size: 18px;
+    font-weight: 550;
+  }
+  .nav-label {
+    margin: 0;
+    padding: 10px 0;
+  }
+  .nav-label li{
+    display: inline-block;
+  }
+  .nav-label li>a{
+    color: #bbb;
+    padding: 20px;
+  }
+  .nav-label li>a:hover {
+    color: #757575;
+    text-decoration: none;
+  }
+  .nav-label li:first-child a  {
+    padding-left: 15px;
+    color: #757575;
+  }
+  .search{
+    position: absolute;
+    right: 0;
+    z-index: 3;
+    margin-top: 10px;
+    width: 300px;
+    height: 30px;
+    border: 1px solid #D7D7D7;
+    border-radius: 3px;
+    transition:width 0.5s;
+    transform-origin: right bottom;
+    text-indent: 16px;
+  }
+  ::-webkit-input-placeholder {
+    color: #999;
+  }
+  :-moz-placeholder {
+      color: #999;
+  }
+  ::-moz-placeholder {
+    color: #999;
+  }
+  :-ms-input-placeholder {
+    color: #999;
+  }
+  input.search:focus {
+    width: 660px;
+  }
+  .search-img {
+    cursor: pointer;
+  }
+  .search-img::before {
+    content: url('../assets/nav_search.png');
+    position: absolute;
+    margin-top: 12px;
+    display: inline-block;
+    z-index: 99;
+    right: 0;
+    top: 6px;
+  }
+  .nav-form {
+    float: right;
+    margin-top: 10px;
+  }
+  .btn-login {
+    color: #009A61;
+    background-color: #FFF;
+  }
+  .btn-login:hover {
+    background-color: #F3F3F3;
+  }
+  .btn-reg {
+    color: #FFF;
+    background-color: #009A61;
+  }
+  .btn-reg:hover {
+    background-color:#006741
+  }
+  .active{
+    color: #41b886 !important;
+  }
+
+  @media (max-width: 1200px) {
+    input.search {
+      width: 200px;
+    }
+  }
+  @media (max-width: 991px) {
+    input.search {
+      display: none;
+    }
+  }
+</style>

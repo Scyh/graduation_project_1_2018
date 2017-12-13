@@ -1,0 +1,243 @@
+a,
+a:hover,
+span:hover {
+	text-decoration: none;
+	cursor: pointer;
+}
+.wrap {
+	text-align: center;
+	background-color: #EBEBEB;
+}
+.wrap *:hover {
+	transition: all 0.4s;
+}
+.header {
+	padding: 62px 0 31px;
+	background: url(../images/header_bg_img.jpg) no-repeat;
+	background-size: cover;
+	color: #FFF;
+}
+.header h1 {
+	padding: 14px 7px;
+	font-size: 3em;
+}
+.btn-custom {
+	margin-top: 14px;
+	padding: 7px 14px;
+	border: 1px solid #f1362f;
+	border-radius: 2px;
+	background-color: transparent;
+	font-size: 1em;
+	color: #FFF;
+}
+.btn-custom:hover,
+.btn-detail:hover {
+	border: 1px solid #303030;
+	background-color: #303030;
+	color: #FFF;
+}
+nav.nav {
+	background-color: #FFF;
+	border-top: 1px solid #ebebeb;
+	border-bottom: 2px solid #e1e1e1;
+}
+nav.navbar {
+	border: none;
+	margin-bottom: 0;
+}
+#nav-menu ul {
+	position: relative;
+	left: 50%;
+	transform: translateX(-50%);
+}
+#nav-menu ul li {
+	float: none;
+	display: inline-block;
+}
+#nav-menu ul a {
+	padding: 20px 18px;
+    font-size: 1.1em;
+}
+#nav-menu ul a:hover {
+	color: #F4645F;
+}
+.main-content main,
+.main-content aside {
+	padding-top: 35px;
+}
+.main-content main article,
+.main-content aside .widget{
+	/*padding: 15px;*/
+	background-color: #FFF;
+}
+.article_header {
+	font-size: 2em;
+}
+.article_meta ,
+.main-content .article_content,
+.article_para,
+.article_footer,
+.btn-detail {
+	margin-top: 30px;
+	color: grey;
+}
+.article_meta span {
+	color: #F4645F;
+}
+.article_para {
+	font: 400 18px/1.62 Georgia,"Xin Gothic","Hiragino Sans GB","Droid Sans Fallback","Microsoft YaHei",sans-serif;
+	color: #444443;
+	text-align: left;
+}
+.btn-detail {
+	padding: 8px 14px;
+	color: #FFF;
+	background-color: #F4645F;
+}
+.main-content .article_content img{
+	width: 100%;
+}
+.article_footer {
+	height: 1px;
+	background-color: #EBEBEB;
+}
+.main-content article,
+.main-content aside .widget {
+	padding: 35px;
+	margin-bottom: 35px;
+}
+.pagination span,
+.pagination-next {
+	background-color: #F4645F;
+	border-radius: 2px;
+	color: #FFF;
+}
+.pagination span {
+	padding: 10px;
+}
+.pagination-next {
+	display: inline-block;
+	padding: 8px 14px;
+}
+
+aside {
+	text-align: left;
+}
+aside .widget h3,
+.footer .widget h3 {
+	padding-bottom: 4px;
+	border-bottom: 1px solid #EBEBEB;
+}
+aside .widget h3::after,
+.footer .widget h3::after {
+	content: '';
+	position: relative;
+	top: 5px;
+	display: block;
+	width: 90px;
+	height: 1px;
+	background-color: #F4645F;
+}
+.widget-content p:last-child {
+	color: #F4645F;
+	cursor: pointer;
+}
+.widget-content p:last-child::before {
+	content: url(../images/contact.png);
+	position: relative;
+	display: inline-block;
+	top: 2px;
+	margin-right: 2px;
+}
+.widget-content > div:first-child {
+	margin-top: 30px;
+}
+.widget-content > div {
+	margin: 5px 0;
+	padding: 10px 0;
+	background-color: #F4645F;
+	color: #FFF;
+	text-align: center;
+}
+.widget-content > div:hover {
+	background-color: #303030
+}
+.footer {
+	text-align: left;
+	background-color: #202020;
+}
+.footer .widget {
+	padding: 35px;
+}
+.footer .widget div{
+	background-color: transparent;
+}
+.footer .widget-header {
+	color: #FFF;
+}
+.widget-news .post,
+.widget-link .post {
+	text-align: left;
+	border-bottom: 1px dashed #505050;
+}
+.widget-news a, 
+.widget-link .post a{
+	color: grey;
+}
+data {
+	display: block;
+	color: #505050;
+}
+.post a:hover {
+	color: #F4645F
+}
+
+.widget-cloud .widget-content span {
+	color: #FFF;
+	padding: 8px;
+}
+.widget-cloud .widget-content span:hover,
+.widget-link .post a:hover {
+	background-color: #F4645F;
+	color: #FFF;
+}
+.widget-link .post a {
+	display: inline-block;
+	padding: 4px 10px;
+}
+#returnTop {
+	display: block;
+	position: fixed;
+	bottom: 0;
+	right: 10px;
+	background-color: #F4645F;
+	padding: 6px 11px;
+	color: #FFF;
+	font-size: 1.4em;
+	font-weight: bold;
+	border-radius: 2px;
+	transform: rotate(-90deg);
+	opacity: 0.6;
+}
+#returnTop:hover {
+	opacity: 1;
+}
+.copyright {
+	background-color: #111111;
+	text-align: center;
+}
+.copyright .row {
+	padding: 30px;
+}
+.copyright span {
+	padding: 10px;
+	color: #505050;
+	font-size: 1em;
+}
+.copyright span:not(:last-child)::after {
+	content: '|';
+	display: inline-block;
+	position: relative;
+	left: 14px;
+
+}
