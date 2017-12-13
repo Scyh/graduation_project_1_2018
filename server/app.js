@@ -9,6 +9,7 @@ var mongoose = require('./db.js');
 var db = mongoose();
 var User = require('./models/user.js');
 var Article = require('./models/article.js');
+var Comment = require('./models/comment.js');
 var app = express();
 
 app.set('views', path.join(__dirname, 'views'));
@@ -142,6 +143,31 @@ app.get('/api/getArticleDetail', function(req, res, next) {
     }
   })
 })
+
+// 获取 文章评论 接口
+app.get('/api/getComment', function(req, res, next) {
+  Comment.findById(req.query._id, function(err, data) {
+    if (err) {
+      console.log(err)
+    } else {
+      if (data == null) {
+        console.log("没有评论");
+        res.send({
+          status: "noComment"
+        })
+      } else {
+        res.send({
+          status: "hasComment",
+          article_like: data.article_like,
+          article_comment: JSON.stringify(data.article_comment)
+        });  
+      }
+      
+    }
+  })
+})
+
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

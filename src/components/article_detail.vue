@@ -23,7 +23,10 @@
 								<p>目前您尚未登录，请<b>登录</b>或<b>注册</b>后进行评论</p>
 							</div>
 							<div v-else>
-								<p>尚未有评论！</p>
+								<!-- <p>尚未有评论！</p> -->
+								<div v-for="item in comments">
+									{{ item }}
+								</div>
 							</div>
 						</div>
 					</div>
@@ -37,18 +40,27 @@
 		data: function() {
 			return {
 				article: '',
+				article_like: 0,
+				article_comment:'',
 			}
 		},
 		computed: {
 			...mapGetters([
 				'hasLogIn'
-			])
+			]),
+			comments: function() {
+				// return JSON.parse(JSON.stringify(this.article_comment))
+			},
 		},
 		mounted: function() {
-			this.getArticleDetail()
+			this.initArticle();
+			this.initComment();
+			console.log(this.article_comment)
 		},
 		methods: {
-			getArticleDetail: function() {
+
+			// 初始化文章
+			initArticle: function() {
 				let that = this;
 				$.get('http://localhost:3000/api/getArticleDetail', {
 					_id: this.$route.params.id
@@ -56,7 +68,25 @@
 					that.article = data.article
 				});				
 			},
-			
+
+			// 初始化评论
+			initComment: function() {
+				let that = this;
+				$.get('http://localhost:3000/api/getComment', {
+					_id: this.$route.params.id
+				}, function(data) {
+					// console.log(data)
+
+					// 没有评论
+					if (data.status == 'noComment') {
+
+					} else if (data.status == 'hasComment') {
+						console.log(data)
+						that.article_like = data.article_like;
+						that.article_comment = data.article_comment
+					}
+				});
+			},
 		},
 	}
 </script>
