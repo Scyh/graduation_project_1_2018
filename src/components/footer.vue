@@ -79,7 +79,7 @@
 		display: block;
 		width: 90px;
 		height: 1px;
-		background-color: #41B886;
+		background-color: #009A61;
 	}
 	.widget-content p:last-child {
 		color: #F4645F;

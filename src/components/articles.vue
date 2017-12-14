@@ -7,10 +7,10 @@
 						<template v-for="article in articles">
 							<article>
 								<div class="row">
-								<div class="article_img col-md-5">
+								<!-- <div class="article_img col-md-5">
 									<img class="img-responsive" src="../assets/img1.png" />
-								</div>
-								<div class="col-md-7">
+								</div> -->
+								<div class="col-md-12">
 									<h4 class="article_title"><router-link :to="{path:'articles/' + article._id}" >{{ article.article_title }}</router-link></h4>
 									<p class="article_content" v-html="article.article_content.slice(0,100)"></p>
 								</div>

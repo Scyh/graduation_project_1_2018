@@ -18,7 +18,7 @@
               <!-- Collect the nav links, forms, and other content for toggling -->  
               <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">  
                 <ul class="nav navbar-nav">  
-                  <li><router-link :class="{active: currentRoute=='articles'}" to="/articles">文章</router-link></li>
+                  <li><router-link :class="{active: currentRoute=='articles'}" to="/articles?page=1">文章</router-link></li>
                   <li><router-link :class="{active: currentRoute=='questions'}"  to="/questions">问答</router-link></li>
                   <li><router-link :class="{active: currentRoute=='video'}"  to="/video">视频</router-link></li>
                   <li><a href="#">专栏</a></li>
@@ -45,7 +45,7 @@
             </template>
 
             <template v-else>
-              <button class="btn btn-home">{{ username }}</button>
+              <button class="btn btn-home" @click="goHome">{{ username }}</button>
               <button class="btn btn-logOut" @click="logOut">退出登录</button>
             </template>
 
@@ -119,13 +119,19 @@ export default {
     }
   },
   methods: {
+
+    // 退出登录
     logOut: function() {
-      console.log("退出")
       sessionStorage.username = undefined;
       this.$router.push({path: '/'});
       location.reload();
       this.$store.dispatch('logOut');
     },
+
+    goHome: function() {
+      console.log(1)
+      this.$router.push({path: '/' + this.username + '/home', params: {username: this.username}})
+    }
   },
   components: {
     scyLogin,

@@ -11,6 +11,21 @@ import store from './store/index.js'
 
 Vue.config.productionTip = false
 
+Vue.filter('getDate', function(value) {
+	if (!value) {
+		return
+	} else {
+		let newDate = new Date((value * 1));
+		let year = newDate.getFullYear();
+		let month = newDate.getMonth();
+		let day = newDate.getDate();
+		let hour = newDate.getHours();
+		let minute = newDate.getMinutes()
+		
+		return year + '-' + month + '-' + day + ' ' +  hour + ':' + minute;
+	}
+});
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

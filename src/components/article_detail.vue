@@ -20,13 +20,35 @@
 						</article>
 						<div class="article-comment">
 							<div v-if="!hasLogIn">
-								<p>目前您尚未登录，请<b>登录</b>或<b>注册</b>后进行评论</p>
+								<p>目前您尚未登录，请<b @click="logIn">登录</b>或<b @click="reg">注册</b>后进行评论</p>
 							</div>
 							<div v-else>
-								<!-- <p>尚未有评论！</p> -->
-								<div v-for="item in comments">
-									{{ item }}
+								<div class="reply-wrap" tabindex="0">
+									<form class="reply-form">
+										<textarea class="reply form-control" placeholder="发表你的评论" @focus="animate"></textarea>
+									</form>
+									<div class="reply-footer">
+										<span></span>
+										<button @click="reply" class="btn btn-reply">发表评论</button>
+									</div>
 								</div>
+								<div v-if="commentsLength">
+									<ul class="comment-list">
+										<template v-for="(item, index) in article_comment">
+											<li>
+												<span class="comment_author">{{ item.comment_author }}</span>
+												<span>{{ index + 1 }}楼 • {{ item.comment_date|getDate }}</span>
+												<p>{{ item.comment_content }}</p>
+												<span @click="replyOne">回复</span>
+											</li>
+										</template>
+									</ul>
+								</div>
+	
+								<div v-else>
+									<p>尚未有评论！赶快来添加你的评论吧~</p>	
+								</div>
+
 							</div>
 						</div>
 					</div>
@@ -41,16 +63,16 @@
 			return {
 				article: '',
 				article_like: 0,
-				article_comment:'',
+				article_comment:[],
 			}
 		},
 		computed: {
 			...mapGetters([
 				'hasLogIn'
 			]),
-			comments: function() {
-				// return JSON.parse(JSON.stringify(this.article_comment))
-			},
+			commentsLength:function() {
+				return this.article_comment.length>0?true:false;
+			}
 		},
 		mounted: function() {
 			this.initArticle();
@@ -66,7 +88,7 @@
 					_id: this.$route.params.id
 				}, function(data) {
 					that.article = data.article
-				});				
+				});		
 			},
 
 			// 初始化评论
@@ -75,18 +97,69 @@
 				$.get('http://localhost:3000/api/getComment', {
 					_id: this.$route.params.id
 				}, function(data) {
-					// console.log(data)
 
 					// 没有评论
 					if (data.status == 'noComment') {
-
-					} else if (data.status == 'hasComment') {
-						console.log(data)
-						that.article_like = data.article_like;
-						that.article_comment = data.article_comment
+					} else {
+						// console.log(data.article_comment);
+						data.article_comment.forEach((item,index) => {
+							that.article_comment.push(item);
+						})
 					}
+					// if (data.status == 'hasComment') {
+					// 	that.article_like = data.article_like;
+						// for (let i in data.comment) {
+						// 	that.article_comment[i] = data.comment[i];
+						// 	for (let obj in data.comment[i]) {
+						// 			that.article_comment[i][obj] = data.comment[i][obj]
+						// 	}
+						// }
+					// }
 				});
 			},
+
+			// 发表评论
+			reply: function (event) {
+				let reply = $(".reply").val();
+
+				// 捕获 replyTo
+				let reg = /\[reply\]([\s\S]*?)\[\/reply\]/;
+				if (reply.match(reg) == null || reply.match(reg) == 'null') {
+					// 不是回复评论，直接添加。需要给 文章的作者 添加 新消息通知
+
+				} else {
+					let replyTo = reply.match(reg)[1];
+					// 添加评论的同时，需要 给 replyTo 添加 新消息通知
+				}
+
+			},
+
+			// 回复评论
+			replyOne: function (event) {
+				let replyTo = $(event.currentTarget).parent().find(".comment_author").html();
+				$(".reply").focus().val("[reply]" + replyTo + '[/reply]' +'\r\n')
+			},
+
+			animate: function (event) {
+				$(event.target).animate({
+					height: 85
+				},300);
+
+				$(".btn-reply").animate({
+					opacity: 1,
+					height: 30
+					},400);
+			},
+
+
+			logIn: function () {
+				$(".btn-login").trigger('click');
+			},
+
+			reg: function () {
+				$(".btn-reg").trigger('click');
+			}
+
 		},
 	}
 </script>
@@ -130,5 +203,54 @@
 	}
 	.article-comment {
 		margin-top: 30px;
+	}
+	.article-comment b {
+		color: #41B886;
+		cursor: pointer;
+	}
+	.reply-form {
+		margin-bottom: 15px;
+	}
+	.reply-wrap {
+		outline: 0;
+		margin-bottom: 15px;
+	}
+	.reply {
+		height: 40px;
+		resize: none;
+		transition: all 0.4s linear;
+	}
+	.reply-footer {
+		overflow: hidden;
+	}
+	.btn-reply {
+		float: right;
+		margin-top: 5px; 
+		height: 0;
+		opacity: 0;
+	}
+	.comment-list {
+		padding-left: 0;
+	}
+	.comment-list li{
+		padding-bottom: 10px;
+		list-style: none;
+		border-bottom: 1px solid #E1E1E1
+	}
+	.comment-list li p,
+	.comment-list li span:last-child {
+		padding: 10px 0;
+		padding-left: 32px;
+		margin-bottom: 0;
+	}
+	.comment-list li span:last-child,
+	.comment-list li span:nth-child(2) {
+		color: #08C;
+	}
+	.comment-list li span:last-child {
+		cursor: pointer;
+	}
+	.comment-list li span:last-child:hover {
+		color: #009A61;
 	}
 </style>

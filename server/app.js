@@ -142,6 +142,7 @@ app.get('/api/getArticleDetail', function(req, res, next) {
       })
     }
   })
+
 })
 
 // 获取 文章评论 接口
@@ -156,11 +157,12 @@ app.get('/api/getComment', function(req, res, next) {
           status: "noComment"
         })
       } else {
-        res.send({
-          status: "hasComment",
-          article_like: data.article_like,
-          article_comment: JSON.stringify(data.article_comment)
-        });  
+        res.json(data);
+        // res.send({
+        //   status: "hasComment",
+        //   article_like: data.article_like,
+        //   comment: data.article_comment
+        // });  
       }
       
     }

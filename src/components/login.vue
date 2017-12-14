@@ -58,7 +58,7 @@
               that.$store.dispatch("logIn");
 
               $(".close").trigger('click');
-              that.$router.push({path: '/'+username+'/home'});
+              // that.$router.push({path: '/'+username+'/home'});
               location.reload();
               // console.log(sessionStorage.username);
 
