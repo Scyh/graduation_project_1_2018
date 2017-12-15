@@ -231,7 +231,7 @@
     content: '用户名已存在!';
   }
   .pwdErr::after {
-    content: '密码格式错误，请输入由字母、数字或. - _ @ ! 字符组成的密码！'
+    content: '密码格式错误，请输入由字母、数字或. - _ @ ! 字符组成的6-16位密码！'
   }
   .pwdConfirmErr::after {
     content: '两次密码不一致！'

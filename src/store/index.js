@@ -4,20 +4,29 @@ import Vuex from 'vuex'
 Vue.use(Vuex);
 
 const state = {
-	login: false
+	login: false,
+	admin: false,
 }
 
 const getters = {
-	hasLogIn: state => state.login
+	hasLogIn: state => state.login,
+	isAdmin: state => state.admin,
 }
 
 const actions = {
 	logIn: ({ commit }) => {
-		commit('logIn')
+		commit('logIn');
 	},
 
 	logOut: ({ commit }) => {
-		commit('logOut')
+		commit('logOut');
+	},
+
+	adminLogIn: ({ commit }) => {
+		commit('adminLogIn');
+	},
+	adminLogOut: ({ commit }) => {
+		commit('adminLogOut');
 	}
 }
 
@@ -27,6 +36,12 @@ const mutations = {
 	},
 	logOut(state) {
 		state.login = false
+	},
+	adminLogIn(state) {
+		state.admin = true
+	},
+	adminLogOut(state) {
+		state.admin = false
 	}
 }
 

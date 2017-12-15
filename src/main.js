@@ -6,6 +6,7 @@ import router from './router'
 import './assets/css/bootstrap.min.css'  
 import './assets/js/bootstrap.min'
 import './assets/css/normalize.css'
+import './assets/js/jquery-solarlunar.js'
 import store from './store/index.js'
 
 

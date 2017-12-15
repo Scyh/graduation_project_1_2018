@@ -4,12 +4,34 @@ var mongoose = require('mongoose');
 var Userschema = new mongoose.Schema({
 	username: String,
 	password: String,
-
-	// 禁言 -> 1代表正常 0代表禁言
+	trueName: {
+		type: String,
+		default: ''
+	}
+	sex: {
+		type: String,
+		default: ''
+	}, // 性别
+	job: {
+		type: String,
+		default: ''
+	}, // 职业
+	industry: {
+		type: String,
+		default: ''
+	}, // 行业
+	birthday: {
+		type: String,
+		default: ''
+	}, // 生日，string类型方便存储和读取
+	introduce: {
+		type: String,
+		default: ''
+	}, // 简介
 	permission: {
 		type: Number,
 		default: 1
-	}
+	}, // 禁言 -> 1代表正常 0代表禁言
 })
 
 Userschema.statics = {
@@ -21,6 +43,11 @@ Userschema.statics = {
 	uniqueUserName: function(params, data) {
 		return this.find({'username': params.username}).count().exec(data);
 	},
+
+	findByUserName: function(params, data) {
+		console.log(params.username);
+		return this.find({'username': params.username}).exec(data);
+	}
 }
 
 module.exports = Userschema

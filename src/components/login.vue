@@ -53,18 +53,28 @@
           .done(function(data) {
             if (data.status == 'success') {
               // 验证成功，用户存在
-              sessionStorage.username = username;
 
-              that.$store.dispatch("logIn");
+              console.log(username)
+              // 跳转管理员界面
+              if (username == 'admin') {
+                console.log("管理员登录")
+                sessionStorage.admin = 'admin';
+                that.$router.push('/admin');
+                that.$store.dispatch("adminLogIn");
+                $(".close").trigger('click');
+                // location.reload();
+              } else {
 
-              $(".close").trigger('click');
-              // that.$router.push({path: '/'+username+'/home'});
-              location.reload();
-              // console.log(sessionStorage.username);
+              // 普通用户登录
+                sessionStorage.username = username;  
+                that.$store.dispatch("logIn");
+                $(".close").trigger('click');
+                location.reload();
+              }
 
             } else if (data.status == 'fail') {
               // 验证失败，用户不存在
-
+              alert("验证失败")
             } else {
               console.log("验证发生错误")
             }

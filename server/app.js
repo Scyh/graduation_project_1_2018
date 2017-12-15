@@ -85,14 +85,18 @@ app.get('/api/uniqueUserName', function(req, res, next) {
       }
     }
   })
-
 })
 
 // 用户注册接口
 app.post('/api/regUser', function(req,res,next) {
     let newUser = new User({
       username: req.body.username,
-      password: req.body.password
+      password: req.body.password,
+      // sex: 'female',
+      // job: '',
+      // industry: '',
+      // birthday: '',
+      // introduce: '个人简介'
     })
     newUser.save(function(err, data) {
       if (err) {
@@ -105,8 +109,18 @@ app.post('/api/regUser', function(req,res,next) {
     });
 })
 
+// 获取用户信息
+app.get('/api/getUserInfo', function(req, res, next) {
+  User.findByUserName({username: req.query.username},function(err, data) {
+    if (err) {
+      console.log(err);
+    } else {
+      res.json(data);
+    }
+  })
+})
 
-// 获取部分文章接口
+// 获取主页文章中的部分文章
 app.get('/api/getArticle', function(req, res, next) {
   Article.fetchPart({
     pageCount: req.query.pageCount
@@ -169,7 +183,7 @@ app.get('/api/getComment', function(req, res, next) {
   })
 })
 
-
+// 获取 部分用户文章
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
