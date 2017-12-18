@@ -8,7 +8,7 @@ import './assets/js/bootstrap.min'
 import './assets/css/normalize.css'
 import './assets/js/jquery-solarlunar.js'
 import store from './store/index.js'
-
+import './assets/css/cropper.min.css'
 
 Vue.config.productionTip = false
 

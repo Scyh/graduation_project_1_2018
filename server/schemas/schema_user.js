@@ -2,12 +2,23 @@ var mongoose = require('mongoose');
 
 // 建模
 var Userschema = new mongoose.Schema({
-	username: String,
-	password: String,
+	username: {
+		type: String,
+		unique: true,
+		require: true
+	},
+	password: {
+		type: String,
+		require: true
+	},
 	trueName: {
 		type: String,
 		default: ''
-	}
+	},
+	userProfile: {
+		type: String,
+		default: ''
+	},
 	sex: {
 		type: String,
 		default: ''

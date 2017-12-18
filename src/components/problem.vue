@@ -121,24 +121,6 @@ export default {
 	},
 	beforeCreate: function() {
 		console.log('beforeCreate');
-
-		// 获取所有文章
-		// $.ajax({
-		// 	url: 'http://localhost:3000/api/getArticle',
-		// 	type: 'get',
-		// 	dataType: 'JSON',
-		// })
-		// .done(function(data) {
-		// 	console.log("success");
-		// 	this.articles = data;
-		// 	console.log(this.articles)
-		// })
-		// .fail(function(err) {
-		// 	console.log("error: " + err);
-		// })
-		// .always(function() {
-		// 	console.log("complete");
-		// });
 	},
 
 }

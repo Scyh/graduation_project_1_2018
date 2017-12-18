@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+var Article = require('./schema_article.js');
 
 var Commentschema = new mongoose.Schema({
 	article_like: {

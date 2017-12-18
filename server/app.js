@@ -119,6 +119,49 @@ app.get('/api/getUserInfo', function(req, res, next) {
     }
   })
 })
+// 更新用户头像
+app.post('/api/updateUserProfile', function (req, res, next) {
+  User.update({'username': req.body.username}, {"userProfile": req.body.srcStr}, function(err, data) {
+     if (err) {
+      console.log(err);
+      res.send({
+        status: 'fail'
+      })
+     } else {
+      res.send({
+        status: 'success'
+      })
+     }
+  })
+})
+
+// 更新用户信息
+app.post('/api/updateUserInfo',function (req, res, next) {
+  User.update({username:req.body.username}, {
+      sex: req.body.sex,
+      trueName: req.body.trueName,
+      industry: req.body.industry,
+      job: req.body.job,
+      introduce: req.body.introduce,
+      birthday: req.body.birthday
+    }, function (err) {
+      if (err) {
+        console.log (err);
+        res.send({
+          status: 'fail'
+        })
+      } else {
+        res.send({
+          status: 'success'
+        })
+      }
+    })
+})
+
+// 获取用户tab信息
+app.get('/api/getTabInfo', function (req, res, next) {
+  
+})
 
 // 获取主页文章中的部分文章
 app.get('/api/getArticle', function(req, res, next) {
@@ -183,7 +226,20 @@ app.get('/api/getComment', function(req, res, next) {
   })
 })
 
-// 获取 部分用户文章
+// test 
+app.get('/api/test', function (req, res) {
+  // Article.findById('5a2517cda56fbdc3ff47902c').populate('_comment_id').exec().then(function(data) {
+  //   console.log(data)
+  // }).catch(function (err) {
+  //   console.log(err)
+  // })
+  Article.test(function(err, data) {
+    if (err) {
+      console.log(err)
+    }
+    console.log(data)
+  })
+})
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

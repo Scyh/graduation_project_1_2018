@@ -4,7 +4,9 @@
 			<div class="row home-header">
 				<div class="col-sm-2 col-md-2 col-lg-2">
 					<div class="img-wrap">
-						<img src="../assets/index.png" id="userProfile">
+						<div class="userProfile-wrap">
+							<img :src="userInfo.userProfile" id="userProfile">	
+						</div>
 						<span class="edit_photo" data-toggle="modal" data-target="#chooseModal">
 							<img src="../assets/edit_photo.png">
 						</span>
@@ -55,7 +57,7 @@
 								<span class="info-null">未填写个人简介</span>
 							</template>
 							<template v-else>
-								{{ userInfo.introduce }}
+								<span>{{ userInfo.introduce }}</span>
 							</template>
 						</dt>
 					</dl>
@@ -77,7 +79,9 @@
 						</div>
 					  <!-- Tab panes -->
 					    <div class="tab-content">
-						    <div role="tabpanel" class="tab-pane active" id="myArticles">这里是我的文章</div>
+						    <div role="tabpanel" class="tab-pane active" id="myArticles">
+							
+						    这里是我的文章</div>
 						    <div role="tabpanel" class="tab-pane" id="myQuestions">这里是我的提问</div>
 						    <div role="tabpanel" class="tab-pane" id="myMessage">这里是我的通知</div>
 						    <div role="tabpanel" class="tab-pane" id="myRelation">这里是我的关系</div>
@@ -87,36 +91,38 @@
 			</div>
 		</div>
 
-
-
 	<!-- 选择头像模态框 -->
 	<div class="modal fade" tabindex="-1" role="dialog" id="chooseModal">
 	  <div class="modal-dialog" role="document">
 	    <div class="modal-content">
 	      <div class="modal-header">
 	        <button type="button" class="close" data-dismiss="modal"></button>
-	        <label for="file" class="file-label">请选择头像</label><input type="file" id="file" @change="preview($event)">
+	        <label for="file" class="file-label">请选择头像<input type="file" id="file" @change="preview"></label>
 	      </div>
 	      <div class="modal-body">
 	        <div class="tempImg-wrap">
-	        	<figure>
-	        		<img src="../assets/index.png" id="tempImgLG">	
-	        		<figcaption>150 * 150</figcaption>
-	        	</figure>
-	        	<figure>
-	        		<img src="../assets/index.png" id="tempImgMD">
-	        		<figcaption>120 * 120</figcaption>
-	        	</figure>
-	        	<figure>
-	        		<img src="../assets/index.png" id="tempImgSM">	
-	        		<figcaption>70 * 70</figcaption>
-	        	</figure>
-	        	
+	            <div class="row">
+	            	<div class="col-md-4">
+	            		<img src="../assets/index.png" id="tempImgLG">
+	            	</div>
+			        <div class="col-md-2 col-md-offset-1">
+			            <div>
+			                <div class="imgPreview">
+			                </div>
+			            </div>
+			        </div>
+			        <div class="col-md-2 col-md-offset-2">
+			            <div>
+			                <div class="imgPreview imgPreviewRound">
+			                </div>
+			            </div>
+			        </div>
+	      		</div>
 	        </div>
-	      </div>
+	      	</div>
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-	        <button type="button" class="btn btn-primary" @click="saveImg">保存</button>
+	        <button type="button" class="btn btn-primary" @click="crop">保存</button>
 	      </div>
 	    </div><!-- /.modal-content -->
 	  </div><!-- /.modal-dialog -->
@@ -136,15 +142,15 @@
 			  <div class="form-group">
 			    <label for="trueName" class="col-sm-1 control-label">实名</label>
 			    <div class="col-sm-4">
-			      <input type="text" class="form-control" id="trueName">
+			      <input type="text" class="form-control" id="trueName" :value="userInfo.trueName?userInfo.trueName:''">
 			    </div>
 			    <label for="sex" class="col-sm-offset-1 col-sm-1 control-label">性别</label>
 			    <div class="col-sm-4">
 			      <label class="radio-inline" for="male">
-			      	<input type="radio" name="sex" id="male" value="男">男
+			      	<input type="radio" name="sex" id="male" value="男" :checked="userInfo.sex=='男'?true:false">男
 			      </label>
 			      <label class="radio-inline" for="female">
-			      	<input type="radio" name="sex" id="female" value="女">女
+			      	<input type="radio" name="sex" id="female" value="女" :checked="userInfo.sex=='女'?true:false">女
 			      </label>
 			    </div>   
 			  </div>
@@ -152,27 +158,26 @@
 			    <label for="industry" class="col-sm-1 control-label">行业</label>
 			    <div class="col-sm-4">
 			      <select id="industry" class="form-control">
-			      	<option v-for="item in industryArr" :value="item" class="form-control">{{ item }}</option>
+			      	<option v-for="item in industryArr" :value="item" class="form-control" :checked="userInfo.industry==item?true:false">{{ item }}</option>
 			      </select>
 			    </div>
 			    <label for="job" class="col-sm-offset-1 col-sm-1 control-label">职业</label>
 			    <div class="col-sm-4">
-			      <input type="text" class="form-control" id="job">
+			      <input type="text" class="form-control" id="job" :value="userInfo.job?userInfo.job:''">
 			    </div>   
 			  </div>
-
 
 			  <div class="form-group">
 			    <label for="birthday" class="col-sm-1 control-label">生日</label>
 			    <div class="col-sm-4">
-			      <input type="text" id="birthday" class="form-control">
+			      <input type="text" id="birthday" class="form-control" :value="userInfo.birthday?userInfo.birthday:''">
 			    </div>
 			  </div>
 
 			  <div class="form-group">
 			    <label for="introduce" class="col-sm-1 control-label">简介</label>
 			    <div class="col-sm-10">
-			      <textarea id="introduce" class="form-control" style="resize: none;height: 100px;" placeholder="请输入你的个人简介"></textarea>
+			      <textarea id="introduce" class="form-control" style="resize: none;height: 100px;" placeholder="请输入你的个人简介" :value="userInfo.introduce?userInfo.introduce:''"></textarea>
 			    </div>
 			  </div>
 			  
@@ -180,7 +185,7 @@
 	      </div>
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-	        <button type="button" class="btn btn-primary">保存</button>
+	        <button type="button" class="btn btn-primary" @click="saveUserInfo">保存</button>
 	      </div>
 	    </div><!-- /.modal-content -->
 	  </div><!-- /.modal-dialog -->
@@ -189,6 +194,7 @@
 	</div>
 </template>
 <script>
+	import cropper from 'cropper'
 	export default {
 		data: function () {
 			return {
@@ -202,14 +208,10 @@
 		  			this.$router.push({path: '/'})
 		  	    }
 		},
-		computed:  {
-			// currentUserHome: function () {
-			// 	return '#/' + this.$route.params.username + '/home'
-			// }
-		},
 		mounted: function () {
 			this.initInfo();
 			$("#birthday").solarlunar();
+			// this.initCropper($('#photo'),$('#input'));
 		},
 		methods:  {
 
@@ -228,31 +230,110 @@
 				if (!event.target.files || !event.target.files[0]) {
 					return 
 				}
-				console.log(event.target.files[0].type);
 
-				// 判断传入类型
+				// // 判断传入类型
+				// let reg = /^image\//;
+				// if (reg.test(event.target.files[0].type)) {
+				// 	let reader = new FileReader();
+				// 	reader.onload = function (ev) {
+				// 		$("#tempImgLG").prop('src',ev.target.result);
+				// 		$("#tempImgMD").prop('src',ev.target.result);
+				// 		$("#tempImgSM").prop('src',ev.target.result);
+				// 		// $(".tempImg-wrap").css("background-image",'url(' + ev.target.result + ')')
+				// 	}
+				// 	reader.readAsDataURL(event.target.files[0])
+				// } else {
+				// 	alert("请上传图片文件！");
+				// }
+				let $img = $("#tempImgLG");
+				let options = {
+					aspectRatio: 1,
+					viewMode: 2,		
+                	preview: '.imgPreview' // 预览图的class名
+				};
+				let files = event.target;
+				let uploadedImageURL;
 				let reg = /^image\//;
-				console.log(reg.test(event.target.files[0].type))
-				if (reg.test(event.target.files[0].type)) {
-					let reader = new FileReader();
-					reader.onload = function (ev) {
-						$("#tempImgLG").prop('src',ev.target.result);
-						$("#tempImgMD").prop('src',ev.target.result);
-						$("#tempImgSM").prop('src',ev.target.result);
-						// $(".tempImg-wrap").css("background-image",'url(' + ev.target.result + ')')
+				// console.log(files.files[0])
+				$img.cropper(options);
+				if (URL) {
+						let file = files.files[0];
+						console.log(file)
+						if (reg.test(event.target.files[0].type)) {
+							if (uploadedImageURL) {
+                                URL.revokeObjectURL(uploadedImageURL);
+                            }
+                            uploadedImageURL = URL.createObjectURL(file);
+                            // 销毁cropper后更改src属性再重新创建cropper
+                            console.log(uploadedImageURL)
+                            $img.cropper('destroy').prop('src', uploadedImageURL).cropper(options);
+                            $(event.target).val('');
 					}
-					reader.readAsDataURL(event.target.files[0])
-				} else {
-					alert("请上传图片文件！");
 				}
-			},
-
-			// 保存图片
-			saveImg: function () {
-				let src = $("#tempImgLG").prop('src');
-				$("#userProfile").prop('src',src);
 
 			},
+
+	        crop : function () {
+	        	let  that = this;
+				var $image = $('#tempImgLG');
+				var $target = $('#userProfile');
+				let srcStr = $image.cropper('getCroppedCanvas',{
+				    width:300, // 裁剪后的长宽
+				    height:300
+				}).toDataURL('image/jpeg');
+				$target.prop('src', srcStr);
+				// 更新到数据库中
+				$.post('http://localhost:3000/api/updateUserProfile', {
+					username: that.userInfo.username,
+					srcStr: srcStr
+				}, function(data, textStatus, xhr) {
+					console.log(data);
+					if (data.status == 'fail') {
+						alert("上传失败")
+					} else if (data.status == 'success') {
+						alert("上传成功");
+						$("#chooseModal .close").trigger('click');
+					}
+				});
+	        }, // crop结束
+
+	        // 保存用户修改的个人信息
+	        saveUserInfo: function () {
+	        	let that = this;
+	        	let sex = $("[name='sex']").val(),
+	        		trueName = $("#trueName").val(),
+	        		industry = $("#industry").val(),
+	        		job = $("#job").val(),
+	        		introduce = $("#introduce").val(),
+	        		birthday = $("#birthday").val();
+
+	        	$.post('http://localhost:3000/api/updateUserInfo', {
+	        		username: that.userInfo.username,
+	        		sex: sex,
+	        		trueName: trueName,
+	        		industry: industry,
+	        		job: job,
+	        		introduce: introduce,
+	        		birthday: birthday
+	        	}, function(data, textStatus, xhr) {
+	        		console.log(data) 
+        			if (data.status == 'fail') {
+        				alert("修改失败")
+        			} else if (data.status == 'success') {
+        				alert("修改成功");
+        				$("#editUserInfo .close").trigger('click');
+        			}
+	        		
+	        	});
+	        }, // saveUserInfo 结束
+
+	        // 初始化我的文章
+	        initUserArticles: function () {},
+
+	        // 初始化我的提问
+	        initUserQuertions: function () {},
+
+	        // 初始化我的关系
 
 		}
 	}
@@ -268,9 +349,12 @@
 		background-color: #FFF;
 		box-shadow: 0 0 10px 5px #EEE;
 	}
-	.userProfileLg {
+	.userProfile-wrap {
 		width: 150px;
 		height: 150px;
+	}
+	.userProfile {
+		width: 100%;
 	}
 	.userinfo {
 		outline: none;
@@ -297,7 +381,6 @@
 	}
 	.userinfo dd span {
 		display: inline-block;
-/*		padding:0 10px;*/
 		margin: 0 10px;
 		font-size: 16px;
 		color: #000;
@@ -350,11 +433,14 @@
 		/*background-size: 100%;
 		background-size: cover;*/
 	}
+	.tempImg img {
+		width: 100%;
+	}
 	#tempImgLG {
 		width: 200px;
 		height: 200px;
 	}
-	#tempImgMD {
+/*	#tempImgMD {
 		width: 120px;
 		height: 120px;
 	}
@@ -370,7 +456,7 @@
 	}
 	figure figcaption {
 		text-align: center;
-	}
+	}*/
 	.info-null {
 		color: #e9733a !important;
 		font-size: 14px !important;
@@ -398,5 +484,15 @@
 		border: 1px solid #EEE;
 		font-size: 20px;
 		font-weight: normal;
+	}
+    .imgPreview {
+    	overflow: hidden;
+		width: 150px;
+		height: 150px;
+    }
+	.imgPreviewRound {
+		border-radius: 50%;
+		width: 70px;
+		height: 70px;
 	}
 </style>
