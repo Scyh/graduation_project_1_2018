@@ -1,7 +1,11 @@
-var mongoose = require('mongoose');
-var Article = require('./schema_article.js');
+var mongoose = require('mongoose'),
+	Schema = mongoose.Schema;
 
 var Commentschema = new mongoose.Schema({
+	_article_id: {
+		 type: String,
+		 require: true
+	},
 	article_like: {
 		type: Number,
 		default: 0
@@ -13,7 +17,6 @@ var Commentschema = new mongoose.Schema({
 })
 
 Commentschema.statics = {
-
 	//  插入格式
 /*
 	db.getCollection('comment').update({"_id" : ObjectId("5a20c9582fd18cd691073607")}, {"$addToSet": {
@@ -25,7 +28,7 @@ Commentschema.statics = {
         }
     })
 */
-
+ 
  	// 排序
 /*
 	 	db.getCollection('comment').update(
@@ -39,9 +42,18 @@ Commentschema.statics = {
 
 	// 添加评论
 	addComment: function(params, data) {
-		console.log(params)
-		// return 
+		return this.update({'_article_id': params._article_id}, {
+			$addToSet: {
+				'article_comment': params.reply
+			}
+		}).exec(data)
 	},
+
+	// 查找评论
+	fetchComment: function (_article_id, data) {
+		console.log(_article_id)
+		return this.find({'_article_id': _article_id}).exec(data);
+	}
 }
 
 module.exports = Commentschema

@@ -2,7 +2,7 @@
 		<div class="article">
 			<div class="container">
 				<div class="row">
-					<div class="col-md-12">
+					<div :class="canEdit?'col-md-8':'col-md-12'">
 						<article>
 							<div class="article-header">
 								<h2>{{ article.article_title }}</h2>
@@ -10,6 +10,10 @@
 									<span>作者：{{ article.article_author }}</span>
 									<span>&nbsp;&nbsp;&nbsp;&nbsp;发布于：{{ article.article_publish_date }}&nbsp;&nbsp;</span>
 									<span class="article_pv">{{ article.article_pv }}</span>
+									<span class="edit" v-show="canEdit">
+										<a href="javascript:void(0)">编辑</a>
+										<a href="javascript:void(0)">删除</a>
+									</span>
 								</div>
 							</div>
 							<div class="article-body" v-html="article.article_content"></div>
@@ -25,11 +29,11 @@
 							<div v-else>
 								<div class="reply-wrap" tabindex="0">
 									<form class="reply-form">
-										<textarea class="reply form-control" placeholder="发表你的评论" @focus="animate"></textarea>
+										<textarea class="reply form-control" placeholder="发表你的评论" @focus="animate" @keyup="computedCharacter"></textarea>
 									</form>
 									<div class="reply-footer">
-										<span></span>
 										<button @click="reply" class="btn btn-reply">发表评论</button>
+										<span></span>
 									</div>
 								</div>
 								<div v-if="commentsLength">
@@ -40,6 +44,7 @@
 												<span>{{ index + 1 }}楼 • {{ item.comment_date|getDate }}</span>
 												<p>{{ item.comment_content }}</p>
 												<span @click="replyOne">回复</span>
+												<span @click="deleteComment" v-show="canEdit" class="edit"><a href="javascript:void(0)">删除</a></span>
 											</li>
 										</template>
 									</ul>
@@ -51,6 +56,10 @@
 
 							</div>
 						</div>
+					</div>
+
+					<div class="col-md-4" v-show="canEdit">
+						这里是副边栏
 					</div>
 				</div>
 			</div>
@@ -72,12 +81,19 @@
 			]),
 			commentsLength:function() {
 				return this.article_comment.length>0?true:false;
+			},
+			// 的长度
+			commentCharacterLength: function () {
+				return $(".reply").val().toString().length;
+			},
+			canEdit: function () {
+				let reg = /^\/[a-zA-Z0-9\_]{3,13}\/articles\/[a-zA-Z0-9]/;
+				return reg.test(this.$route.path)
 			}
 		},
 		mounted: function() {
 			this.initArticle();
 			this.initComment();
-			console.log(this.article_comment)
 		},
 		methods: {
 
@@ -88,7 +104,7 @@
 					_id: this.$route.params.id
 				}, function(data) {
 					that.article = data.article
-				});		
+				});
 			},
 
 			// 初始化评论
@@ -102,7 +118,8 @@
 					if (data.status == 'noComment') {
 					} else {
 						// console.log(data.article_comment);
-						data.article_comment.forEach((item,index) => {
+						that.article_comment = [];
+						data[0].article_comment.forEach((item,index) => {
 							that.article_comment.push(item);
 						})
 					}
@@ -120,13 +137,31 @@
 
 			// 发表评论
 			reply: function (event) {
+				let that = this;
 				let reply = $(".reply").val();
 
 				// 捕获 replyTo
 				let reg = /\[reply\]([\s\S]*?)\[\/reply\]/;
 				if (reply.match(reg) == null || reply.match(reg) == 'null') {
 					// 不是回复评论，直接添加。需要给 文章的作者 添加 新消息通知
-
+					if (reply == '') {
+						$(".reply-footer span").html("请输入字符");
+					} else {
+						$(".reply-footer span").html("");
+							$.post('http://localhost:3000/api/reply', {
+								_article_id: that.article._id,
+								type: 'comment',
+								comment_content: reply,
+								comment_author: sessionStorage.username,
+								comment_date: Date.parse(new Date())
+							}, function(data, textStatus, xhr) {
+								if (data.status == 'success') {
+									alert("评论成功")
+									$(".reply").val("");
+									that.initComment()
+								}
+						});
+					}
 				} else {
 					let replyTo = reply.match(reg)[1];
 					// 添加评论的同时，需要 给 replyTo 添加 新消息通知
@@ -151,6 +186,10 @@
 					},400);
 			},
 
+			computedCharacter: function (event) {
+				let length = $(event.target).val().toString().length;
+				$(event.target).parent().next().find('span').html("还剩" + (1000-length) + "个字符可以输入")
+			},
 
 			logIn: function () {
 				$(".btn-login").trigger('click');
@@ -158,7 +197,11 @@
 
 			reg: function () {
 				$(".btn-reg").trigger('click');
-			}
+			},
+
+			deleteComment: function () {
+				
+			},
 
 		},
 	}
@@ -223,6 +266,13 @@
 	.reply-footer {
 		overflow: hidden;
 	}
+	.reply-footer span {
+		float: right;
+		display: inline-block;
+		margin-right: 10px;
+    	margin-top: 10px;
+    	color: #41B886;
+	}
 	.btn-reply {
 		float: right;
 		margin-top: 5px; 
@@ -238,19 +288,22 @@
 		border-bottom: 1px solid #E1E1E1
 	}
 	.comment-list li p,
-	.comment-list li span:last-child {
+	.comment-list li span:nth-child(4) {
 		padding: 10px 0;
 		padding-left: 32px;
 		margin-bottom: 0;
 	}
-	.comment-list li span:last-child,
+	.comment-list li span:nth-child(4),
 	.comment-list li span:nth-child(2) {
 		color: #08C;
 	}
-	.comment-list li span:last-child {
+	.comment-list li span:nth-child(4) {
 		cursor: pointer;
 	}
-	.comment-list li span:last-child:hover {
+	.comment-list li span:nth-child(4):hover {
 		color: #009A61;
+	}
+	.edit {
+		float: right;
 	}
 </style>

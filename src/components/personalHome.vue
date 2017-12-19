@@ -72,7 +72,7 @@
 							<ul class="nav nav-tabs" role="tablist">
 							    <li role="presentation" class="active col-md-3"><a href="#myArticles" aria-controls="home" role="tab" data-toggle="tab">我的文章</a></li>
 							    <li role="presentation" class="col-md-3"><a href="#myQuestions" aria-controls="profile" role="tab" data-toggle="tab">我的提问</a></li>
-							    <li role="presentation" class="col-md-3"><a href="#myMessage" aria-controls="messages" role="tab" data-toggle="tab">我的通知</a></li>
+							    <li role="presentation" class="col-md-3"><a href="#myMessage" aria-controls="messages" role="tab" data-toggle="tab">我的通知<span class="badge badge-wraning">2</span></a></li>
 							    <li role="presentation" class="col-md-3"><a href="#myRelation" aria-controls="settings" role="tab" data-toggle="tab">我的关系</a></li>
 						    </ul>
 
@@ -80,8 +80,8 @@
 					  <!-- Tab panes -->
 					    <div class="tab-content">
 						    <div role="tabpanel" class="tab-pane active" id="myArticles">
-							
-						    这里是我的文章</div>
+								<myArticles :userName="currentUserName"></myArticles>
+							</div>
 						    <div role="tabpanel" class="tab-pane" id="myQuestions">这里是我的提问</div>
 						    <div role="tabpanel" class="tab-pane" id="myMessage">这里是我的通知</div>
 						    <div role="tabpanel" class="tab-pane" id="myRelation">这里是我的关系</div>
@@ -195,11 +195,18 @@
 </template>
 <script>
 	import cropper from 'cropper'
+	import myArticles from '../components/myArticles.vue'
+
 	export default {
 		data: function () {
 			return {
-				userInfo: '',
+				userInfo: {},
 				industryArr: ['选择行业','电子·微电子','通信','教育·培训·科研·院校','医疗·保健·美容·卫生服务','银行','保险','IT服务·系统集成','基金·证券·期货·投资','政府·非营利机构','房地产服务','交通·运输·物流','广告·会展·公关','房地产开发·建筑与工程','娱乐·运动·休闲','快速消费品','家电业','仪器·仪表·工业自动化·电气','计算机软件','计算机硬件·网络设备','汽车·摩托车','互联网·电子商务','其他'],
+			}
+		},
+		computed: {
+			currentUserName: function () {
+				return sessionStorage.username
 			}
 		},
 		beforeCreate: function () {
@@ -211,7 +218,6 @@
 		mounted: function () {
 			this.initInfo();
 			$("#birthday").solarlunar();
-			// this.initCropper($('#photo'),$('#input'));
 		},
 		methods:  {
 
@@ -221,7 +227,13 @@
 				$.get('http://localhost:3000/api/getUserInfo',{
 					username: this.$route.params.username
 				}, function(data) {
+					// for (let i in data[0]) {
+					// 	// console.log ('data[0][i]' + i + ":" + data[0][i])
+					// 		that.userInfo[i] = data[0][i]							
+					// }
+
 					that.userInfo = data[0];
+
 				});
 			},
 
@@ -335,6 +347,9 @@
 
 	        // 初始化我的关系
 
+		},
+		components: {
+			myArticles
 		}
 	}
 </script>
@@ -371,6 +386,11 @@
 	}
 	.userinfo dt {
 		font-size: 24px;
+		font-weight: normal;
+		padding: 15px 0;
+	}
+	.userinfo dt:last-child {
+		font-size: 16px;
 		font-weight: normal;
 		padding: 15px 0;
 	}
@@ -494,5 +514,12 @@
 		border-radius: 50%;
 		width: 70px;
 		height: 70px;
+	}
+	.badge {
+		margin-left: 5px;
+		margin-top: -20px;
+	}
+	.badge-wraning {
+		background-color: red;
 	}
 </style>

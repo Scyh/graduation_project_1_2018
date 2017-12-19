@@ -56,7 +56,6 @@ Userschema.statics = {
 	},
 
 	findByUserName: function(params, data) {
-		console.log(params.username);
 		return this.find({'username': params.username}).exec(data);
 	}
 }

@@ -22,7 +22,7 @@ export default {
   	return {}
   },
   mounted: function() {
-    console.log(this.isAdmin);
+    // console.log(this.isAdmin);
     sessionStorage.admin = 'notAdmin'
   },
   watch: {

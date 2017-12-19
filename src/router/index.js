@@ -3,8 +3,10 @@ import Router from 'vue-router'
 import app from '../App.vue'
 import articles from '../components/articles.vue'
 import article_detail from '../components/article_detail.vue'
+import question from '../components/question.vue'
 import personalHome from '../components/personalHome.vue'
 import admin from '../components/admin.vue'
+import personalArticleDetail from '../components/personalArticleDetail.vue'
 import store from '../store/index.js'
 
 
@@ -34,6 +36,20 @@ const router = new Router({
     {
       path: '/admin',
       component: admin
+    },
+    {
+      path: '/questions',
+      component: question
+    },
+    // 查看自己或者别人的主页
+    {
+      path: '/:username/articles/:id',
+      // component: personalArticleDetail
+      component: article_detail
+    },
+    // 通过类别查看文章
+    {
+      path: '/:category/:username/articles/:id'
     },
     // {
     // 	path: '*',

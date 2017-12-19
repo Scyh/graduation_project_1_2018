@@ -1,6 +1,5 @@
-var mongoose = require('mongoose');
-
-var Comment = require('../models/comment.js');
+var mongoose = require('mongoose'),
+	Schema = mongoose.Schema;
 
 var Articleschema = new mongoose.Schema({
 	article_title: String,
@@ -8,7 +7,7 @@ var Articleschema = new mongoose.Schema({
 	article_content: String,
 	article_pv: Number,
 	_comment_id: {
-		type: mongoose.Schema.ObjectId,
+		type: Schema.Types.ObjectId,
 		ref: 'Comment'
 	}
 })
@@ -20,8 +19,9 @@ Articleschema.statics = {
 	fetchCount: function(data) {
 		return this.find({}).count().exec(data);
 	},
-	test: function (data) {
-		return this.find({_id : "ObjectId('5a20c9512fd18cd691073602')"}).pupulate('_comment_id').exec(data)
+	fetchByAuthor: function (username, data) {
+		console.log(username)
+		return this.find({'article_author': username}, {'article_publish_date': 1, 'article_title': 1}).exec(data)
 	}
 }
 
