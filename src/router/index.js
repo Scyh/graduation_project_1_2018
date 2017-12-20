@@ -6,7 +6,6 @@ import article_detail from '../components/article_detail.vue'
 import question from '../components/question.vue'
 import personalHome from '../components/personalHome.vue'
 import admin from '../components/admin.vue'
-import personalArticleDetail from '../components/personalArticleDetail.vue'
 import store from '../store/index.js'
 
 

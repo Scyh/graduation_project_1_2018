@@ -211,7 +211,7 @@ app.get('/api/getComment', function(req, res, next) {
     } else {
       
       if (data.length == 0) {
-        console.log("没有评论");
+        // console.log("没有评论");
         res.send({
           status: "noComment"
         })
@@ -228,26 +228,12 @@ app.get('/api/getComment', function(req, res, next) {
   })
 })
 
-// app.get('/api/saveComment', function(req, res) {
-//   let newComment = new Comment({
-//     _article_id: '5a20c94c2fd18cd6910735ff'
-//   })
-//   newComment.save(function(err, data) {
-//     if (err) {
-//       console.log(err)
-//     } else {
-//       console.log(data);
-//     }
-//   })
-// })
-
 // 回复评论  如果数据库中没有该文章的评论 document ，就新建一张
 app.post('/api/reply', function (req, res, next) {
   Comment.count({'_article_id': req.body._article_id})
     .then(data => {
     // 数据库中没有该文章的记录,则新建
-    console.log(data)
-    if (data <1 ) {
+    if (data < 1) {
       let newComment = new Comment({
         _article_id: req.body._article_id
       })
@@ -263,7 +249,6 @@ app.post('/api/reply', function (req, res, next) {
       'comment_date': req.body.comment_date,
       'comment_content': req.body.comment_content
     }
-    console.log(11111)
     Comment.addComment({
       _article_id: req.body._article_id,
       reply:article_comment
@@ -274,7 +259,6 @@ app.post('/api/reply', function (req, res, next) {
           status: 'fail'
         })
       } else if (data.n == 1 && data.nModified == 1){
-        console.log('success')
         res.send({
           status: 'success'
         })
@@ -283,8 +267,49 @@ app.post('/api/reply', function (req, res, next) {
   }).catch(err => {
     console.log(err)
   })
+});
 
+// 删除评论
+app.post('/api/deleteComment', function (req, res, next) {
+  Comment.deleteComment({
+    _article_id: req.body._article_id,
+    comment_date: req.body.comment_date,
+    comment_content: req.body.comment_content
+  }).then(data => {
+    res.send({
+      status: 'success'
+    })
+  }).catch(err => {
+    console.log(err);
+    res.send({
+      status: 'fail'
+    })
+  })
+}) 
+
+// 点赞或踩
+app.post('/api/likeOrNot', function (req, res, next) {
+  // 没有评论只有点赞的时候，需新建comment
+
+
+
+
+
+
+  Comment.updateLikeOrNot({
+    _article_id: req.body._article_id,
+    type: req.body.type,
+    count: req.body.count,
+    user: req.body.user
+  }, (err, data) => {
+    if (data.n ==1 && data.nModified == 1) {
+      res.send({
+        status: 'success'
+      })
+    }
+  })
 })
+
 
 // 初始化个人主页的文章tab
 app.get('/api/getMyArticles', function (req, res, next) {
@@ -298,12 +323,33 @@ app.get('/api/getMyArticles', function (req, res, next) {
 })
 
 // 获取查看文章
-app.get('/api/getOneArticle', function(req, res, next) {
+app.get('/api/getOneArticle', function (req, res, next) {
   Article.findById(req.query.article_id).then(data => {
     res.json(data);
   }).catch(err => {
     console.log(err)
   })
+})
+
+// 删除文章
+app.post('/api/deleteArticle', function (req, res, next) {
+  Article.deleteOne(req.body._id)
+    .then(data => {
+      // console.log(data)
+      res.send({
+        status: 'success'
+      })
+  }).catch(err => {
+      console.log(err)
+      res.send({
+        status: 'fail'
+      })
+  })
+})
+
+// 初始化 个人信息tab
+app.get('/api/getMyNotice', function (req, res, next) {
+
 })
 
 // test 

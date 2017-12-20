@@ -18,7 +18,7 @@ Vue.filter('getDate', function(value) {
 	} else {
 		let newDate = new Date((value * 1));
 		let year = newDate.getFullYear();
-		let month = newDate.getMonth();
+		let month = newDate.getMonth() + 1;
 		let day = newDate.getDate();
 		let hour = newDate.getHours();
 		let minute = newDate.getMinutes()

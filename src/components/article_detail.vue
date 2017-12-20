@@ -11,15 +11,18 @@
 									<span>&nbsp;&nbsp;&nbsp;&nbsp;发布于：{{ article.article_publish_date }}&nbsp;&nbsp;</span>
 									<span class="article_pv">{{ article.article_pv }}</span>
 									<span class="edit" v-show="canEdit">
-										<a href="javascript:void(0)">编辑</a>
-										<a href="javascript:void(0)">删除</a>
+										<a href="javascript:void(0)"><span class="glyphicon glyphicon-edit"></span>编辑</a>
+										<a href="javascript:void(0)" @click="deleteArticle"><span class="glyphicon glyphicon-trash"></span>删除</a>
 									</span>
 								</div>
 							</div>
 							<div class="article-body" v-html="article.article_content"></div>
 							<div class="article-footer">
-								<span>{{ article.article_label }}</span>
-								
+								<div class="row">
+									<div class="col-md-2"><span>{{ article.article_label }}</span></div>
+									<div class="col-md-2 col-md-offset-2 like"><span :class="{forbidden: hasClick, disabled: hasLike}" @click="likeOrNot('like', $event)">赞 | <i>{{ article_like }}</i></span></div>
+									<div class="col-md-2 dislike"><span :class="{forbidden: hasClick, disabled:hasDislike }" @click="likeOrNot('dislike', $event)">踩 | <i>{{ article_dislike }}</i></span></div>
+								</div>
 							</div>
 						</article>
 						<div class="article-comment">
@@ -41,7 +44,8 @@
 										<template v-for="(item, index) in article_comment">
 											<li>
 												<span class="comment_author">{{ item.comment_author }}</span>
-												<span>{{ index + 1 }}楼 • {{ item.comment_date|getDate }}</span>
+												<span class="comment_date" :time="item.comment_date">{{ item.comment_date|getDate }}</span>
+												<span>{{ index + 1 }}楼</span>
 												<p>{{ item.comment_content }}</p>
 												<span @click="replyOne">回复</span>
 												<span @click="deleteComment" v-show="canEdit" class="edit"><a href="javascript:void(0)">删除</a></span>
@@ -59,7 +63,18 @@
 					</div>
 
 					<div class="col-md-4" v-show="canEdit">
-						这里是副边栏
+						<div class="widget widget-info">
+							<div class="widget-header">
+									
+								<img src="../assets/index.png">
+								<h4>{{ tempUserName }}</h4>
+	
+							</div>
+							<div class="widget-body">
+								
+							</div>
+						</div>
+
 					</div>
 				</div>
 			</div>
@@ -73,13 +88,18 @@
 				article: '',
 				article_like: 0,
 				article_comment:[],
+				article_like: 0,
+				article_dislike: 0,
+				hasLike: false,
+				hasDislike: false,
+				tempUserName: ''
 			}
 		},
 		computed: {
 			...mapGetters([
 				'hasLogIn'
 			]),
-			commentsLength:function() {
+			commentsLength() {
 				return this.article_comment.length>0?true:false;
 			},
 			// 的长度
@@ -87,11 +107,27 @@
 				return $(".reply").val().toString().length;
 			},
 			canEdit: function () {
+				// 判断路由的同时，还要判断 当前登录user 是否与 所看文章的author 是同一人
 				let reg = /^\/[a-zA-Z0-9\_]{3,13}\/articles\/[a-zA-Z0-9]/;
-				return reg.test(this.$route.path)
+				if (reg.test(this.$route.path)) {
+					let reg2 = /^\/([a-zA-Z0-9\_]{3,13})\/articles/;
+					let temp = reg2.exec(this.$route.path)[1];
+					return reg.test(this.$route.path) && (temp == sessionStorage.username)
+				} else {
+					return false
+				}	
+			},
+			hasClick: function () {
+				return this.hasLike || this.hasDislike
+			},
+			_article_id: function () {
+				return this.$route.params.id
 			}
 		},
-		mounted: function() {
+		beforeMount: function () {
+			window.scroll(0,0)
+		},
+		mounted: function () {
 			this.initArticle();
 			this.initComment();
 		},
@@ -101,7 +137,7 @@
 			initArticle: function() {
 				let that = this;
 				$.get('http://localhost:3000/api/getArticleDetail', {
-					_id: this.$route.params.id
+					_id: that._article_id
 				}, function(data) {
 					that.article = data.article
 				});
@@ -111,17 +147,23 @@
 			initComment: function() {
 				let that = this;
 				$.get('http://localhost:3000/api/getComment', {
-					_id: this.$route.params.id
+					_id: that._article_id
 				}, function(data) {
 
 					// 没有评论
 					if (data.status == 'noComment') {
+						that.hasLike = false;
 					} else {
-						// console.log(data.article_comment);
 						that.article_comment = [];
-						data[0].article_comment.forEach((item,index) => {
+						data[0].article_comment.forEach((item, index) => {
 							that.article_comment.push(item);
 						})
+
+						that.article_like = data[0].article_like;
+						that.article_dislike = data[0].article_dislike;
+
+						that.hasLike = !!($.inArray(sessionStorage.username, data[0].article_like_user) > -1);
+						that.hasDislike = !!($.inArray(sessionStorage.username, data[0].article_dislike_user) > -1);
 					}
 					// if (data.status == 'hasComment') {
 					// 	that.article_like = data.article_like;
@@ -134,6 +176,45 @@
 					// }
 				});
 			},
+
+			// 点赞 
+			likeOrNot: function (type, event) {
+				// console.log(($(event.currentTarget).parent().find('i').html() * 1) + 1)
+				if ($(event.currentTarget).hasClass('forbidden')) {
+					// 已经点击过
+					return
+				} else {
+					if (type == 'like') {
+						this.updateLikeOrNot('like');
+					} else if (type == 'dislike') {
+						this.updateLikeOrNot('dislike')
+					}
+
+				}
+			},
+
+			updateLikeOrNot: function (type) {
+				let that = this;
+				$.post('http://localhost:3000/api/likeOrNot', {
+							_article_id: that._article_id,
+							type: type,
+							count: ($(event.currentTarget).parent().find('i').html() * 1) + 1,
+							user: sessionStorage.username
+						}, function(data, textStatus, xhr) {
+							if (data.status == 'success') {
+								// 初始化
+								console.log("初始化")
+								that.initComment();	
+							} else {
+								alert("点击失败")
+							}
+							
+				});
+			},
+
+			dislikeThisArticle: function () {},
+			// 初始化 个人信息侧边栏
+
 
 			// 发表评论
 			reply: function (event) {
@@ -199,9 +280,49 @@
 				$(".btn-reg").trigger('click');
 			},
 
-			deleteComment: function () {
-				
+			// 删除评论
+			deleteComment: function (event) {
+				let that = this;
+				// console.log($(event.currentTarget).prevAll(".comment_date").attr('time'))
+				console.log($(event.currentTarget).prevAll('p').html())
+				$.post('http://localhost:3000/api/deleteComment', {
+					_article_id: that.article._id,
+					comment_date: $(event.currentTarget).prevAll(".comment_date").attr('time'),
+					comment_content: $(event.currentTarget).prevAll('p').html(),
+				}, function(data, textStatus, xhr) {
+					if (data.status == 'success') {
+
+						// 加载 动画
+						setTimeout(() => {
+							that.initComment();
+						}, 600)
+					} else if (data.status == 'fail') {
+						alert("删除失败");
+					} else {
+						console.log("出现未知错误");
+					}
+				});
 			},
+
+			// 删除文章
+			deleteArticle: function (event) {
+				let that = this;
+				$.post('http://localhost:3000/api/deleteArticle', {
+					_id: that.article._id
+				}, function(data, textStatus, xhr) {
+					if (data.status == 'success') {
+						
+						// 加载 动画
+						setTimeout(() => {
+							that.$router.replace('/' + that.article.article_author + '/home');	
+						},600)
+
+					} else if (data.status == 'fail') {
+						alert("删除失败")
+					}
+					
+				});
+			}
 
 		},
 	}
@@ -226,6 +347,9 @@
 		padding: 15px 0;
 		border-bottom: 1px solid #E5E5E5;
 	}
+	.article-footer {
+		border: none;
+	}
 	.article_pv::before {
 		content: url('../assets/article_pv.svg');
 		display: inline-block;
@@ -237,12 +361,25 @@
 	.article-body {
 		min-height: 400px;
 	}
-	.article-footer span{
+	.article-footer .col-md-2:first-child span{
 		display: inline-block;
 		padding: 2px 5px;
 		font-size: 12px;
 		border-radius: 2px;
 		background-color: #E5E5E5;
+	}
+	.article-footer .col-md-2:nth-child(2) span,
+	.article-footer .col-md-2:nth-child(3) span {
+		display: inline-block;
+		padding: 5px 12px;
+		color: #FFF;
+		background-color: #009A61;
+		border-radius: 5px;
+		font-size: 24px;
+		cursor: pointer;
+	}
+	.article-footer .col-md-2:nth-child(3) span {
+		background-color: #444;
 	}
 	.article-comment {
 		margin-top: 30px;
@@ -303,7 +440,38 @@
 	.comment-list li span:nth-child(4):hover {
 		color: #009A61;
 	}
+	.comment-list li span:nth-child(3) {
+		float: right;
+	}
 	.edit {
 		float: right;
+	}
+	.edit a:first-child {
+		margin-right: 10px;
+	}
+	.edit a span {
+		margin-right: 2px;
+	}
+	.widget {
+		background-color: #FFF;
+	}
+	.widget-header {
+		padding: 15px;
+	}
+	.widget-header img {
+		width: 80px;
+		height: 80px;
+		border-radius: 50%;
+	}
+	.widget-header h4 {
+		display: inline-block;
+		font-weight: bold;
+		margin-left: 10px;
+	}
+	.disabled {
+		background-color: #CCC !important;
+	}
+	.forbidden {
+		cursor: url('../assets/forbidden.png'), auto !important;
 	}
 </style>

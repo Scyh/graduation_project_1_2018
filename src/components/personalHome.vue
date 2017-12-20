@@ -83,7 +83,9 @@
 								<myArticles :userName="currentUserName"></myArticles>
 							</div>
 						    <div role="tabpanel" class="tab-pane" id="myQuestions">这里是我的提问</div>
-						    <div role="tabpanel" class="tab-pane" id="myMessage">这里是我的通知</div>
+						    <div role="tabpanel" class="tab-pane" id="myMessage">
+						    	<myNotice :userName="currentUserName"></myNotice>
+						    </div>
 						    <div role="tabpanel" class="tab-pane" id="myRelation">这里是我的关系</div>
 					    </div>
 					</div>
@@ -196,7 +198,7 @@
 <script>
 	import cropper from 'cropper'
 	import myArticles from '../components/myArticles.vue'
-
+	import myNotice from '../components/myNotice.vue'
 	export default {
 		data: function () {
 			return {
@@ -349,7 +351,8 @@
 
 		},
 		components: {
-			myArticles
+			myArticles,
+			myNotice,
 		}
 	}
 </script>

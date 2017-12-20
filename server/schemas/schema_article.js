@@ -20,9 +20,11 @@ Articleschema.statics = {
 		return this.find({}).count().exec(data);
 	},
 	fetchByAuthor: function (username, data) {
-		console.log(username)
 		return this.find({'article_author': username}, {'article_publish_date': 1, 'article_title': 1}).exec(data)
-	}
+	},
+	deleteOne: function (_id, data) {
+		return this.remove({"_id": _id}).exec(data)
+	},
 }
 
 module.exports = Articleschema

@@ -88,6 +88,9 @@ export default {
 			showItem: 5,
 		}
 	},
+	beforeMount: function () {
+      window.scroll(0,0)
+  	},
 	mounted: function() {
 		this.initPagination();
 		this.initArticles();
