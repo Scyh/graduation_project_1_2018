@@ -4,7 +4,7 @@ var mongoose = require('mongoose'),
 var Commentschema = new mongoose.Schema({
 	_article_id: {
 		 type: String,
-		 require: true
+		 require: true		 
 	},
 	article_like: {
 		type: Number,
@@ -99,22 +99,40 @@ Commentschema.statics = {
 
 	//点赞或踩
 	updateLikeOrNot: function (params, data) {
-		// let str1 = 'article_' + params.type;
-		// let str2 = 'article_' + params.type + '_user';
 		if (params.type == 'like') {
-			return this.update({'_article_id': params._article_id},
-				{
-					$addToSet: {'article_like_user': params.user},
-					$set: {'article_like': params.count}
-				}
-			).exec(data);
+			if (params.newComment_id) {
+				// console.log("点赞 根据_id查找");
+				return this.update({'_id': params.newComment_id},
+					{
+						$addToSet: {'article_like_user': params.user},
+						$set: {'article_like': params.count}
+					}
+				).exec(data);		
+			} else {
+				return this.update({'_article_id': params._article_id},
+					{
+						$addToSet: {'article_like_user': params.user},
+						$set: {'article_like': params.count}
+					}
+				).exec(data);		
+			}
 		} else {
-			return this.update({'_article_id': params._article_id},
-				{
-					$addToSet: {'article_dislike_user': params.user},
-					$set: {'article_dislike': params.count}
-				}
-			).exec(data);
+			if (params.newComment_id) {
+				// console.log("踩 根据_id查找");
+				return this.update({'_id': params.newComment_id},
+					{
+						$addToSet: {'article_dislike_user': params.user},
+						$set: {'article_dislike': params.count}
+					}
+				).exec(data);
+			} else {
+				return this.update({'_article_id': params._article_id},
+					{
+						$addToSet: {'article_dislike_user': params.user},
+						$set: {'article_dislike': params.count}
+					}
+				).exec(data);
+			}
 		}
 	},
 }

@@ -10,6 +10,7 @@ var db = mongoose();
 var User = require('./models/user.js');
 var Article = require('./models/article.js');
 var Comment = require('./models/comment.js');
+var Notice = require('./models/notice.js');
 var app = express();
 
 app.set('views', path.join(__dirname, 'views'));
@@ -161,7 +162,7 @@ app.post('/api/updateUserInfo',function (req, res, next) {
 
 // 获取用户tab信息
 app.get('/api/getTabInfo', function (req, res, next) {
-  
+
 })
 
 // 获取主页文章中的部分文章
@@ -200,7 +201,6 @@ app.get('/api/getArticleDetail', function(req, res, next) {
       })
     }
   })
-
 })
 
 // 获取 文章评论 接口
@@ -223,7 +223,6 @@ app.get('/api/getComment', function(req, res, next) {
         //   comment: data.article_comment
         // });  
       }
-      
     }
   })
 })
@@ -289,25 +288,44 @@ app.post('/api/deleteComment', function (req, res, next) {
 
 // 点赞或踩
 app.post('/api/likeOrNot', function (req, res, next) {
+  
   // 没有评论只有点赞的时候，需新建comment
+  if ((req.body.commentsLength * 1) < 1) {
+    let newComment = new Comment({
+      _article_id: req.body._article_id
+    })
 
-
-
-
-
-
-  Comment.updateLikeOrNot({
-    _article_id: req.body._article_id,
-    type: req.body.type,
-    count: req.body.count,
-    user: req.body.user
-  }, (err, data) => {
-    if (data.n ==1 && data.nModified == 1) {
-      res.send({
-        status: 'success'
+    newComment.save()
+      .then(data => {
+      Comment.updateLikeOrNot({
+        newComment_id : data._id,
+        type: req.body.type,
+        count: req.body.count,
+        user: req.body.user
+      }).then(data => {
+        if (data.n ==1 && data.nModified == 1) {
+          res.send({
+            status: 'success'
+          })
+        }
       })
-    }
-  })
+    }).catch(err => {
+
+    })
+  } else {
+    Comment.updateLikeOrNot({
+      _article_id: req.body._article_id,
+      type: req.body.type,
+      count: req.body.count,
+      user: req.body.user
+    }, (err, data) => {
+      if (data.n ==1 && data.nModified == 1) {
+        res.send({
+          status: 'success'
+        })
+      }
+    })
+  }
 })
 
 
@@ -347,9 +365,101 @@ app.post('/api/deleteArticle', function (req, res, next) {
   })
 })
 
-// 初始化 个人信息tab
+// 初始化 个人通知tab
 app.get('/api/getMyNotice', function (req, res, next) {
+  Notice.fecthNotice(req.query.user)
+    .then(data => {
+      res.json(data);
+    })
+    .catch(err => {
+      console.log(err)
+    })
+})
 
+// 个人通知 标记全读
+app.post('/api/noticeAllRead', function (req, res, next) {
+  Notice.findById(req.body._id).then(data => {
+    for(let i in data.notice) {
+      data.notice[i].notice_state = 'hasRead';
+    }
+    let newNotice = new Notice(data);
+    newNotice.save((err, data) => {
+      if (err) {
+        console.log(data);
+      } else {
+        res.send({
+          status: 'success'
+        })
+      }
+    })
+  })
+})
+
+// 清空 个人通知
+app.post('/api/clearAllNotice', function (req, res, next) {
+  Notice.clearAllNotice(req.body._id,(err, data) => {
+    if (err) {
+      console.log(err)
+    } else {
+      console.log(data);
+      res.send({
+        status: 'success'
+      })
+    }
+  })
+})
+
+// 添加通知
+app.post('/api/addNotice', function (req, res, next) {
+  Notice.count({"notice_user": req.body.notice_user}, function(err, data) {
+            console.log(data)
+            let noticeObj = {
+                  notice_state: req.body.notice_state,
+                  notice_date: req.body.notice_date,
+                  notice_ByUser: req.body.notice_ByUser,
+                  notice_type: req.body.notice_type,
+                  notice_title: req.body.notice_title,
+                  notice_title_id: req.body.notice_title_id
+            };
+            console.log(noticeObj);
+
+          if ((data * 1) > 0) {
+            // 有记录，直接更新notice
+            console.log("有记录，直接更新notice")
+            Notice.addNotice({
+              username: req.body.notice_user,
+              notice: noticeObj,
+            }, function (err, data) {
+              if (err) {
+                console.log(err)
+              } 
+              console.log(data);
+
+            })
+
+          } else {
+            // 没有记录，需新建notice的
+            console.log("// 没有记录，需新建notice的")
+            let newNotice = new Notice({
+              notice_user: req.body.notice_user,
+              notice: noticeObj
+            })
+            newNotice.save((err, data) => {
+              if (err) {
+                console.log(err)
+              } else {
+                console.log(data);
+                // res.send({
+                //   status: 'success'
+                // })
+              }
+            })
+          }
+  })
+
+    
+
+        
 })
 
 // test 

@@ -46,7 +46,7 @@
 												<span class="comment_author">{{ item.comment_author }}</span>
 												<span class="comment_date" :time="item.comment_date">{{ item.comment_date|getDate }}</span>
 												<span>{{ index + 1 }}楼</span>
-												<p>{{ item.comment_content }}</p>
+												<p v-html="item.comment_content"></p>
 												<span @click="replyOne">回复</span>
 												<span @click="deleteComment" v-show="canEdit" class="edit"><a href="javascript:void(0)">删除</a></span>
 											</li>
@@ -186,8 +186,10 @@
 				} else {
 					if (type == 'like') {
 						this.updateLikeOrNot('like');
+						that.addNotice(that.article.article_author,'like')
 					} else if (type == 'dislike') {
 						this.updateLikeOrNot('dislike')
+						that.addNotice(that.article.article_author,'dislike')
 					}
 
 				}
@@ -197,6 +199,7 @@
 				let that = this;
 				$.post('http://localhost:3000/api/likeOrNot', {
 							_article_id: that._article_id,
+							commentsLength: that.article_comment.length,
 							type: type,
 							count: ($(event.currentTarget).parent().find('i').html() * 1) + 1,
 							user: sessionStorage.username
@@ -212,7 +215,6 @@
 				});
 			},
 
-			dislikeThisArticle: function () {},
 			// 初始化 个人信息侧边栏
 
 
@@ -220,7 +222,6 @@
 			reply: function (event) {
 				let that = this;
 				let reply = $(".reply").val();
-
 				// 捕获 replyTo
 				let reg = /\[reply\]([\s\S]*?)\[\/reply\]/;
 				if (reply.match(reg) == null || reply.match(reg) == 'null') {
@@ -229,25 +230,36 @@
 						$(".reply-footer span").html("请输入字符");
 					} else {
 						$(".reply-footer span").html("");
-							$.post('http://localhost:3000/api/reply', {
-								_article_id: that.article._id,
-								type: 'comment',
-								comment_content: reply,
-								comment_author: sessionStorage.username,
-								comment_date: Date.parse(new Date())
-							}, function(data, textStatus, xhr) {
-								if (data.status == 'success') {
-									alert("评论成功")
-									$(".reply").val("");
-									that.initComment()
-								}
-						});
+						that.replyFn(reply);
+						that.addNotice(that.article.article_author,'newComment')
 					}
 				} else {
 					let replyTo = reply.match(reg)[1];
 					// 添加评论的同时，需要 给 replyTo 添加 新消息通知
+					let tempStr = '@' + replyTo + '&nbsp;&nbsp;' + reply.slice(reply.indexOf('[/reply]') + 8).trim();
+					// console.log(tempStr)
+					that.replyFn(tempStr);
+					that.addNotice(replyTo,'newCommentReply')
+
 				}
 
+			},
+
+			replyFn: function (content) {
+				let that = this; 
+				$.post('http://localhost:3000/api/reply', {
+						_article_id: that.article._id,
+						type: 'comment',
+						comment_content: content,
+						comment_author: sessionStorage.username,
+						comment_date: Date.parse(new Date())
+					}, function(data, textStatus, xhr) {
+						if (data.status == 'success') {
+							alert("评论成功")
+							$(".reply").val("");
+							that.initComment()
+						}
+				});
 			},
 
 			// 回复评论
@@ -322,7 +334,25 @@
 					}
 					
 				});
-			}
+			},
+
+			// 通知
+			addNotice: function (toUser,type) {
+				let that = this;
+				$.post('http://localhost:3000/api/addNotice', {
+					notice_user: toUser,
+					notice_state: "notRead",
+					notice_date: Date.parse(new Date()),
+					notice_ByUser: sessionStorage.username,
+					notice_type: type,
+					notice_title: that.article.article_title,
+					notice_title_id: that.article._id
+				}, function(data, textStatus, xhr) {
+					if (data.status == 'success') {
+						console.log("添加通知成功")
+					}					
+				});
+			},
 
 		},
 	}
@@ -425,19 +455,19 @@
 		border-bottom: 1px solid #E1E1E1
 	}
 	.comment-list li p,
-	.comment-list li span:nth-child(4) {
+	.comment-list li span:nth-child(5) {
 		padding: 10px 0;
 		padding-left: 32px;
 		margin-bottom: 0;
 	}
-	.comment-list li span:nth-child(4),
+	.comment-list li span:nth-child(5),
 	.comment-list li span:nth-child(2) {
 		color: #08C;
 	}
-	.comment-list li span:nth-child(4) {
+	.comment-list li span:nth-child(5) {
 		cursor: pointer;
 	}
-	.comment-list li span:nth-child(4):hover {
+	.comment-list li span:nth-child(5):hover {
 		color: #009A61;
 	}
 	.comment-list li span:nth-child(3) {

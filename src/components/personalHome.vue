@@ -5,7 +5,9 @@
 				<div class="col-sm-2 col-md-2 col-lg-2">
 					<div class="img-wrap">
 						<div class="userProfile-wrap">
-							<img :src="userInfo.userProfile" id="userProfile">	
+							
+							<img v-if="!userInfo.userProfile" src="../assets/index.png" id="userProfile">
+							<img v-else :src="userInfo.userProfile" id="userProfile">	
 						</div>
 						<span class="edit_photo" data-toggle="modal" data-target="#chooseModal">
 							<img src="../assets/edit_photo.png">
@@ -72,7 +74,7 @@
 							<ul class="nav nav-tabs" role="tablist">
 							    <li role="presentation" class="active col-md-3"><a href="#myArticles" aria-controls="home" role="tab" data-toggle="tab">我的文章</a></li>
 							    <li role="presentation" class="col-md-3"><a href="#myQuestions" aria-controls="profile" role="tab" data-toggle="tab">我的提问</a></li>
-							    <li role="presentation" class="col-md-3"><a href="#myMessage" aria-controls="messages" role="tab" data-toggle="tab">我的通知<span class="badge badge-wraning">2</span></a></li>
+							    <li role="presentation" class="col-md-3"><a href="#myMessage" aria-controls="messages" role="tab" data-toggle="tab">我的通知<span class="badge badge-wraning">{{ NoticeCount }}</span></a></li>
 							    <li role="presentation" class="col-md-3"><a href="#myRelation" aria-controls="settings" role="tab" data-toggle="tab">我的关系</a></li>
 						    </ul>
 
@@ -84,7 +86,7 @@
 							</div>
 						    <div role="tabpanel" class="tab-pane" id="myQuestions">这里是我的提问</div>
 						    <div role="tabpanel" class="tab-pane" id="myMessage">
-						    	<myNotice :userName="currentUserName"></myNotice>
+						    	<myNotice :userName="currentUserName" @initTabHeaderbadge="initNoticeBadge"></myNotice>
 						    </div>
 						    <div role="tabpanel" class="tab-pane" id="myRelation">这里是我的关系</div>
 					    </div>
@@ -204,12 +206,13 @@
 			return {
 				userInfo: {},
 				industryArr: ['选择行业','电子·微电子','通信','教育·培训·科研·院校','医疗·保健·美容·卫生服务','银行','保险','IT服务·系统集成','基金·证券·期货·投资','政府·非营利机构','房地产服务','交通·运输·物流','广告·会展·公关','房地产开发·建筑与工程','娱乐·运动·休闲','快速消费品','家电业','仪器·仪表·工业自动化·电气','计算机软件','计算机硬件·网络设备','汽车·摩托车','互联网·电子商务','其他'],
+				NoticeCount: '',
 			}
 		},
 		computed: {
 			currentUserName: function () {
 				return sessionStorage.username
-			}
+			},
 		},
 		beforeCreate: function () {
 			let temp = sessionStorage.username.toString();
@@ -235,7 +238,7 @@
 					// }
 
 					that.userInfo = data[0];
-
+					console.log(!data[0].userProfile)
 				});
 			},
 
@@ -341,14 +344,14 @@
 	        	});
 	        }, // saveUserInfo 结束
 
-	        // 初始化我的文章
-	        initUserArticles: function () {},
-
-	        // 初始化我的提问
-	        initUserQuertions: function () {},
-
-	        // 初始化我的关系
-
+	        initNoticeBadge: function (data) {
+	        	if ((data * 1) >0) {
+	        		this.NoticeCount = data	
+	        	} else {
+	        		this.NoticeCount = '';
+	        	}
+	        	
+	        },
 		},
 		components: {
 			myArticles,

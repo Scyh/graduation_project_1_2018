@@ -33,6 +33,9 @@ const router = new Router({
       component: personalHome
     },
     {
+      path: '/:username/PublicHome'
+    },
+    {
       path: '/admin',
       component: admin
     },

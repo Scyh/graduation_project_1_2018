@@ -27,6 +27,26 @@ Vue.filter('getDate', function(value) {
 	}
 });
 
+Vue.filter('switchNoticeType', function(value) {
+	switch(value){
+		case 'newComment':
+			return	"评论了你的文章";
+			break;
+		case 'like' : 
+			return "点赞了你的文章";
+			break;
+		case 'dislike': 
+			return "踩了你的文章";
+			break;
+		case 'newCommentReply': 
+			return "回复了你的评论";
+			break;
+		default: 
+			return "不知道干了啥";
+	}
+})
+
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
