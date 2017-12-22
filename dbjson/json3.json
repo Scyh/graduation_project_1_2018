@@ -1,0 +1,255 @@
+/* 1 */
+{
+    "_id" : ObjectId("5a20c9582fd18cd691073607"),
+    "_article_id" : "5a20c9582fd18cd691073607",
+    "article_like" : 2,
+    "article_dislike" : 1,
+    "article_like_user" : [ 
+        "shen", 
+        "zhang"
+    ],
+    "article_dislike_user" : [ 
+        "shenchaoyue"
+    ],
+    "article_comment" : [ 
+        {
+            "comment_author" : "admin",
+            "comment_date" : NumberLong(1513228321434),
+            "comment_content" : "这里是一段评论"
+        }, 
+        {
+            "comment_author" : "zhangsan",
+            "comment_date" : NumberLong(1513228333851),
+            "comment_content" : "这里是一段评论"
+        }, 
+        {
+            "comment_author" : "lisi",
+            "comment_date" : NumberLong(1513228345034),
+            "comment_content" : "这里是一段评论"
+        }
+    ]
+}
+
+/* 2 */
+{
+    "_id" : ObjectId("5a20c4502fd18cd691073538"),
+    "_article_id" : "5a20c4502fd18cd691073538",
+    "article_like" : 5,
+    "article_like_user" : [ 
+        "shen", 
+        "woshisei", 
+        "asdasdsadshisei", 
+        "mmmm", 
+        "shenchaoyue"
+    ],
+    "article_dislike" : 1,
+    "article_dislike_user" : [ 
+        "zhang"
+    ],
+    "article_comment" : [ 
+        {
+            "comment_author" : "shenchaoyue",
+            "comment_date" : "1513850401000",
+            "comment_content" : "啊实打实大师的"
+        }, 
+        {
+            "comment_author" : "shenchaoyue",
+            "comment_date" : "1513850432000",
+            "comment_content" : "阿达撒撒"
+        }, 
+        {
+            "comment_author" : "shenchaoyue",
+            "comment_date" : "1513850532000",
+            "comment_content" : "按时大飒飒大师的"
+        }, 
+        {
+            "comment_author" : "shen",
+            "comment_date" : "1513922659000",
+            "comment_content" : "asdasdasd"
+        }
+    ]
+}
+
+/* 3 */
+{
+    "_id" : ObjectId("5a20c93e2fd18cd6910735f5"),
+    "_article_id" : "5a20c93e2fd18cd6910735f5",
+    "article_like" : 0,
+    "article_like_user" : [],
+    "article_dislike" : 1,
+    "article_dislike_user" : [ 
+        "shenchaoyue"
+    ],
+    "article_comment" : [ 
+        {
+            "comment_author" : "admin",
+            "comment_date" : "1513228385837",
+            "comment_content" : "这是评论这是评论"
+        }, 
+        {
+            "comment_author" : "shen",
+            "comment_date" : "1513661197000",
+            "comment_content" : "这也是评论"
+        }, 
+        {
+            "comment_author" : "shen",
+            "comment_date" : "1513661279000",
+            "comment_content" : "这是我的评论"
+        }, 
+        {
+            "comment_author" : "shen",
+            "comment_date" : "1513661372000",
+            "comment_content" : "啊撒大声地"
+        }, 
+        {
+            "comment_author" : "shen",
+            "comment_date" : "1513661390000",
+            "comment_content" : "啊实打实大师的"
+        }, 
+        {
+            "comment_author" : "shenchaoyue",
+            "comment_date" : "1513758425000",
+            "comment_content" : "这里是shenchaoyue的评论"
+        }
+    ]
+}
+
+/* 4 */
+{
+    "_id" : ObjectId("5a38a3d6f36a5a2208fbc85d"),
+    "_article_id" : "5a24c3bda56fbdc3ff477502",
+    "article_like" : 0,
+    "article_like_user" : [],
+    "article_dislike" : 0,
+    "article_dislike_user" : [],
+    "article_comment" : [ 
+        {
+            "comment_author" : "shen",
+            "comment_date" : "1513661400000",
+            "comment_content" : "啊实打实大师大按时阿萨德按时按时的"
+        }
+    ],
+    "__v" : 0
+}
+
+/* 5 */
+{
+    "_id" : ObjectId("5a38a7c3f36a5a2208fbc85e"),
+    "_article_id" : "5a24c39ca56fbdc3ff4774e3",
+    "article_like" : 0,
+    "article_like_user" : [],
+    "article_dislike" : 0,
+    "article_dislike_user" : [],
+    "article_comment" : [ 
+        {
+            "comment_author" : "shen",
+            "comment_date" : "1513662406000",
+            "comment_content" : "asdfasdfasdfasdfasdf"
+        }, 
+        {
+            "comment_author" : "shen",
+            "comment_date" : "1513662410000",
+            "comment_content" : "asdasasdasd"
+        }, 
+        {
+            "comment_author" : "shen",
+            "comment_date" : "1513662414000",
+            "comment_content" : "asdasdasd"
+        }, 
+        {
+            "comment_author" : "shen",
+            "comment_date" : "1513662421000",
+            "comment_content" : "asdfadf"
+        }, 
+        {
+            "comment_author" : "shen",
+            "comment_date" : "1513662474000",
+            "comment_content" : "asdasd"
+        }, 
+        {
+            "comment_author" : "shen",
+            "comment_date" : "1513662480000",
+            "comment_content" : "aasdasdasdfasdfasdgasdgasdg"
+        }, 
+        {
+            "comment_author" : "shen",
+            "comment_date" : "1513662489000",
+            "comment_content" : "这是评论啥的阿萨德啥的阿萨德个带饭放大阿萨德阿萨德阿萨德啥的"
+        }
+    ],
+    "__v" : 0
+}
+
+/* 6 */
+{
+    "_id" : ObjectId("5a38d01474efd52388e5e7b2"),
+    "_article_id" : "5a2517cda56fbdc3ff47902c",
+    "article_like" : 0,
+    "article_like_user" : [],
+    "article_dislike" : 0,
+    "article_dislike_user" : [],
+    "article_comment" : [ 
+        {
+            "comment_author" : "shen",
+            "comment_date" : "1513672728000",
+            "comment_content" : "asdasdasd"
+        }, 
+        {
+            "comment_author" : "shen",
+            "comment_date" : "1513672734000",
+            "comment_content" : "asdasd"
+        }
+    ],
+    "__v" : 0
+}
+
+/* 7 */
+{
+    "_id" : ObjectId("5a3b18ad80fdfb1a60e8a956"),
+    "_article_id" : "5a24c3b6a56fbdc3ff4774fd",
+    "article_comment" : [],
+    "article_dislike_user" : [ 
+        "shen"
+    ],
+    "article_like_user" : [],
+    "article_dislike" : 1,
+    "article_like" : 0,
+    "__v" : 0
+}
+
+/* 8 */
+{
+    "_id" : ObjectId("5a3c5c2dc0aa4214dc22748c"),
+    "_article_id" : "5a24c391a56fbdc3ff4774d9",
+    "article_comment" : [],
+    "article_dislike_user" : [],
+    "article_like_user" : [ 
+        "shenchaoyue"
+    ],
+    "article_dislike" : 0,
+    "article_like" : 1,
+    "__v" : 0
+}
+
+/* 9 */
+{
+    "_id" : ObjectId("5a3c9bbfc190971d0c4b304f"),
+    "_article_id" : "5a20c92d2fd18cd6910735ed",
+    "article_comment" : [ 
+        {
+            "comment_author" : "shen",
+            "comment_date" : "1513921481000",
+            "comment_content" : "这里是评论这里是评论这里是评论这里是评论这里是评论这里是评论"
+        }, 
+        {
+            "comment_author" : "shen",
+            "comment_date" : "1513922060000",
+            "comment_content" : "这里是评论这里是评论这里是评论这里是评论这里是评论这里是评论"
+        }
+    ],
+    "article_dislike_user" : [],
+    "article_like_user" : [],
+    "article_dislike" : 0,
+    "article_like" : 0,
+    "__v" : 0
+}
