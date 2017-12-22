@@ -55,19 +55,19 @@
       <div class="row">
         <div class="col-lg-12">
           <ul class="nav-label">
-            <li><a href="#">全部</a></li>
-            <li><a href="#">html</a></li>
-            <li><a href="#">css</a></li>
-            <li><a href="#">javascript</a></li>
-            <li><a href="#">css3</a></li>
-            <li><a href="#">html5</a></li>
-            <li><a href="#">jquery</a></li>
-            <li><a href="#">bootstrap</a></li>
-            <li><a href="#">webpack</a></li>
-            <li><a href="#">vue</a></li>
-            <li><a href="#">react</a></li>
-            <li><a href="#">nodejs</a></li>
-            <li><a href="#">mongodb</a></li>
+            <li><a href="#/articles?page=1">全部</a></li>
+            <li><router-link to="/html/article?page=1">html</router-link></li>
+            <li><router-link to="/css/article?page=1">css</router-link></li>
+            <li><router-link to="/javascript/article?page=1">javascript</router-link></li>
+            <li><router-link to="/css3/article?page=1">css3</router-link></li>
+            <li><router-link to="/html5/article?page=1">html5</router-link></li>
+            <li><router-link to="/jquery/article?page=1">jquery</router-link></li>
+            <li><router-link to="/bootstrap/article?page=1">bootstrap</router-link></li>
+            <li><router-link to="/webpack/article?page=1">webpack</router-link></li>
+            <li><router-link to="/vue/article?page=1">vue</router-link></li>
+            <li><router-link to="/react/article?page=1">react</router-link></li>
+            <li><router-link to="/nodejs/article?page=1">nodejs</router-link></li>
+            <li><router-link to="/mongodb/article?page=1">mongodb</router-link></li>
           </ul>
         </div>
       </div>
@@ -124,8 +124,8 @@ export default {
     logOut: function() {
       sessionStorage.username = undefined;
       this.$router.push({path: '/'});
-      location.reload();
       this.$store.dispatch('logOut');
+      location.reload();
     },
 
     goHome: function() {

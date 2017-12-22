@@ -7,7 +7,7 @@
 						<div class="userProfile-wrap">
 							
 							<img v-if="!userInfo.userProfile" src="../assets/index.png" id="userProfile">
-							<img v-else :src="userInfo.userProfile" id="userProfile">	
+							<img v-else :src="userInfo.userProfile" id="userProfile">
 						</div>
 						<span class="edit_photo" data-toggle="modal" data-target="#chooseModal">
 							<img src="../assets/edit_photo.png">

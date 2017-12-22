@@ -28,7 +28,7 @@
 						      </a>
 						    </li>
 						    <li v-for="(index) in pages" :class="{active: currentPage == index}" @click="pageChange(index)" >
-						    	<router-link :to="{path: '/articles', query: { page: index }}">{{index}}</router-link>
+						    	<router-link :to="{path: currentCategory?'/' + currentCategory + '/articles':'/articles', query: { page: index }}">{{index}}</router-link>
 						    </li>
 						    <li>
 						      <a href="javascript:void(0)" aria-label="Next" @click="prevOrNext('next')">
@@ -118,10 +118,17 @@ export default {
                    }
                }
              return pag
-           }
+        },
+
+        currentCategory: function () {
+        	return this.$route.params.category?this.$route.params.category:false
+        },
+
 	},
 	watch: {
 		$route() {
+			this.initPagination();
+			this.initArticles()
 			this.pageChange(this.$route.query.page);
 		},
 	},
@@ -130,28 +137,23 @@ export default {
 		// 初始化文章
 		initArticles: function() {
 			let that = this;
-			$.ajax({
-				url: 'http://localhost:3000/api/getArticle',
-				type: 'get',
-				dataType: 'JSON',
-				data: {
-					pageCount: 1
-				},
-			})
-			.done(function(data) {
-				data.forEach((item,index) => {
+			$.get('http://localhost:3000/api/getArticle', {
+				pageCount: 1,
+				category: that.$route.params.category?that.$route.params.category:'all'
+			}, function(data) {
+					data.forEach((item,index) => {
 					that.articles.push(item);
 				})
-			})
-			.fail(function(err) {
-				console.log("error: " + err);
-			})
+
+			});
 		},// initArticles 结束
 
 		// 初始化分页
 		initPagination: function() {
 			let that = this;
-			$.get('http://localhost:3000/api/getPageCount', function(data) {
+			$.get('http://localhost:3000/api/getPageCount', {
+				category: that.$route.params.category?that.$route.params.category:'all'
+			}, function(data) {
 				that.pageCount = Math.ceil(data*1 / that.showItem);
 			});
 		}, // initPagination 结束
@@ -161,7 +163,8 @@ export default {
 			let that = this;
 			that.currentPage = index;
 			$.get('http://localhost:3000/api/getArticle', {
-				pageCount: that.currentPage
+				pageCount: that.currentPage,
+				category: that.$route.params.category?that.$route.params.category:'all'
 			}, function(data) {
 				that.articles = data;
 				// window.scroll(0,0)

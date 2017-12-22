@@ -28,12 +28,20 @@ const router = new Router({
       component: article_detail
     },
     {
+      path: '/:category/article',
+      component: articles
+    },
+    {
+      path: '/:category/article/:id',
+      component: article_detail
+    },
+    {
       path: '/:username/home',
       name: 'personalHome',
       component: personalHome
     },
     {
-      path: '/:username/PublicHome'
+      path: '/:username/publicHome'
     },
     {
       path: '/admin',

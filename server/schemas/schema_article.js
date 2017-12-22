@@ -13,14 +13,23 @@ var Articleschema = new mongoose.Schema({
 })
 
 Articleschema.statics = {
-	fetchPart: function(pageCount ,data) {
-		return this.find({}).limit(5).skip((pageCount.pageCount -1) * 5).exec(data);
+	fetchPart: function(params ,data) {
+		if (params.category == 'all') {
+			return this.find({}).limit(5).skip((params.pageCount -1) * 5).exec(data);	
+		} else {
+			return this.find({'category': params.category}).skip((params.pageCount -1) * 5).exec(data);
+		}
+		
 	},
-	fetchCount: function(data) {
-		return this.find({}).count().exec(data);
+	fetchCount: function(category, data) {
+		if (category == 'all') {
+			return this.find({}).count().exec(data);
+		} else {
+			return this.find({'category': category}).count().exec(data);
+		}
 	},
 	fetchByAuthor: function (username, data) {
-		return this.find({'article_author': username}, {'article_publish_date': 1, 'article_title': 1}).exec(data)
+		return this.find({'article_author': username}).exec(data)
 	},
 	deleteOne: function (_id, data) {
 		return this.remove({"_id": _id}).exec(data)

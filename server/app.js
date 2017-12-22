@@ -168,7 +168,8 @@ app.get('/api/getTabInfo', function (req, res, next) {
 // 获取主页文章中的部分文章
 app.get('/api/getArticle', function(req, res, next) {
   Article.fetchPart({
-    pageCount: req.query.pageCount
+    pageCount: req.query.pageCount,
+    category: req.query.category
   }, function(err, article) {
     if (err) {
       console.log(err);
@@ -180,10 +181,11 @@ app.get('/api/getArticle', function(req, res, next) {
 
 // 初始化文章分页
 app.get('/api/getPageCount', function(req, res, next) {
-  Article.fetchCount(function(err, data) {
+  Article.fetchCount(req.query.category, function(err, data) {
     if (err) {
       console.log(err)
     } else {
+      console.log(data)
       res.json(data);
     }
   })
@@ -196,11 +198,17 @@ app.get('/api/getArticleDetail', function(req, res, next) {
     if (err) {
       console.log(err)
     } else {
-      res.send({
-        article: article
-      })
+      // res.send({
+      //   article: article
+      // })
+      res.json(article)
     }
   })
+})
+
+// 获取作者相关文章
+app.get('/api/getArticleByAuthor', function (req, res, next) {
+  
 })
 
 // 获取 文章评论 接口
@@ -231,40 +239,53 @@ app.get('/api/getComment', function(req, res, next) {
 app.post('/api/reply', function (req, res, next) {
   Comment.count({'_article_id': req.body._article_id})
     .then(data => {
+      let article_comment = {
+        'comment_author': req.body.comment_author,
+        'comment_date': req.body.comment_date,
+        'comment_content': req.body.comment_content
+      }
+
     // 数据库中没有该文章的记录,则新建
     if (data < 1) {
       let newComment = new Comment({
         _article_id: req.body._article_id
       })
-      newComment.save((err, data) => {
-        if (err) {
-          console.log(err)
-        }
+      newComment.save().then(data => {
+
+        Comment.addComment({
+          newComment_id: data._id,
+          reply:article_comment
+        }, function (err, data) {
+          if (err) {
+            console.log(err)
+            res.send({
+              status: 'fail'
+            })
+          } else if (data.n == 1 && data.nModified == 1){
+            res.send({
+              status: 'success'
+            })
+          } 
+        })
       });      
+    } else {
+      Comment.addComment({
+          _article_id: req.body._article_id,
+          reply:article_comment
+        }, function (err, data) {
+          if (err) {
+            console.log(err)
+            res.send({
+              status: 'fail'
+            })
+          } else if (data.n == 1 && data.nModified == 1){
+            res.send({
+              status: 'success'
+            })
+          } 
+        })
     }
 
-    let article_comment = {
-      'comment_author': req.body.comment_author,
-      'comment_date': req.body.comment_date,
-      'comment_content': req.body.comment_content
-    }
-    Comment.addComment({
-      _article_id: req.body._article_id,
-      reply:article_comment
-    }, function (err, data) {
-      if (err) {
-        console.log(err)
-        res.send({
-          status: 'fail'
-        })
-      } else if (data.n == 1 && data.nModified == 1){
-        res.send({
-          status: 'success'
-        })
-      } 
-    })
-  }).catch(err => {
-    console.log(err)
   })
 });
 

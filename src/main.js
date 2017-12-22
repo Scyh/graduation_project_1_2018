@@ -46,6 +46,9 @@ Vue.filter('switchNoticeType', function(value) {
 	}
 })
 
+Vue.filter('introduceDecoration', function(value) {
+	return "“ " + value + " ”"
+});
 
 /* eslint-disable no-new */
 new Vue({

@@ -70,11 +70,19 @@ Commentschema.statics = {
 
 	// 添加评论
 	addComment: function(params, data) {
-		return this.update({'_article_id': params._article_id}, {
-			$addToSet: {
-				'article_comment': params.reply
-			}
-		}).exec(data)
+		if (params.newComment_id) {
+			return this.update({'_id': params.newComment_id}, {
+				$addToSet: {
+					'article_comment': params.reply
+				}
+			})
+		} else {
+			return this.update({'_article_id': params._article_id}, {
+				$addToSet: {
+					'article_comment': params.reply
+				}
+			}).exec(data)
+		}
 	},
 
 	// 查找评论
