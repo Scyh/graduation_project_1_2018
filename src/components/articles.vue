@@ -20,7 +20,7 @@
 							</article>
 						</template>
 
-						<nav aria-label="Page navigation">
+						<nav aria-label="Page navigation" v-show='!isSearch'>
 						  <ul class="pagination">
 						    <li>
 						      <a href="javascript:void(0)" aria-label="Previous" @click="prevOrNext('prev')">
@@ -78,7 +78,8 @@
 
 <script>
 import $ from 'jquery'
-
+import bus from '../bus.js'
+import { mapGetters } from 'vuex'
 export default {
 	data: function() {
 		return {
@@ -92,12 +93,38 @@ export default {
       window.scroll(0,0)
   	},
 	mounted: function() {
-		this.initPagination();
-		this.initArticles();
+		let that = this;
+			bus.$on('fn', function (data) {
+				that.updateArticle();
+			})	
+		if (this.$route.path == '/search') {
+			that.updateArticle()
+		} else {
 
-		if (this.$route.query.page != undefined) {
-			this.pageChange(this.$route.query.page);
+			if (this.$route.path == '/articles' && !this.$route.query.page) {
+				this.$router.replace({path: 'articles', query: {page: 1}})
+			}
+			this.initPagination();
+			this.initArticles();
+
+			if (this.$route.query.page != undefined) {
+				this.pageChange(this.$route.query.page);
+			}
 		}
+		
+	},
+	created: function () {
+		let that = this;
+		bus.$on('fn', function (data) {
+				that.articles = [];
+				for (let i in data) {
+					that.articles.push(data[i])
+				}
+				
+				// data.forEach((i) => {
+				// 	this.articles.push(data[i])
+				// })
+			})
 	},
 	computed:{
 		pages: function(){
@@ -124,18 +151,35 @@ export default {
         	return this.$route.params.category?this.$route.params.category:false
         },
 
+        ...mapGetters([
+        	'isSearch'
+        ])
+
 	},
 	watch: {
 		$route() {
-			this.initPagination();
-			this.initArticles()
-			this.pageChange(this.$route.query.page);
+			if (this.$route.path == '/search') {
+				console.log("search")
+				this.$store.dispatch('isSearch');
+				if (sessionStorage.searchCache){
+					this.articles = [];
+					let temp = JSON.parse(sessionStorage.searchCache);
+					for(let i in temp) {
+						this.articles.push(temp[i])
+					}
+				}				
+			} else {
+				this.initPagination();
+				this.initArticles();
+				this.pageChange(this.$route.query.page);
+				this.$store.dispatch('notSearch');
+			}
 		},
 	},
 	methods: {
 
 		// 初始化文章
-		initArticles: function() {
+		initArticles: function () {
 			let that = this;
 			$.get('http://localhost:3000/api/getArticle', {
 				pageCount: 1,
@@ -149,7 +193,7 @@ export default {
 		},// initArticles 结束
 
 		// 初始化分页
-		initPagination: function() {
+		initPagination: function () {
 			let that = this;
 			$.get('http://localhost:3000/api/getPageCount', {
 				category: that.$route.params.category?that.$route.params.category:'all'
@@ -159,7 +203,7 @@ export default {
 		}, // initPagination 结束
 
 		// 分页跳转
-		pageChange: function(index) {
+		pageChange: function (index) {
 			let that = this;
 			that.currentPage = index;
 			$.get('http://localhost:3000/api/getArticle', {
@@ -172,7 +216,7 @@ export default {
 
 		},// pageChange 改变
 
-		prevOrNext: function(type) {
+		prevOrNext: function (type) {
 			let that = this;
 			if (type == 'prev') {
 				
@@ -196,6 +240,16 @@ export default {
 				}
 			}
 		},//prevOrNext结束
+
+		updateArticle: function () {
+			if (sessionStorage.searchCache){
+				this.articles = [];
+				let temp = JSON.parse(sessionStorage.searchCache);
+				for(let i in temp) {
+					this.articles.push(temp[i])
+					}
+			}
+		}
 	}
 }
 </script>

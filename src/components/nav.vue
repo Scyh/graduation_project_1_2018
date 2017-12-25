@@ -13,7 +13,7 @@
                   <span class="icon-bar"></span>  
                   <span class="icon-bar"></span>  
                 </button>  
-                <a class="navbar-brand" href="javascript:void(0)">Scy</a>  
+                <a class="navbar-brand" href="#/articles?page=1">Scy</a>  
               </div>  
               <!-- Collect the nav links, forms, and other content for toggling -->  
               <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">  
@@ -31,7 +31,7 @@
                     </ul>
                   </li>
                 </ul>
-              <span class="search-img"><input type="text" class="search" placeholder="搜索问题或关键字"></span>
+              <span @click="search" class="search-img"><input type="text" class="search" placeholder="搜索问题或关键字" @keyup.enter="search"></span>
               </div><!-- /.navbar-collapse -->  
             </div><!-- /.container-fluid -->  
           </nav>  
@@ -86,6 +86,7 @@ import $ from 'jquery'
 import scyLogin from './login.vue'
 import scyRegister from './register.vue'
 import { mapGetters } from 'vuex'
+import bus from '../bus.js'
 
 export default {
   data () {
@@ -114,6 +115,7 @@ export default {
   },
   watch: {
     $route () {
+      
       // 当前路由页
       this.currentRoute = this.$route.path.slice(1);
     }
@@ -131,6 +133,25 @@ export default {
     goHome: function() {
       console.log(1)
       this.$router.push({path: '/' + this.username + '/home', params: {username: this.username}})
+    },
+
+    search(event) {
+      let val = $(event.target).val().trim();
+      if (val == '') {
+        return  
+      } else {
+        let that = this;
+          $.get('http://localhost:3000/api/search', {
+          key: val
+         }, function(data) {
+          sessionStorage.searchCache = JSON.stringify(data);
+          bus.$emit('fn')
+          that.$router.push('/search')
+
+         });
+        
+        // $(event.target).val('');
+      }
     }
   },
   components: {

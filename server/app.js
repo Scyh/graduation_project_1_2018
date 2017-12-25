@@ -160,11 +160,6 @@ app.post('/api/updateUserInfo',function (req, res, next) {
     })
 })
 
-// 获取用户tab信息
-app.get('/api/getTabInfo', function (req, res, next) {
-
-})
-
 // 获取主页文章中的部分文章
 app.get('/api/getArticle', function(req, res, next) {
   Article.fetchPart({
@@ -185,7 +180,6 @@ app.get('/api/getPageCount', function(req, res, next) {
     if (err) {
       console.log(err)
     } else {
-      console.log(data)
       res.json(data);
     }
   })
@@ -477,10 +471,18 @@ app.post('/api/addNotice', function (req, res, next) {
             })
           }
   })
+})
 
-    
-
-        
+// 搜索文章或问题
+app.get('/api/search', function (req, res, next) {
+  Article.search(req.query.key, function (err, data) {
+    if (err) {
+      console.log(err);
+      console.log('err')
+    } else {
+      res.json(data)
+    }
+  })
 })
 
 // test 

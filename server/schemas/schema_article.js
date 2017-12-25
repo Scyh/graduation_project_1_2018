@@ -34,6 +34,20 @@ Articleschema.statics = {
 	deleteOne: function (_id, data) {
 		return this.remove({"_id": _id}).exec(data)
 	},
+	search: function (key, data) {
+		let arr = key.split(' ')
+		let temp = []
+		// let reg = new RegExp(key, 'i');
+		arr.forEach((i, index) => {
+			let reg = new RegExp(i, 'i');
+			if (index == (arr.length -1)) {
+				return this.find({$or: [{'article_author': reg}, {'article_title': reg}, {'article_content': reg}]}).exec(data)
+			}
+			// exec 返回的是一个 promise 对象
+			temp[index] = this.find({$or: [{'article_author': reg}, {'article_title': reg}, {'article_content': reg}]}).then(data)
+		})
+		return temp
+	}
 }
 
 module.exports = Articleschema

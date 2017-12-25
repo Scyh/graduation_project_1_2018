@@ -10,9 +10,10 @@
 <script>
 	export default {
 		beforeCreate: function () {
-			if (sessionStorage.admin != 'admin') {
+			console.log('sessionStorage.admin: ' + sessionStorage.admin)
+			if (sessionStorage.admin !== 'admin') {
 				console.log('当前不是管理员登录');
-				alert("当前不是管理员登录")
+				alert("管理员已退出或当前不是管理员登录")
 				this.$router.replace('/')
 			}
 		},

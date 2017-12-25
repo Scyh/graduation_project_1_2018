@@ -50,7 +50,6 @@ Vue.filter('introduceDecoration', function(value) {
 	return "“ " + value + " ”"
 });
 
-/* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,

@@ -4,20 +4,21 @@ import Vuex from 'vuex'
 Vue.use(Vuex);
 
 const state = {
-	login: false,
-	admin: false,
+	login: false,	// 是否登录
+	admin: false,	// 是否是管理员登录
+	search: false,  // 是否在搜索文章,
 }
 
 const getters = {
 	hasLogIn: state => state.login,
 	isAdmin: state => state.admin,
+	isSearch: state => state.search,
 }
 
 const actions = {
 	logIn: ({ commit }) => {
 		commit('logIn');
 	},
-
 	logOut: ({ commit }) => {
 		commit('logOut');
 	},
@@ -27,7 +28,14 @@ const actions = {
 	},
 	adminLogOut: ({ commit }) => {
 		commit('adminLogOut');
-	}
+	},
+
+	isSearch: ({ commit }) => {
+		commit('isSearch');
+	},
+	notSearch: ({ commit }) => {
+		commit('notSearch');
+	},
 }
 
 const mutations = {
@@ -42,6 +50,12 @@ const mutations = {
 	},
 	adminLogOut(state) {
 		state.admin = false
+	},
+	isSearch(state) {
+		state.search = true
+	},
+	notSearch(state) {
+		state.search = false
 	}
 }
 

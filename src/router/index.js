@@ -5,6 +5,7 @@ import articles from '../components/articles.vue'
 import article_detail from '../components/article_detail.vue'
 import question from '../components/question.vue'
 import personalHome from '../components/personalHome.vue'
+import publicHome from '../components/publicHome.vue'
 import admin from '../components/admin.vue'
 import store from '../store/index.js'
 
@@ -21,7 +22,11 @@ const router = new Router({
     {
     	path: '/articles',
       name: 'articles',
-    	component: articles
+    	component: articles,
+    },
+    {
+      path: '/search',
+      component: articles
     },
     {
       path: '/articles/:id',
@@ -41,7 +46,8 @@ const router = new Router({
       component: personalHome
     },
     {
-      path: '/:username/publicHome'
+      path: '/:username/publicHome',
+      component: publicHome
     },
     {
       path: '/admin',
@@ -84,15 +90,15 @@ router.beforeEach((to, from, next) => {
     console.log("进入管理员界面");
     router.app.$store.dispatch('adminLogIn')
   } 
-  else if (to.path.slice(1) == 'admin' && sessionStorage.admin != 'admin'){
-    console.log('notAdmin');
-    router.app.$store.dispatch('adminLogOut');
-    sessionStorage.admin == 'notAdmin';
-    // alert("管理员未登录");
-  } else {
-    sessionStorage.admin == 'notAdmin';
-    router.app.$store.dispatch('adminLogOut');
-  }
+  //   else if (to.path.slice(1) == 'admin' && sessionStorage.admin != 'admin'){
+  //   console.log('notAdmin');
+  //   router.app.$store.dispatch('adminLogOut');
+  //   sessionStorage.admin == 'notAdmin';
+  //   alert("管理员未登录");
+  // } else {
+  //   sessionStorage.admin == 'notAdmin';
+  //   router.app.$store.dispatch('adminLogOut');
+  // }
 
 
   next();

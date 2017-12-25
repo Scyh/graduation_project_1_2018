@@ -23,11 +23,13 @@ export default {
   },
   mounted: function() {
     // console.log(this.isAdmin);
-    sessionStorage.admin = 'notAdmin'
   },
   watch: {
     $route (to) {
-      
+      if (to.name == 'articles') {
+        this.$store.dispatch('adminLogOut');
+        sessionStorage.admin = 'notAdmin'
+      }
     }
   },
   computed: {
