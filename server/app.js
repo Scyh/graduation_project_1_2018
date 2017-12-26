@@ -110,9 +110,19 @@ app.post('/api/regUser', function(req,res,next) {
     });
 })
 
+app.get('/api/admin/getAllUserInfo', function (req, res, next) {
+  User.find({}, (err, data) => {
+    if (err) {
+      console.log(err)
+    } else {
+      // console.log(data);
+      res.json(data);
+    }
+  })
+})
+
 // 获取用户信息
 app.get('/api/getUserInfo', function(req, res, next) {
-  console.log(req.query.username)
   User.findByUserName({username: req.query.username},function(err, data) {
     if (err) {
       console.log(err);

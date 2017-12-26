@@ -41,10 +41,10 @@ Articleschema.statics = {
 		arr.forEach((i, index) => {
 			let reg = new RegExp(i, 'i');
 			if (index == (arr.length -1)) {
-				return this.find({$or: [{'article_author': reg}, {'article_title': reg}, {'article_content': reg}]}).exec(data)
+				return this.find({$or: [{'article_author': reg}, {'article_title': reg}, {'article_content': reg}, {'article_label': reg}, {'category': reg}]}).exec(data)
 			}
 			// exec 返回的是一个 promise 对象
-			temp[index] = this.find({$or: [{'article_author': reg}, {'article_title': reg}, {'article_content': reg}]}).then(data)
+			temp[index] = this.find({$or: [{'article_author': reg}, {'article_title': reg}, {'article_content': reg}, {'article_label': reg}, {'category': reg}]}).then(data)
 		})
 		return temp
 	}

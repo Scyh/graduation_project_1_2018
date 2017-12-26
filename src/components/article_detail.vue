@@ -181,20 +181,26 @@
 			likeOrNot: function (type, event) {
 				let that = this
 				// console.log(($(event.currentTarget).parent().find('i').html() * 1) + 1)
-				if ($(event.currentTarget).hasClass('forbidden')) {
-					// 已经点击过
-					return
-				} else {
-					if (type == 'like') {
-						this.updateLikeOrNot('like');
-						that.addNotice(that.article.article_author,'like');
-					} else if (type == 'dislike') {
-						
-						this.updateLikeOrNot('dislike')
-						that.addNotice(that.article.article_author,'dislike')
-					}
 
-				}
+				if (sessionStorage.username == undefined || sessionStorage.username == '' || sessionStorage.username == 'undefined')  {
+        			console.log("未登录");
+        			alert("请登录")
+      			} else {
+					if ($(event.currentTarget).hasClass('forbidden')) {
+						// 已经点击过
+						return
+					} else {
+						if (type == 'like') {
+							this.updateLikeOrNot('like');
+							that.addNotice(that.article.article_author,'like');
+						} else if (type == 'dislike') {
+							
+							this.updateLikeOrNot('dislike')
+							that.addNotice(that.article.article_author,'dislike')
+						}
+
+					}
+      			}
 			},
 
 			updateLikeOrNot: function (type) {
@@ -412,7 +418,7 @@
 		color: #FFF;
 		background-color: #009A61;
 		border-radius: 5px;
-		font-size: 24px;
+		font-size: 22px;
 		cursor: pointer;
 	}
 	.article-footer .col-md-2:nth-child(3) span {
