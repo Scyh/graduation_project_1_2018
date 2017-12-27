@@ -3,7 +3,7 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-import './assets/css/bootstrap.min.css'  
+import './assets/css/bootstrap.min.css'
 import './assets/js/bootstrap.min'
 import './assets/css/normalize.css'
 import './assets/js/jquery-solarlunar.js'
@@ -22,26 +22,26 @@ Vue.filter('getDate', function(value) {
 		let day = newDate.getDate();
 		let hour = newDate.getHours();
 		let minute = newDate.getMinutes()
-		
-		return year + '-' + month + '-' + day + ' ' +  hour + ':' + minute;
+
+		return year + '-' + month + '-' + day + ' ' + hour + ':' + minute;
 	}
 });
 
 Vue.filter('switchNoticeType', function(value) {
-	switch(value){
+	switch (value) {
 		case 'newComment':
-			return	"评论了你的文章";
+			return "评论了你的文章";
 			break;
-		case 'like' : 
+		case 'like':
 			return "点赞了你的文章";
 			break;
-		case 'dislike': 
+		case 'dislike':
 			return "踩了你的文章";
 			break;
-		case 'newCommentReply': 
+		case 'newCommentReply':
 			return "回复了你的评论";
 			break;
-		default: 
+		default:
 			return "不知道干了啥";
 	}
 })
@@ -51,9 +51,11 @@ Vue.filter('introduceDecoration', function(value) {
 });
 
 new Vue({
-  el: '#app',
-  router,
-  store,
-  template: '<App/>',
-  components: { App }
+	el: '#app',
+	router,
+	store,
+	template: '<App/>',
+	components: {
+		App
+	}
 })

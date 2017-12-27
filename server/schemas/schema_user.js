@@ -57,6 +57,10 @@ Userschema.statics = {
 
 	findByUserName: function(params, data) {
 		return this.find({'username': params.username}).exec(data);
+	},
+
+	adminFetchSome (index, data) {
+		return this.find({}).limit(6).skip((index -1) * 6).exec(data)
 	}
 }
 

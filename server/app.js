@@ -110,18 +110,7 @@ app.post('/api/regUser', function(req,res,next) {
     });
 })
 
-app.get('/api/admin/getAllUserInfo', function (req, res, next) {
-  User.find({}, (err, data) => {
-    if (err) {
-      console.log(err)
-    } else {
-      // console.log(data);
-      res.json(data);
-    }
-  })
-})
-
-// 获取用户信息
+// 获取单个用户信息
 app.get('/api/getUserInfo', function(req, res, next) {
   User.findByUserName({username: req.query.username},function(err, data) {
     if (err) {
@@ -131,6 +120,7 @@ app.get('/api/getUserInfo', function(req, res, next) {
     }
   })
 })
+
 // 更新用户头像
 app.post('/api/updateUserProfile', function (req, res, next) {
   User.update({'username': req.body.username}, {"userProfile": req.body.srcStr}, function(err, data) {
@@ -147,7 +137,7 @@ app.post('/api/updateUserProfile', function (req, res, next) {
   })
 })
 
-// 更新用户信息
+// 更新用户基本信息
 app.post('/api/updateUserInfo',function (req, res, next) {
   User.update({username:req.body.username}, {
       sex: req.body.sex,
@@ -195,7 +185,6 @@ app.get('/api/getPageCount', function(req, res, next) {
   })
 })
 
-
 // 获取 article_detail 接口
 app.get('/api/getArticleDetail', function(req, res, next) {
   Article.findById(req.query._id, function(err, article) {
@@ -210,10 +199,10 @@ app.get('/api/getArticleDetail', function(req, res, next) {
   })
 })
 
-// 获取作者相关文章
-app.get('/api/getArticleByAuthor', function (req, res, next) {
+// // 获取作者相关文章
+// app.get('/api/getArticleByAuthor', function (req, res, next) {
   
-})
+// })
 
 // 获取 文章评论 接口
 app.get('/api/getComment', function(req, res, next) {
@@ -505,6 +494,61 @@ app.get('/api/test', function (req, res, next) {
   // })
 })
 
+
+
+/*
+ * 管理员接口
+ */
+
+// 获取所以用户信息
+app.get('/api/admin/getAllUserInfo', function (req, res, next) {
+  User.adminFetchSome(req.query.page)
+    .then(users => {
+      User.count({})
+      .then(count => {
+        res.send({
+          count: count,
+          users: users
+        })
+      })
+  })
+})
+
+// 获取文章
+// app.get('/api/admin/getArticle', function (req, res, next) {
+//   Article.adminFetchSome({
+//     type: req.query.type,
+//     page: req.query.page
+//   }, (err, data) => {
+//     if (err) {
+//       console.log(err)
+//     } else {
+//       res.json(data)
+//     }
+//   })
+// })
+
+app.get('/api/admin/getArticle', function (req, res, next) {
+  Article.adminFetchSome({type: req.query.type, page: req.query.page})
+    .then(articles => {
+      if (req.query.type == 'all') {
+        Article.count({}).then(count => {
+          res.send({
+            articles: articles,
+            count: count
+          })  
+        }) 
+      } else {
+        Article.count({'article_audit': req.query.type})
+          .then(count => {
+            res.send({
+              articles: articles,
+              count: count
+            })
+          })
+      }
+  })
+})
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');

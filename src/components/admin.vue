@@ -15,9 +15,9 @@
 					<dt @click="fn($event)" title="userManage" id="userManage"><span class="glyphicon glyphicon-user"></span>用户管理</dt>
 				</dl>
 				<dl>
-					<dt @click="fn($event)" title="articleManage" id="articleManage"><span class="glyphicon glyphicon-list"></span>文章管理</dt>
-					<dd @click="fn($event),test('audited')" title="articleManage">已审核</dd>
-					<dd @click="fn($event),test('notAudit')" title="articleManage">待审核</dd>
+					<dt @click="fn($event),articleFilter('all')" title="articleManage" id="articleManage"><span class="glyphicon glyphicon-list"></span>文章管理</dt>
+					<dd @click="fn($event),articleFilter('audited')" title="articleManage">已审核</dd>
+					<dd @click="fn($event),articleFilter('notAudit')" title="articleManage">待审核</dd>
 				</dl>
 				<dl>
 					<dt @click="fn($event)" title="announcement" id="announcement"><span class="glyphicon glyphicon-bullhorn"></span>公告</dt>
@@ -48,6 +48,8 @@
 	import adminAnnouncement from './admin_announcement.vue'
 	import adminMessage from './admin_message.vue'
 
+	import bus from '../bus.js'
+
 	export default {
 		data () {
 			return {
@@ -66,6 +68,8 @@
 		mounted () {
 		},
 		methods: {
+
+			// 添加选中样式
 			fn(event) {
 				let targetType = event.target.nodeName.toLowerCase();
 				if (targetType == 'dt') {
@@ -78,8 +82,9 @@
 					this.currentContent = $(event.target).attr('title');
 				},
 
-			test () {
-				this.$emit('fn', 'aaaa')
+			// 筛选文章
+			articleFilter (data) {
+				bus.$emit('type', data)
 			}
 
 

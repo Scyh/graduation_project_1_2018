@@ -9,6 +9,7 @@ import publicHome from '../components/publicHome.vue'
 import admin from '../components/admin.vue'
 import store from '../store/index.js'
 
+import adminUserInfo from '../components/admin_User_Manage.vue'
 
 Vue.use(Router)
 
