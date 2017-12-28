@@ -50,6 +50,16 @@ Vue.filter('introduceDecoration', function(value) {
 	return "“ " + value + " ”"
 });
 
+Vue.filter('translate', value => {
+	switch (value) {
+		case 'audited':
+			return "已审核"
+			break;
+		case 'notAudit':
+			return "待审核"
+	}
+})
+
 new Vue({
 	el: '#app',
 	router,

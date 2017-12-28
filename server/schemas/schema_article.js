@@ -54,7 +54,6 @@ Articleschema.statics = {
 	},
 
 	adminFetchSome(params, data) {
-		console.log(params)
 		switch(params.type) {
 			case 'all':
 				return this.find({}).limit(8).skip((params.page -1) * 8).exec(data);
@@ -66,6 +65,10 @@ Articleschema.statics = {
 			default: 
 				return this.find({}).limit(8).skip((params.page -1) * 8).exec(data);
 		}
+	},
+
+	audit(id, data) {
+		return this.update({"_id": id}, {$set: {'article_audit': 'audited'}}).exec(data);
 	}
 }
 

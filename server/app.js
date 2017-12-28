@@ -39,11 +39,11 @@ app.get('/api/checkUser', function(req, res, next) {
   User.checkUser({
     username: req.query.username,
     password: req.query.password
-  }, function (err, data) {
+  }, function(err, data) {
     if (err) {
       console.log(err);
     } else {
-      if ((data*1) >0) {
+      if ((data * 1) > 0) {
         // console.log("用户存在");
         res.send({
           status: 'success'
@@ -70,11 +70,13 @@ app.get('/api/captcha', function(req, res, next) {
 
 // 检查用户名唯一
 app.get('/api/uniqueUserName', function(req, res, next) {
-  User.uniqueUserName({username: req.query.username}, function(err, data) {
+  User.uniqueUserName({
+    username: req.query.username
+  }, function(err, data) {
     if (err) {
       console.log(err)
     } else {
-      if ((data*1) >0) {
+      if ((data * 1) > 0) {
         // 用户名存在
         res.send({
           status: 'fail',
@@ -89,30 +91,32 @@ app.get('/api/uniqueUserName', function(req, res, next) {
 })
 
 // 用户注册接口
-app.post('/api/regUser', function(req,res,next) {
-    let newUser = new User({
-      username: req.body.username,
-      password: req.body.password,
-      // sex: 'female',
-      // job: '',
-      // industry: '',
-      // birthday: '',
-      // introduce: '个人简介'
-    })
-    newUser.save(function(err, data) {
-      if (err) {
-        console.log(err)
-      } else {
-        res.send({
-          status: 'success'
-        })
-      }
-    });
+app.post('/api/regUser', function(req, res, next) {
+  let newUser = new User({
+    username: req.body.username,
+    password: req.body.password,
+    // sex: 'female',
+    // job: '',
+    // industry: '',
+    // birthday: '',
+    // introduce: '个人简介'
+  })
+  newUser.save(function(err, data) {
+    if (err) {
+      console.log(err)
+    } else {
+      res.send({
+        status: 'success'
+      })
+    }
+  });
 })
 
 // 获取单个用户信息
 app.get('/api/getUserInfo', function(req, res, next) {
-  User.findByUserName({username: req.query.username},function(err, data) {
+  User.findByUserName({
+    username: req.query.username
+  }, function(err, data) {
     if (err) {
       console.log(err);
     } else {
@@ -122,42 +126,48 @@ app.get('/api/getUserInfo', function(req, res, next) {
 })
 
 // 更新用户头像
-app.post('/api/updateUserProfile', function (req, res, next) {
-  User.update({'username': req.body.username}, {"userProfile": req.body.srcStr}, function(err, data) {
-     if (err) {
+app.post('/api/updateUserProfile', function(req, res, next) {
+  User.update({
+    'username': req.body.username
+  }, {
+    "userProfile": req.body.srcStr
+  }, function(err, data) {
+    if (err) {
       console.log(err);
       res.send({
         status: 'fail'
       })
-     } else {
+    } else {
       res.send({
         status: 'success'
       })
-     }
+    }
   })
 })
 
 // 更新用户基本信息
-app.post('/api/updateUserInfo',function (req, res, next) {
-  User.update({username:req.body.username}, {
-      sex: req.body.sex,
-      trueName: req.body.trueName,
-      industry: req.body.industry,
-      job: req.body.job,
-      introduce: req.body.introduce,
-      birthday: req.body.birthday
-    }, function (err) {
-      if (err) {
-        console.log (err);
-        res.send({
-          status: 'fail'
-        })
-      } else {
-        res.send({
-          status: 'success'
-        })
-      }
-    })
+app.post('/api/updateUserInfo', function(req, res, next) {
+  User.update({
+    username: req.body.username
+  }, {
+    sex: req.body.sex,
+    trueName: req.body.trueName,
+    industry: req.body.industry,
+    job: req.body.job,
+    introduce: req.body.introduce,
+    birthday: req.body.birthday
+  }, function(err) {
+    if (err) {
+      console.log(err);
+      res.send({
+        status: 'fail'
+      })
+    } else {
+      res.send({
+        status: 'success'
+      })
+    }
+  })
 })
 
 // 获取主页文章中的部分文章
@@ -201,7 +211,7 @@ app.get('/api/getArticleDetail', function(req, res, next) {
 
 // // 获取作者相关文章
 // app.get('/api/getArticleByAuthor', function (req, res, next) {
-  
+
 // })
 
 // 获取 文章评论 接口
@@ -210,7 +220,7 @@ app.get('/api/getComment', function(req, res, next) {
     if (err) {
       console.log(err)
     } else {
-      
+
       if (data.length == 0) {
         // console.log("没有评论");
         res.send({
@@ -229,8 +239,10 @@ app.get('/api/getComment', function(req, res, next) {
 })
 
 // 回复评论  如果数据库中没有该文章的评论 document ，就新建一张
-app.post('/api/reply', function (req, res, next) {
-  Comment.count({'_article_id': req.body._article_id})
+app.post('/api/reply', function(req, res, next) {
+  Comment.count({
+      '_article_id': req.body._article_id
+    })
     .then(data => {
       let article_comment = {
         'comment_author': req.body.comment_author,
@@ -238,52 +250,52 @@ app.post('/api/reply', function (req, res, next) {
         'comment_content': req.body.comment_content
       }
 
-    // 数据库中没有该文章的记录,则新建
-    if (data < 1) {
-      let newComment = new Comment({
-        _article_id: req.body._article_id
-      })
-      newComment.save().then(data => {
+      // 数据库中没有该文章的记录,则新建
+      if (data < 1) {
+        let newComment = new Comment({
+          _article_id: req.body._article_id
+        })
+        newComment.save().then(data => {
 
+          Comment.addComment({
+            newComment_id: data._id,
+            reply: article_comment
+          }, function(err, data) {
+            if (err) {
+              console.log(err)
+              res.send({
+                status: 'fail'
+              })
+            } else if (data.n == 1 && data.nModified == 1) {
+              res.send({
+                status: 'success'
+              })
+            }
+          })
+        });
+      } else {
         Comment.addComment({
-          newComment_id: data._id,
-          reply:article_comment
-        }, function (err, data) {
-          if (err) {
-            console.log(err)
-            res.send({
-              status: 'fail'
-            })
-          } else if (data.n == 1 && data.nModified == 1){
-            res.send({
-              status: 'success'
-            })
-          } 
-        })
-      });      
-    } else {
-      Comment.addComment({
           _article_id: req.body._article_id,
-          reply:article_comment
-        }, function (err, data) {
+          reply: article_comment
+        }, function(err, data) {
           if (err) {
             console.log(err)
             res.send({
               status: 'fail'
             })
-          } else if (data.n == 1 && data.nModified == 1){
+          } else if (data.n == 1 && data.nModified == 1) {
             res.send({
               status: 'success'
             })
-          } 
+          }
         })
-    }
+      }
 
-  })
+    })
 });
 
 // 删除评论
-app.post('/api/deleteComment', function (req, res, next) {
+app.post('/api/deleteComment', function(req, res, next) {
   Comment.deleteComment({
     _article_id: req.body._article_id,
     comment_date: req.body.comment_date,
@@ -298,11 +310,11 @@ app.post('/api/deleteComment', function (req, res, next) {
       status: 'fail'
     })
   })
-}) 
+})
 
 // 点赞或踩
-app.post('/api/likeOrNot', function (req, res, next) {
-  
+app.post('/api/likeOrNot', function(req, res, next) {
+
   // 没有评论只有点赞的时候，需新建comment
   if ((req.body.commentsLength * 1) < 1) {
     let newComment = new Comment({
@@ -311,21 +323,21 @@ app.post('/api/likeOrNot', function (req, res, next) {
 
     newComment.save()
       .then(data => {
-      Comment.updateLikeOrNot({
-        newComment_id : data._id,
-        type: req.body.type,
-        count: req.body.count,
-        user: req.body.user
-      }).then(data => {
-        if (data.n ==1 && data.nModified == 1) {
-          res.send({
-            status: 'success'
-          })
-        }
-      })
-    }).catch(err => {
+        Comment.updateLikeOrNot({
+          newComment_id: data._id,
+          type: req.body.type,
+          count: req.body.count,
+          user: req.body.user
+        }).then(data => {
+          if (data.n == 1 && data.nModified == 1) {
+            res.send({
+              status: 'success'
+            })
+          }
+        })
+      }).catch(err => {
 
-    })
+      })
   } else {
     Comment.updateLikeOrNot({
       _article_id: req.body._article_id,
@@ -333,7 +345,7 @@ app.post('/api/likeOrNot', function (req, res, next) {
       count: req.body.count,
       user: req.body.user
     }, (err, data) => {
-      if (data.n ==1 && data.nModified == 1) {
+      if (data.n == 1 && data.nModified == 1) {
         res.send({
           status: 'success'
         })
@@ -344,8 +356,8 @@ app.post('/api/likeOrNot', function (req, res, next) {
 
 
 // 初始化个人主页的文章tab
-app.get('/api/getMyArticles', function (req, res, next) {
-  Article.fetchByAuthor(req.query.username, function (err, data) {
+app.get('/api/getMyArticles', function(req, res, next) {
+  Article.fetchByAuthor(req.query.username, function(err, data) {
     if (err) {
       console.log(err)
     } else {
@@ -355,7 +367,7 @@ app.get('/api/getMyArticles', function (req, res, next) {
 })
 
 // 获取查看文章
-app.get('/api/getOneArticle', function (req, res, next) {
+app.get('/api/getOneArticle', function(req, res, next) {
   Article.findById(req.query.article_id).then(data => {
     res.json(data);
   }).catch(err => {
@@ -364,23 +376,23 @@ app.get('/api/getOneArticle', function (req, res, next) {
 })
 
 // 删除文章
-app.post('/api/deleteArticle', function (req, res, next) {
+app.post('/api/deleteArticle', function(req, res, next) {
   Article.deleteOne(req.body._id)
     .then(data => {
       // console.log(data)
       res.send({
         status: 'success'
       })
-  }).catch(err => {
+    }).catch(err => {
       console.log(err)
       res.send({
         status: 'fail'
       })
-  })
+    })
 })
 
 // 初始化 个人通知tab
-app.get('/api/getMyNotice', function (req, res, next) {
+app.get('/api/getMyNotice', function(req, res, next) {
   Notice.fecthNotice(req.query.user)
     .then(data => {
       res.json(data);
@@ -391,9 +403,9 @@ app.get('/api/getMyNotice', function (req, res, next) {
 })
 
 // 个人通知 标记全读
-app.post('/api/noticeAllRead', function (req, res, next) {
+app.post('/api/noticeAllRead', function(req, res, next) {
   Notice.findById(req.body._id).then(data => {
-    for(let i in data.notice) {
+    for (let i in data.notice) {
       data.notice[i].notice_state = 'hasRead';
     }
     let newNotice = new Notice(data);
@@ -410,8 +422,8 @@ app.post('/api/noticeAllRead', function (req, res, next) {
 })
 
 // 清空 个人通知
-app.post('/api/clearAllNotice', function (req, res, next) {
-  Notice.clearAllNotice(req.body._id,(err, data) => {
+app.post('/api/clearAllNotice', function(req, res, next) {
+  Notice.clearAllNotice(req.body._id, (err, data) => {
     if (err) {
       console.log(err)
     } else {
@@ -424,57 +436,59 @@ app.post('/api/clearAllNotice', function (req, res, next) {
 })
 
 // 添加通知
-app.post('/api/addNotice', function (req, res, next) {
-  Notice.count({"notice_user": req.body.notice_user}, function(err, data) {
-            console.log(data)
-            let noticeObj = {
-                  notice_state: req.body.notice_state,
-                  notice_date: req.body.notice_date,
-                  notice_ByUser: req.body.notice_ByUser,
-                  notice_type: req.body.notice_type,
-                  notice_title: req.body.notice_title,
-                  notice_title_id: req.body.notice_title_id
-            };
-            console.log(noticeObj);
+app.post('/api/addNotice', function(req, res, next) {
+  Notice.count({
+    "notice_user": req.body.notice_user
+  }, function(err, data) {
+    console.log(data)
+    let noticeObj = {
+      notice_state: req.body.notice_state,
+      notice_date: req.body.notice_date,
+      notice_ByUser: req.body.notice_ByUser,
+      notice_type: req.body.notice_type,
+      notice_title: req.body.notice_title,
+      notice_title_id: req.body.notice_title_id
+    };
+    console.log(noticeObj);
 
-          if ((data * 1) > 0) {
-            // 有记录，直接更新notice
-            console.log("有记录，直接更新notice")
-            Notice.addNotice({
-              username: req.body.notice_user,
-              notice: noticeObj,
-            }, function (err, data) {
-              if (err) {
-                console.log(err)
-              } 
-              console.log(data);
+    if ((data * 1) > 0) {
+      // 有记录，直接更新notice
+      console.log("有记录，直接更新notice")
+      Notice.addNotice({
+        username: req.body.notice_user,
+        notice: noticeObj,
+      }, function(err, data) {
+        if (err) {
+          console.log(err)
+        }
+        console.log(data);
 
-            })
+      })
 
-          } else {
-            // 没有记录，需新建notice的
-            console.log("// 没有记录，需新建notice的")
-            let newNotice = new Notice({
-              notice_user: req.body.notice_user,
-              notice: noticeObj
-            })
-            newNotice.save((err, data) => {
-              if (err) {
-                console.log(err)
-              } else {
-                console.log(data);
-                // res.send({
-                //   status: 'success'
-                // })
-              }
-            })
-          }
+    } else {
+      // 没有记录，需新建notice的
+      console.log("// 没有记录，需新建notice的")
+      let newNotice = new Notice({
+        notice_user: req.body.notice_user,
+        notice: noticeObj
+      })
+      newNotice.save((err, data) => {
+        if (err) {
+          console.log(err)
+        } else {
+          console.log(data);
+          // res.send({
+          //   status: 'success'
+          // })
+        }
+      })
+    }
   })
 })
 
 // 搜索文章或问题
-app.get('/api/search', function (req, res, next) {
-  Article.search(req.query.key, function (err, data) {
+app.get('/api/search', function(req, res, next) {
+  Article.search(req.query.key, function(err, data) {
     if (err) {
       console.log(err);
       console.log('err')
@@ -485,7 +499,7 @@ app.get('/api/search', function (req, res, next) {
 })
 
 // test 
-app.get('/api/test', function (req, res, next) {
+app.get('/api/test', function(req, res, next) {
   // Article.find({'article_author': 'shen'}, 'article_title', function (err, data) {
   //   if (err) {
   //     console.log(err)
@@ -497,49 +511,85 @@ app.get('/api/test', function (req, res, next) {
 
 
 /*
- * 管理员接口
+ * 管理员部分接口
  */
 
 // 获取所以用户信息
-app.get('/api/admin/getAllUserInfo', function (req, res, next) {
+app.get('/api/admin/getAllUserInfo', function(req, res, next) {
   User.adminFetchSome(req.query.page)
     .then(users => {
       User.count({})
-      .then(count => {
-        res.send({
-          count: count,
-          users: users
+        .then(count => {
+          res.send({
+            count: count,
+            users: users
+          })
         })
+    })
+})
+
+// 删除用户
+app.post('/api/admin/deleteUser', function(req, res, next) {
+  User.deleteUser(req.body.id).then(data => {
+    if (data.result.n == 1 && data.result.ok ==1) {
+      res.send({
+        status: 'success'
+      })
+    }
+  }).catch(err => {
+    console.log('err: ' + err);
+      res.send({
+        status: 'fail'
       })
   })
 })
 
-// 获取文章
-// app.get('/api/admin/getArticle', function (req, res, next) {
-//   Article.adminFetchSome({
-//     type: req.query.type,
-//     page: req.query.page
-//   }, (err, data) => {
-//     if (err) {
-//       console.log(err)
-//     } else {
-//       res.json(data)
-//     }
-//   })
-// })
+// 禁言用户
+app.post('/api/admin/permission', function(req, res, next) {
+  User.permission({
+    id: req.body.id,
+    permission: req.body.permission
+  }).then(data => {
+    if (data.n ==1 && data.nModified ==1) {
+      res.send({
+        status: 'success'
+      })
+    }
+  }).catch(err => {
+    console.log("err:" + err)
+    res.send({
+      status: 'fail'
+    })
+  })
+})
 
-app.get('/api/admin/getArticle', function (req, res, next) {
-  Article.adminFetchSome({type: req.query.type, page: req.query.page})
+// 搜索用户
+app.post('/api/admin/searchUser', function(req, res, next) {
+  User.searchUser(req.body.username).then(data => {
+    res.json(data)
+  }).catch(err => {
+    console.log("err: " + err);
+  })
+})
+
+// 获取文章
+app.get('/api/admin/getArticle', function(req, res, next) {
+  Article.adminFetchSome({
+      type: req.query.type,
+      page: req.query.page
+    })
     .then(articles => {
       if (req.query.type == 'all') {
         Article.count({}).then(count => {
           res.send({
             articles: articles,
             count: count
-          })  
-        }) 
+          })
+        })
       } else {
-        Article.count({'article_audit': req.query.type})
+        Article.count({
+            'article_audit': req.query.type
+          })
           .then(count => {
             res.send({
               articles: articles,
@@ -547,8 +597,29 @@ app.get('/api/admin/getArticle', function (req, res, next) {
             })
           })
       }
-  })
+    })
 })
+
+// 通过审核
+app.post('/api/admin/hasAudited', function(req, res, next) {
+   Article.audit(req.body.id).then(data => {
+    if (data.n == 1 && data.nModified == 1 && data.ok == 1) {
+      res.send({
+        status: 'success'
+      })
+    } else {
+      res.send({
+        status: 'fail'
+      })
+    }
+   }).catch(err => {
+      console.log('err:' + err);
+      res.send({
+        status: 'fail'
+      })
+   })
+})
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');

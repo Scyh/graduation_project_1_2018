@@ -45,7 +45,14 @@
             </template>
 
             <template v-else>
-              <button class="btn btn-home" @click="goHome">{{ username }}</button>
+              <span class="dropdown">
+                <span class="glyphicon glyphicon-pencil markdown" data-toggle="dropdown"></span>
+              <ul class="dropdown-menu">
+                <li><a href="#">写博客</a></li>
+                <li><a href="#">提问题</a></li>
+              </ul>
+            </span>
+            <button class="btn btn-home" @click="goHome">{{ username }}</button>
               <button class="btn btn-logOut" @click="logOut">退出登录</button>
             </template>
 
@@ -265,7 +272,11 @@ export default {
   .active{
     color: #41b886 !important;
   }
-
+  .markdown {
+    margin-right: 15px;
+    cursor: pointer;
+    padding: 15px 0;
+  }
   @media (max-width: 1200px) {
     input.search {
       width: 200px;

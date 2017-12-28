@@ -125,7 +125,6 @@
 			bus.$on('transferUserName', data => {
 				if (data == undefined || data == '' || data == null) {
 					return 
-					
 				} else {
 					this.init(data);
 

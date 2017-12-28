@@ -48,20 +48,47 @@ var Userschema = new mongoose.Schema({
 Userschema.statics = {
 	checkUser: function(params, data) {
 		// console.log()
-		return this.find({'username': params.username,'password': params.password}).count().exec(data);
+		return this.find({
+			'username': params.username,
+			'password': params.password
+		}).count().exec(data);
 	},
 
 	uniqueUserName: function(params, data) {
-		return this.find({'username': params.username}).count().exec(data);
+		return this.find({
+			'username': params.username
+		}).count().exec(data);
 	},
 
 	findByUserName: function(params, data) {
-		return this.find({'username': params.username}).exec(data);
+		return this.find({
+			'username': params.username
+		}).exec(data);
 	},
 
-	adminFetchSome (index, data) {
-		return this.find({}).limit(6).skip((index -1) * 6).exec(data)
+	adminFetchSome(index, data) {
+		return this.find({}).limit(6).skip((index - 1) * 6).exec(data)
+	},
+
+	deleteUser(_id, data) {
+		return this.remove({"_id": _id}).exec(data)
+	},
+
+	// 更改权限
+	permission(params, data) {
+		if ((params.permission*1) > 0) {
+			return this.update({"_id": params.id}, {$set: {"permission": 0}})
+		} else {
+			return this.update({"_id": params.id}, {$set: {"permission": 1}})
+		}
+		
+	},
+
+	searchUser(username, data) {
+		let reg = new RegExp(username, 'i');
+		return this.find({$or: [{"username": reg}]}).exec(data);
 	}
+
 }
 
 module.exports = Userschema
