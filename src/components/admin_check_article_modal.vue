@@ -45,16 +45,20 @@
 <script>
 	import bus from '../bus.js'
 	export default {
-		data () {
+		data() {
 			return {
 				article: {}
 			}
 		},	// data end
-		mounted () {
+		mounted() {
 			bus.$on('transferArticle_id', data => {
 				this.init(data)
 			})
 		},	// mounted end
+		updated(event) {
+			// console.log($(".article-content").text())
+			$(".article-content").html($(".article-content").text())
+		},
 		methods: {
 			init (id) {
 				let that = this;
@@ -62,6 +66,7 @@
 					article_id: id
 				}, function(data) {
 					that.article = data;
+					console.log(data)
 				});
 			}
 		},	// methods end

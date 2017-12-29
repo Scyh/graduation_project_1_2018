@@ -4,7 +4,7 @@
 			<div class="row">
 				<div class="col-md-8 col-lg-8">
 					<main>
-						<template v-for="article in articles">
+						<template v-for="(article, index) in articles">
 							<article>
 								<div class="row">
 								<!-- <div class="article_img col-md-5">
@@ -12,9 +12,9 @@
 								</div> -->
 								<div class="col-md-12">
 									<h4 class="article_title"><router-link :to="{path:'articles/' + article._id}" >{{ article.article_title }}</router-link></h4>
-									<p class="article_content" v-html="article.article_content.slice(0,100)"></p>
+									<p class="article_content" :id="'content' + index" v-html="article.article_content.slice(0,100)"></p>
 								</div>
-								<div class="article_publish_date">{{ article.article_publish_date }}</div>
+								<div class="article_publish_date">{{ article.article_publish_date | getDate}}</div>
 								<div class="article_pv">{{ article.article_pv }}</div>
 							</div>
 							</article>
@@ -41,35 +41,7 @@
 					</main>
 				</div>
 				<div class="col-md-4 col-lg-4">
-					<aside>
-						<div class="widget">
-							<h4>热门文章</h4>
-							<div class="widget_content">
-								<div class="widget_article_title">热门文章标题热门文章标题</div>
-								<div class="widget_article_title">热门文章标题热门文章标题</div>
-								<div class="widget_article_title">热门文章标题热门文章标题</div>
-								<div class="widget_article_title">热门文章标题热门文章标题</div>
-							</div>
-						</div>
-						<div class="widget">
-							<h4>热门文章</h4>
-							<div class="widget_content">
-								<div class="widget_article_title">热门文章标题热门文章标题</div>
-								<div class="widget_article_title">热门文章标题热门文章标题</div>
-								<div class="widget_article_title">热门文章标题热门文章标题</div>
-								<div class="widget_article_title">热门文章标题热门文章标题</div>
-							</div>
-						</div>
-						<div class="widget">
-							<h4>热门文章</h4>
-							<div class="widget_content">
-								<div class="widget_article_title">热门文章标题热门文章标题</div>
-								<div class="widget_article_title">热门文章标题热门文章标题</div>
-								<div class="widget_article_title">热门文章标题热门文章标题</div>
-								<div class="widget_article_title">热门文章标题热门文章标题</div>
-							</div>
-						</div>
-					</aside>
+					<index-aside></index-aside>
 				</div>
 			</div>
 		</div>
@@ -80,6 +52,8 @@
 import $ from 'jquery'
 import bus from '../bus.js'
 import { mapGetters } from 'vuex'
+import indexAside from '../components/indexAside.vue'
+
 export default {
 	data: function() {
 		return {
@@ -89,14 +63,27 @@ export default {
 			showItem: 5,
 		}
 	},
+	created: function () {
+		let that = this;
+		// bus.$on('fn', function (data) {
+		// 		that.articles = [];
+		// 		for (let i in data) {
+		// 			that.articles.push(data[i])
+		// 		}
+		// 		// data.forEach((i) => {
+		// 		// 	this.articles.push(data[i])
+		// 		// })
+		// 	})
+	},
 	beforeMount: function () {
       window.scroll(0,0)
   	},
 	mounted: function() {
 		let that = this;
-			bus.$on('fn', function (data) {
-				that.updateArticle();
-			})	
+
+		bus.$on('fn', function (data) {
+			that.updateArticle();
+		})	
 		if (this.$route.path == '/search') {
 			that.updateArticle()
 		} else {
@@ -111,20 +98,19 @@ export default {
 				this.pageChange(this.$route.query.page);
 			}
 		}
-		
 	},
-	created: function () {
-		let that = this;
-		bus.$on('fn', function (data) {
-				that.articles = [];
-				for (let i in data) {
-					that.articles.push(data[i])
-				}
-				
-				// data.forEach((i) => {
-				// 	this.articles.push(data[i])
-				// })
-			})
+	updated(data) {
+
+		// this.articles.forEach((item, index)=> {
+		// 	// i.article_content = ''
+		// 	let el = '#content' + index;
+			
+		// 	// item.article_content = $(el).html($(el).html()).slice(0,100)
+
+		// })
+		
+		// console.log($(".article-content").text())
+		// $(".article_content").html($(".article_content").text())
 	},
 	computed:{
 		pages: function(){
@@ -210,8 +196,15 @@ export default {
 				pageCount: that.currentPage,
 				category: that.$route.params.category?that.$route.params.category:'all'
 			}, function(data) {
-				that.articles = data;
+				
 				// window.scroll(0,0)
+				// console.log(data)
+				data.forEach((item, index) => {
+					// console.log(item.article_content)
+					item.article_content = that.html(item.article_content)
+				})
+
+				that.articles = data;
 			});
 
 		},// pageChange 改变
@@ -231,8 +224,9 @@ export default {
 			} else if (type == 'next') {
 				// 向后翻页
 				console.log(this.currentPage)
-				console.log(this.pages[4])
-				if (this.currentPage < this.pages[4]) {
+				// console.log(this.pages[4])
+				console.log(this.pages)
+				if (this.currentPage < this.pages[3]) {
 					this.currentPage ++;
 					this.pageChange(this.currentPage)
 				} else {
@@ -249,7 +243,16 @@ export default {
 					this.articles.push(temp[i])
 					}
 			}
+		},
+
+		html(val) {
+			let el = document.createElement('span')
+			$(el).html(val);
+			return $(el).text()
 		}
+	},
+	components: {
+		indexAside
 	}
 }
 </script>
@@ -307,18 +310,5 @@ export default {
 		left: 0px;
 		top: 11px;
 		margin-right: 3px;
-	}
-	.widget {
-		padding: 30px;
-		margin-bottom: 15px;
-		background: #FFF;
-	}
-	.widget_article_title {
-		padding: 10px;
-		border-bottom: 1px solid #EEE;
-		cursor: pointer;
-	}
-	.widget_article_title:hover {
-		background-color: #F5F5F5;
 	}
 </style>

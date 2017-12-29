@@ -11,7 +11,7 @@
 									<router-link :to="'/' + viewName + '/articles/' + item._id">{{ item.article_title }}</router-link>
 
 									<!-- 可能需要判断是否开头截取的内容中有图片，如果有，需要去除掉 -->
-									<p v-html="item.article_content.slice(0,80)"></p>
+									<!-- <p v-html="item.article_content.slice(0,80)"></p> -->
 									<span>
 										{{ item.article_publish_date | getDate }}
 									</span>
@@ -22,7 +22,7 @@
 				</div>
 
 				<div class="col-md-4">
-					<cusAside :name="viewName" @allArticles="initAllArticles($event)"></cusAside>	
+					<cus-aside :name="viewName" @allArticles="initAllArticles($event)"></cus-aside>	
 				</div>
 			</div>
 		</div>
@@ -30,7 +30,7 @@
 </template>
 <script>
 
-	import cusAside from './aside.vue'
+	import cusAside from './publicHomeAside.vue'
 
 	export default {
 		data: function () {
@@ -63,6 +63,9 @@
 	.row-left {
 		background-color: #FFF;
 		min-height: 600px;
+	}
+	.row-left li span {
+		float: right;
 	}
 	.allArticles {
 		padding: 15px 0;

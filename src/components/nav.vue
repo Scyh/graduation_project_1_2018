@@ -48,8 +48,9 @@
               <span class="dropdown">
                 <span class="glyphicon glyphicon-pencil markdown" data-toggle="dropdown"></span>
               <ul class="dropdown-menu">
-                <li><a href="#">写博客</a></li>
-                <li><a href="#">提问题</a></li>
+                <li><router-link to="/edit/mdEditor">写博客<span><img src="../assets/blog.png"></span></router-link></li>
+                <li><router-link to="/edit/askQuestions">提问题<span><img src="../assets/ask.png"></span></router-link></li>
+                <li><router-link to="/edit/leaveMessage">去留言<span><img src="../assets/message.png"></span></router-link></li>
               </ul>
             </span>
             <button class="btn btn-home" @click="goHome">{{ username }}</button>
@@ -276,6 +277,9 @@ export default {
     margin-right: 15px;
     cursor: pointer;
     padding: 15px 0;
+  }
+  .dropdown-menu span{
+    margin-left: 10px;
   }
   @media (max-width: 1200px) {
     input.search {

@@ -9,6 +9,7 @@ import './assets/css/normalize.css'
 import './assets/js/jquery-solarlunar.js'
 import store from './store/index.js'
 import './assets/css/cropper.min.css'
+import 'mavon-editor/dist/css/index.css'
 
 Vue.config.productionTip = false
 

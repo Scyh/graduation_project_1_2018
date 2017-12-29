@@ -1,9 +1,9 @@
 <template>
   <div id="app">
-  	<cusNav v-show="!isAdmin"></cusNav>
+  	<cusNav v-show="!isAdmin && !isEdit"></cusNav>
     <router-view></router-view>
-    <cusFooter v-show="!isAdmin"></cusFooter>
-    <cusCopyRight v-show="!isAdmin"></cusCopyRight>
+    <cusFooter v-show="!isAdmin && !isEdit"></cusFooter>
+    <cusCopyRight v-show="!isAdmin && !isEdit"></cusCopyRight>
   </div>
 </template>
 
@@ -22,7 +22,7 @@ export default {
   	return {}
   },
   mounted: function() {
-    // console.log(this.isAdmin);
+    // console.log(!this.isEdit && !this.isAdmin)
   },
   watch: {
     $route (to) {
@@ -34,7 +34,8 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'isAdmin'
+      'isAdmin',
+      'isEdit'
     ])
   },
   components: {

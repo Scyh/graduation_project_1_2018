@@ -11,6 +11,7 @@ var User = require('./models/user.js');
 var Article = require('./models/article.js');
 var Comment = require('./models/comment.js');
 var Notice = require('./models/notice.js');
+var Announcement = require('./models/announcement.js');
 var app = express();
 
 app.set('views', path.join(__dirname, 'views'));
@@ -209,11 +210,6 @@ app.get('/api/getArticleDetail', function(req, res, next) {
   })
 })
 
-// // 获取作者相关文章
-// app.get('/api/getArticleByAuthor', function (req, res, next) {
-
-// })
-
 // 获取 文章评论 接口
 app.get('/api/getComment', function(req, res, next) {
   Comment.fetchComment(req.query._id, function(err, data) {
@@ -357,7 +353,10 @@ app.post('/api/likeOrNot', function(req, res, next) {
 
 // 初始化个人主页的文章tab
 app.get('/api/getMyArticles', function(req, res, next) {
-  Article.fetchByAuthor(req.query.username, function(err, data) {
+  Article.fetchByAuthor({
+    username: req.query.username,
+    audit: req.query.audit
+  }, function(err, data) {
     if (err) {
       console.log(err)
     } else {
@@ -389,6 +388,25 @@ app.post('/api/deleteArticle', function(req, res, next) {
         status: 'fail'
       })
     })
+})
+
+// 发表文章
+app.post('/api/publish', function(req, res, next) {
+
+  let newArticle = new Article({
+    article_title: req.body.title,
+    article_publish_date: Date.parse(new Date) ,
+    article_content: req.body.content,
+    article_author: req.body.author
+  });
+  newArticle.save().then(data => {
+    res.send({
+      status: 'success'
+    });
+  }).catch(err => {
+    console.log(err)
+    console.log('err')
+  })
 })
 
 // 初始化 个人通知tab
@@ -498,18 +516,27 @@ app.get('/api/search', function(req, res, next) {
   })
 })
 
+// 获取公告
+app.get('/api/getAnnouncementAndHotArticle', function(req, res, next) {
+  Announcement.getFourAnnouncements()
+    .then(announcement => {
+    Article.fetchSortByPv().then(hotArticle => {
+      res.send({
+        announcement: announcement,
+        hotArticle: hotArticle
+      })
+    })
+  }).catch(err => {
+    console.log(err)
+  })
+})
+
 // test 
 app.get('/api/test', function(req, res, next) {
-  // Article.find({'article_author': 'shen'}, 'article_title', function (err, data) {
-  //   if (err) {
-  //     console.log(err)
-  //   }
+  // Announcement.find({}).sort({'announcement_date': -1}).then(data=> {
   //   console.log(data)
   // })
 })
-
-
-
 /*
  * 管理员部分接口
  */
@@ -618,6 +645,22 @@ app.post('/api/admin/hasAudited', function(req, res, next) {
         status: 'fail'
       })
    })
+})
+
+// 发表公告
+app.post('/api/admin/publish', function(req, res, next) {
+  let newAnnouncement = new Announcement({
+    announcement_title: req.body.title,
+    announcement_content: req.body.content,
+    announcement_date: Date.parse(new Date())
+  });
+
+  newAnnouncement.save().then(data => {
+    console.log(data)
+  }).catch(err => {
+    console.log(err)
+  })
+
 })
 
 // catch 404 and forward to error handler

@@ -6,13 +6,15 @@ Vue.use(Vuex);
 const state = {
 	login: false,	// 是否登录
 	admin: false,	// 是否是管理员登录
-	search: false,  // 是否在搜索文章,
+	search: false,  // 是否在搜索文章
+	edit: false, // 是否 编辑
 }
 
 const getters = {
 	hasLogIn: state => state.login,
 	isAdmin: state => state.admin,
 	isSearch: state => state.search,
+	isEdit: state => state.edit,
 }
 
 const actions = {
@@ -36,6 +38,13 @@ const actions = {
 	notSearch: ({ commit }) => {
 		commit('notSearch');
 	},
+
+	isEdit: ({ commit }) => {
+		commit('isEdit');
+	},
+	notEdit: ({ commit }) => {
+		commit('notEdit');
+	}
 }
 
 const mutations = {
@@ -56,6 +65,12 @@ const mutations = {
 	},
 	notSearch(state) {
 		state.search = false
+	},
+	isEdit(state) {
+		state.edit = true
+	},
+	notEdit(state) {
+		state.edit = false
 	}
 }
 

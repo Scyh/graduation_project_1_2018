@@ -1,0 +1,49 @@
+/* 1 */
+{
+    "_id" : ObjectId("5a45f9fa1d988a03dc89bc9d"),
+    "announcement_title" : "这是公告标题111",
+    "announcement_content" : "这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容",
+    "announcement_date" : 1514535418000.0,
+    "announcement_author" : "admin",
+    "__v" : 0
+}
+
+/* 2 */
+{
+    "_id" : ObjectId("5a45fa626b484007f4a7a547"),
+    "announcement_title" : "这是公告标题222",
+    "announcement_content" : "这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容",
+    "announcement_date" : 1514535522000.0,
+    "announcement_author" : "admin",
+    "__v" : 0
+}
+
+/* 3 */
+{
+    "_id" : ObjectId("5a45fa6881579c24940a7cf6"),
+    "announcement_title" : "这是公告标题333",
+    "announcement_content" : "这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容",
+    "announcement_date" : 1514535528000.0,
+    "announcement_author" : "admin",
+    "__v" : 0
+}
+
+/* 4 */
+{
+    "_id" : ObjectId("5a45fb8581579c24940a7cf7"),
+    "announcement_title" : "这是公告标题444",
+    "announcement_content" : "这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容",
+    "announcement_date" : 1514535813000.0,
+    "announcement_author" : "admin",
+    "__v" : 0
+}
+
+/* 5 */
+{
+    "_id" : ObjectId("5a45fb9281579c24940a7cf8"),
+    "announcement_title" : "这是公告标题555",
+    "announcement_content" : "这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容",
+    "announcement_date" : 1514535826000.0,
+    "announcement_author" : "admin",
+    "__v" : 0
+}

@@ -1,11 +1,16 @@
 <template>
 	<div id="myArticles">
 		<ul v-if="hasArticle">
+			<li class="article-filter">
+				<span @click="initMyArticles('all')">文章：&nbsp;{{ articleLength }}</span>
+				<span @click="initMyArticles('audited')"><a href="javascript:void(0)">已审核</a></span>
+				<span @click="initMyArticles('notAudit')"><a href="javascript:void(0)">审核中</a></span>
+			</li>
 			<template v-for="item in myArticles">
 				<li>
 					<router-link :to="{path: '/' +userName + '/articles/' + item._id}">{{ item.article_title }}</router-link>
 					<span>
-						{{ item.article_publish_date }}
+						{{ item.article_publish_date | getDate}}
 					</span>
 				</li>
 			</template>
@@ -32,17 +37,22 @@
 		computed: {
 			hasArticle: function () {
 				return this.myArticles.length>0?true:false	
+			},
+			articleLength() {
+				return this.myArticles.length
 			}
 		},
-		mounted: function () {
-			this.initMyArticles();
+		mounted: function() {
+			this.initMyArticles('all');
 		},
 		methods: {
 			// 初始化个人主页的文章tab
-			initMyArticles: function () {
+			initMyArticles: function(audit) {
 				let that = this;
+				that.myArticles = [];
 				$.get('http://localhost:3000/api/getMyArticles', {
-					username: that.userName
+					username: that.userName,
+					audit: audit
 				}, function(data) {
 					for (let i in data) {
 						that.myArticles.push(data[i]);
@@ -63,10 +73,14 @@
 		
 		border-bottom: 1px solid #EEE;
 	}
-	li span {
+	li:not(:first-child) span {
 		float: right;
 		margin-right: 10px;
 		color: #999;
+	}
+	.article-filter span {
+		margin-right: 15px;
+		cursor: pointer;
 	}
 	.hasNoArticle {
 		position: absolute;

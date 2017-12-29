@@ -4,6 +4,7 @@ import app from '../App.vue'
 import articles from '../components/articles.vue'
 import article_detail from '../components/article_detail.vue'
 import question from '../components/question.vue'
+import edit from '../components/edit.vue'
 import personalHome from '../components/personalHome.vue'
 import publicHome from '../components/publicHome.vue'
 import admin from '../components/admin.vue'
@@ -67,6 +68,10 @@ const router = new Router({
     // 通过类别查看文章
     {
       path: '/:category/:username/articles/:id'
+    },
+    {
+      path: '/edit/:class',
+      component: edit
     },
     // {
     // 	path: '*',

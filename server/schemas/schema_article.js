@@ -2,10 +2,23 @@ var mongoose = require('mongoose'),
 	Schema = mongoose.Schema;
 
 var Articleschema = new mongoose.Schema({
-	article_title: String,
-	article_publish_date: String,
+	article_title: {
+		type: String,
+		require: true
+	},
+	article_publish_date: {
+		type: String,
+		require: true
+	},
+	article_author: {
+		type: String,
+		require: true,
+	},
 	article_content: String,
-	article_pv: Number,
+	article_pv: {
+		type: Number,
+		default: 0
+	},
 	_comment_id: {
 		type: Schema.Types.ObjectId,
 		ref: 'Comment'
@@ -32,8 +45,13 @@ Articleschema.statics = {
 			return this.find({'category': category, 'article_audit': 'audited'}).count().exec(data);
 		}
 	},
-	fetchByAuthor: function(username, data) {
-		return this.find({'article_author': username, 'article_audit': 'audited'}).exec(data)
+	fetchByAuthor: function(params, data) {
+		if (params.audit == 'all') {
+			return this.find({'article_author': params.username}).exec(data)	
+		} else {
+			return this.find({'article_author': params.username, 'article_audit': params.audit}).exec(data)	
+		}
+		
 	},
 	deleteOne: function(_id, data) {
 		return this.remove({"_id": _id}).exec(data)
@@ -69,6 +87,10 @@ Articleschema.statics = {
 
 	audit(id, data) {
 		return this.update({"_id": id}, {$set: {'article_audit': 'audited'}}).exec(data);
+	},
+
+	fetchSortByPv(data) {
+		return this.find({},{'article_title': 1, '_id': 1}).sort({'article_pv': -1}).limit(4).exec(data)
 	}
 }
 

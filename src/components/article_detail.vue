@@ -63,7 +63,7 @@
 					</div>
 
 					<div class="col-md-4">
-						<cusAside :name="article_author"></cusAside>
+						<cus-aside :name="article_author"></cus-aside>
 					</div>
 				</div>
 			</div>
@@ -71,7 +71,7 @@
 </template>
 <script>
 	import { mapGetters } from 'vuex'
-	import cusAside from './aside.vue'
+	import cusAside from './publicHomeAside.vue'
 
 	export default {
 		data: function() {
@@ -120,6 +120,9 @@
 		mounted: function () {
 			this.initArticle();
 			this.initComment();
+		},
+		updated(event) {
+			$(".article-body").html($(".article-body").text())
 		},
 		watch: {
 			$route() {

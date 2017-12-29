@@ -78,7 +78,10 @@
 					}))
 					.then(()=>{
 						that.getMyArticles = [];
-						$.get('http://localhost:3000/api/getMyArticles',{username: username},  function(data) {
+						$.get('http://localhost:3000/api/getMyArticles',{
+							username: username,
+							audit: 'audited'
+						},  function(data) {
 							// that.currentArticleAuthorInfo.articleLength = data.length
 							// console.log(that.currentArticleAuthorInfo.articleLength)
 							for (let i in data) {
