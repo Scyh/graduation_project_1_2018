@@ -531,12 +531,30 @@ app.get('/api/getAnnouncementAndHotArticle', function(req, res, next) {
   })
 })
 
+//  公告页初始化
+app.get('/api/initAnnouncement', function(req, res, next) {
+  Announcement.findById(req.query.id)
+    .then(data => res.json(data))
+    .catch(err => {
+      console.log(err)
+      res.send({
+        status: 'fail'
+      })
+    })
+})
+
+
 // test 
 app.get('/api/test', function(req, res, next) {
   // Announcement.find({}).sort({'announcement_date': -1}).then(data=> {
   //   console.log(data)
   // })
 })
+
+
+
+
+
 /*
  * 管理员部分接口
  */

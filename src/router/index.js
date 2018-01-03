@@ -7,9 +7,9 @@ import question from '../components/question.vue'
 import edit from '../components/edit.vue'
 import personalHome from '../components/personalHome.vue'
 import publicHome from '../components/publicHome.vue'
+import announcement from '../components/announcement.vue'
 import admin from '../components/admin.vue'
 import store from '../store/index.js'
-
 import adminUserInfo from '../components/admin_User_Manage.vue'
 
 Vue.use(Router)
@@ -72,6 +72,10 @@ const router = new Router({
     {
       path: '/edit/:class',
       component: edit
+    },
+    {
+      path: '/announcement',
+      component: announcement
     },
     // {
     // 	path: '*',

@@ -90,7 +90,7 @@ Articleschema.statics = {
 	},
 
 	fetchSortByPv(data) {
-		return this.find({},{'article_title': 1, '_id': 1}).sort({'article_pv': -1}).limit(4).exec(data)
+		return this.find({},{'article_title': 1, '_id': 1, 'article_author': 1}).sort({'article_pv': -1}).limit(4).exec(data)
 	}
 }
 
