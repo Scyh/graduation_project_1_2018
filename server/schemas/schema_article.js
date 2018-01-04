@@ -7,13 +7,14 @@ var Articleschema = new mongoose.Schema({
 		require: true
 	},
 	article_publish_date: {
-		type: String,
+		type: Number,
 		require: true
 	},
 	article_author: {
 		type: String,
 		require: true,
 	},
+	article_md_content: String,
 	article_content: String,
 	article_pv: {
 		type: Number,

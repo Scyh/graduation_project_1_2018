@@ -24,8 +24,8 @@
 							<span class="glyphicon glyphicon-paperclip audit" v-if="item.article_audit == 'notAudit'" @click="audit($event)"></span>
 						</th>
 						<th>
-							<button class="btn" data-toggle="modal" data-target="#adminCheckArticleModal" @click="transfer($event)">查看</button>
-							<button class="btn" :data-id="item._id" @click="confirm($event)">删除</button>
+							<button class="btn btn-info" data-toggle="modal" data-target="#adminCheckArticleModal" @click="transfer($event)">查看</button>
+							<button class="btn btn-danger" :data-id="item._id" @click="confirm($event)">删除</button>
 						</th>
 					</tr>
 				</template>
@@ -78,7 +78,7 @@
 		</div>	<!-- 确认删除 modal end-->
 
 
-		<adminCheckArticleModal></adminCheckArticleModal>
+		<admin-check-article-modal></admin-check-article-modal>
 
 	</div>
 </template>
@@ -100,7 +100,7 @@
 			this.currentPage = 1;
 			this.init('all', 1);
 			bus.$on('type', data => {
-				// console.log("文章筛选" + data)
+				console.log("文章筛选" + data)
 				sessionStorage.articlePage = 1;
 				this.currentPage = sessionStorage.articlePage;
 				this.type = data;
@@ -186,7 +186,9 @@
 			},	// delete end
 
 		},	// methods end
-
+		beforeDestroy() {
+			bus.$off('type')
+		},
 		components: {
 			adminCheckArticleModal
 		}

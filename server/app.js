@@ -395,9 +395,10 @@ app.post('/api/publish', function(req, res, next) {
 
   let newArticle = new Article({
     article_title: req.body.title,
-    article_publish_date: Date.parse(new Date) ,
+    article_publish_date: Date.parse(new Date),
+    article_md_content: req.body.md_content,
     article_content: req.body.content,
-    article_author: req.body.author
+    article_author: req.body.author,
   });
   newArticle.save().then(data => {
     res.send({
@@ -665,8 +666,49 @@ app.post('/api/admin/hasAudited', function(req, res, next) {
    })
 })
 
+// 获取公告
+app.get('/api/admin/getAnnouncements', function(req, res, next) {
+  Announcement.find({}).then(data => {
+    res.send(data)
+  }).catch(err => {
+    console.log('err:' + err);
+  })
+})
+
+// 查看公告
+app.get('/api/admin/getOneAnnouncement', function(req, res, next) {
+  Announcement.findById(req.query.id).then(data => {
+    res.json(data)
+  }).catch(err => {
+    console.log(err)
+  })
+})
+
+// 删除公告
+app.post('/api/admin/delAnnouncement', function(req, res, next) {
+  Announcement.deleteOne(req.body.id)
+    .then(data => {
+      // console.log(data)
+      let result = data.result
+      if (result.n == 1  && result.ok ==1) {
+        res.send({
+          status: 'success'
+        })
+      } else {
+        res.send({
+          status: 'fail'
+        })  
+      }
+  }).catch(err => {
+      console.log(err);
+      res.send({
+        status: 'fail'
+      })
+  })
+})
+
 // 发表公告
-app.post('/api/admin/publish', function(req, res, next) {
+app.post('/api/admin/announcementPublish', function(req, res, next) {
   let newAnnouncement = new Announcement({
     announcement_title: req.body.title,
     announcement_content: req.body.content,
@@ -674,12 +716,18 @@ app.post('/api/admin/publish', function(req, res, next) {
   });
 
   newAnnouncement.save().then(data => {
-    console.log(data)
+    res.send({
+      status: 'success'
+    })
   }).catch(err => {
     console.log(err)
+    res.send({
+      status: 'fail'
+    })
   })
-
 })
+
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

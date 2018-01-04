@@ -15,6 +15,7 @@
 </template>
 <script>
 	import { mavonEditor } from 'mavon-editor'
+	import bus from '../bus.js'
 
 	export default {
 		data() {
@@ -29,7 +30,10 @@
 			}
 		},
 		mounted() {
-			this.$store.dispatch('isEdit')
+			this.$store.dispatch('isEdit');
+			if (this.$router.query) {
+				console.log(this.$router.query.id)
+			}
 		},
 		destroyed() {
 			this.$store.dispatch('notEdit')
@@ -46,9 +50,11 @@
 				} else if (content == '') {
 					$(".auto-textarea-input").focus()
 				} else {
+					console.log()
 					$.post('http://localhost:3000/api/publish', {
 						title: $("#article_title").val(),
-						content: $(".v-show-content-html").html(),
+						md_content: $(".auto-textarea-input").val(),
+						content: content,
 						author: sessionStorage.username
 					}, function(data, textStatus, xhr) {
 						if (data.status == 'success') {
@@ -57,8 +63,6 @@
 						}
 					});	
 				}
-
-				
 			}
 		},
 		components: {

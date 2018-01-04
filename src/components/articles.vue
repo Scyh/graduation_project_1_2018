@@ -12,11 +12,16 @@
 								</div> -->
 								<div class="col-md-12">
 									<h4 class="article_title"><router-link :to="{path:'articles/' + article._id}" >{{ article.article_title }}</router-link></h4>
-									<p class="article_content" :id="'content' + index" v-html="article.article_content.slice(0,100)"></p>
+									<!-- <p class="article_content" :id="'content' + index" v-html="article.article_content.slice(0,100)"></p> -->
 								</div>
-								<div class="article_publish_date">{{ article.article_publish_date | getDate}}</div>
-								<div class="article_pv">{{ article.article_pv }}</div>
-							</div>
+								<div class="article-meta">
+									<span class="glyphicon glyphicon-user">{{ article.article_author }}</span>
+									<span>{{ article.article_publish_date | getDate}}</span>
+									<span class="article_pv">{{ article.article_pv }}</span>
+								</div>
+<!-- 								<div class="article_publish_date"></div>
+								<div ></div>
+ -->							</div>
 							</article>
 						</template>
 
@@ -284,23 +289,48 @@ export default {
 		height: 30px;
 		background-color: #009A61;
 	}
-	.article_img {
+	/*.article_img {
 		overflow: hidden;
 	}
 	.article_img img:hover {
 		transform: scale(1.4);
+	}*/
+	.article_title {
+		font-size: 22px;
 	}
+	.article_title a {
+		color: #4f4f4f !important;
+	}
+	.article_title a:hover{
+		text-decoration: none;
+	}
+	.article-meta {
+		padding-left: 15px;
+		color: #999;
+		font-size: 15px;
+	}
+	.article-meta span {
+		margin-right: 20px;
+	}
+	.article-meta span:first-child::before {
+		content: url(../assets/author.png);
+		position: relative;
+		display: inline-block;
+		top: 3px;
+		margin-right: 4px;
+	}
+	.article-meta span:last-child::before {
+		content: url(../assets/view.png);
+		position: relative;
+		display: inline-block;
+		top: 3px;
+		margin-right: 4px;
+	}
+
 	.article_content {
 		color: #969696;
 	}
-	.article_publish_date,
-	.article_pv {
-		position: absolute;
-		bottom: 15px;
-		right: 15px;
-		color: #C5C5C5;
-	}
-	.article_pv {
+	/*.article_pv {
 		right: 170px;
 	}
 	.article_pv::before {
@@ -310,5 +340,5 @@ export default {
 		left: 0px;
 		top: 11px;
 		margin-right: 3px;
-	}
+	}*/
 </style>

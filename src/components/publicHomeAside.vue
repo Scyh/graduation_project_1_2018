@@ -54,7 +54,7 @@
 			}
 		},
 		mounted: function () {
-			console.log(this.name)
+			// console.log(this.name)
 			// 异步获取时，数据尚未传来，会渲染失败
 			if (!this.name) {
 				setTimeout(()=>{
@@ -87,7 +87,7 @@
 							for (let i in data) {
 								that.getMyArticles.push(data[i])	
 							}
-							console.log(data)
+							// console.log(data)
 							that.$emit('allArticles', data);
 						});
 					})

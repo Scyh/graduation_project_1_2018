@@ -15,14 +15,14 @@
 					<dt @click="fn($event)" title="userManage" id="userManage"><span class="glyphicon glyphicon-user"></span>用户管理</dt>
 				</dl>
 				<dl>
-					<dt @click="fn($event),articleFilter('all')" title="articleManage" id="articleManage"><span class="glyphicon glyphicon-list"></span>文章管理</dt>
-					<dd @click="fn($event),articleFilter('audited')" title="articleManage">已审核</dd>
-					<dd @click="fn($event),articleFilter('notAudit')" title="articleManage">待审核</dd>
+					<dt @click="fn($event),articleFilter('all', $event)" title="articleManage" id="articleManage"><span class="glyphicon glyphicon-list"></span>文章管理</dt>
+					<dd @click="fn($event),articleFilter('audited', $event)" title="articleManage">已审核</dd>
+					<dd @click="fn($event),articleFilter('notAudit', $event)" title="articleManage">待审核</dd>
 				</dl>
 				<dl>
-					<dt @click="fn($event)" title="announcement" id="announcement"><span class="glyphicon glyphicon-bullhorn"></span>公告</dt>
-					<dd @click="fn($event)">公告管理</dd>
-					<dd @click="fn($event)">发布公告</dd>
+					<dt @click="fn($event),announcementPublish('manage', $event)" title="announcement" id="announcement"><span class="glyphicon glyphicon-bullhorn"></span>公告管理</dt>
+					<!-- <dd @click="fn($event),announcement('')">公告管理</dd> -->
+					<dd @click="fn($event),announcementPublish('publish', $event)" title="announcement">发布公告</dd>
 				</dl>
 				<dl>
 					<dt @click="fn($event)" title="message" id="message"><span class="glyphicon glyphicon-tags"></span>留言</dt>
@@ -51,13 +51,13 @@
 	import bus from '../bus.js'
 
 	export default {
-		data () {
+		data() {
 			return {
 				currentPath: '首页',
 				currentContent: '',
 			}
 		},
-		beforeCreate: function () {
+		beforeCreate() {
 			// console.log('sessionStorage.admin: ' + sessionStorage.admin)
 			if (sessionStorage.admin !== 'admin') {
 				// console.log('当前不是管理员登录');
@@ -65,7 +65,11 @@
 				this.$router.replace('/')
 			}
 		},
-		mounted () {
+		mounted() {
+			bus.$on('publishSuccess', () => {
+				// console.log("触发")
+				$("#announcement").trigger("click");
+			})
 		},
 		methods: {
 
@@ -83,13 +87,18 @@
 				},
 
 			// 筛选文章
-			articleFilter (data) {
+			articleFilter(data, event) {
+				console.log(this.currentContent)
+				
 				bus.$emit('type', data)
-			}
+			},
 
+			// 公告操作
+			announcementPublish(data) {
+				bus.$emit('announcement', data)
+			},	
 
 		},
-
 		components: {
 			adminUserInfo,
 			adminArticle,

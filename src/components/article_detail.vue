@@ -8,10 +8,10 @@
 								<h2>{{ article.article_title }}</h2>
 								<div class="article-meta">
 									<span>作者：{{ article.article_author }}</span>
-									<span>&nbsp;&nbsp;&nbsp;&nbsp;发布于：{{ article.article_publish_date }}&nbsp;&nbsp;</span>
+									<span>&nbsp;&nbsp;&nbsp;&nbsp;发布于：{{ article.article_publish_date | getDate}}&nbsp;&nbsp;</span>
 									<span class="article_pv">{{ article.article_pv }}</span>
 									<span class="edit" v-show="canEdit">
-										<a href="javascript:void(0)"><span class="glyphicon glyphicon-edit"></span>编辑</a>
+										<a href="javascript:void(0)"  @click="reEdit"><span class="glyphicon glyphicon-edit"></span>编辑</a>
 										<a href="javascript:void(0)" @click="deleteArticle"><span class="glyphicon glyphicon-trash"></span>删除</a>
 									</span>
 								</div>
@@ -72,6 +72,7 @@
 <script>
 	import { mapGetters } from 'vuex'
 	import cusAside from './publicHomeAside.vue'
+	import bus from '../bus.js'
 
 	export default {
 		data: function() {
@@ -123,6 +124,14 @@
 		},
 		updated(event) {
 			$(".article-body").html($(".article-body").text())
+		},
+		beforeDestroy() {
+			// console.log(this.$route)
+			if (this.$route.path == '/edit/mdEditor') {
+				console.log('重新编辑');
+				console.log(this.article._id)
+				bus.$emit('reEdit', this.article._id)
+			}
 		},
 		watch: {
 			$route() {
@@ -204,7 +213,7 @@
 
 					}
       			}
-			},
+			},	// likeOrNot end
 
 			updateLikeOrNot: function (type) {
 				let that = this;
@@ -224,7 +233,7 @@
 							}
 							
 				});
-			},
+			},	// updateLikeOrNot end
 
 			// 发表评论
 			reply: function (event) {
@@ -250,8 +259,7 @@
 					that.addNotice(replyTo,'newCommentReply')
 
 				}
-
-			},
+			},	// reply end
 
 			replyFn: function (content) {
 				let that = this; 
@@ -268,13 +276,13 @@
 							that.initComment()
 						}
 				});
-			},
+			},	// replyFn end
 
 			// 回复评论
 			replyOne: function (event) {
 				let replyTo = $(event.currentTarget).parent().find(".comment_author").html();
 				$(".reply").focus().val("[reply]" + replyTo + '[/reply]' +'\r\n')
-			},
+			},	// replyOne
 
 			animate: function (event) {
 				$(event.target).animate({
@@ -285,20 +293,20 @@
 					opacity: 1,
 					height: 30
 					},400);
-			},
+			},	// animate
 
 			computedCharacter: function (event) {
 				let length = $(event.target).val().toString().length;
 				$(event.target).parent().next().find('span').html("还剩" + (1000-length) + "个字符可以输入")
-			},
+			},	// computedCharacter end
 
 			logIn: function () {
 				$(".btn-login").trigger('click');
-			},
+			},	// logIn end
 
 			reg: function () {
 				$(".btn-reg").trigger('click');
-			},
+			},	// reg end
 
 			// 删除评论
 			deleteComment: function (event) {
@@ -322,7 +330,7 @@
 						console.log("出现未知错误");
 					}
 				});
-			},
+			},	// deleteComment end
 
 			// 删除文章
 			deleteArticle: function (event) {
@@ -342,7 +350,7 @@
 					}
 					
 				});
-			},
+			},	// deleteArticle end
 
 			// 通知
 			addNotice: function (toUser,type) {
@@ -360,10 +368,16 @@
 						console.log("添加通知成功")
 					}					
 				});
-			},
+			},	// addNotice end
 
 			reload() {
 				location.reload()
+			},	// reload end
+
+			reEdit() {
+				// console.log(this.article._id)
+				this.$router.replace({path: '/edit/mdEditor', query: {id: this.article._id}})
+
 			},
 		},
 

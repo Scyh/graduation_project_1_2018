@@ -23,7 +23,11 @@ var Announcementschema = new Schema({
 Announcementschema.statics = {
 	getFourAnnouncements(data) {
 		return this.find({},{'_id': 1, 'announcement_title': 1, 'announcement_date': 1}).sort({'announcement_date': -1}).limit(4).exec(data)
-	}
+	},
+
+	deleteOne: function(id, data) {
+		return this.remove({"_id": id}).exec(data)
+	},
 }
 
 
