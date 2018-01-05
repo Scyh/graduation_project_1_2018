@@ -19,8 +19,8 @@
 							<div class="article-body" v-html="article.article_content"></div>
 							<div class="article-footer">
 								<div class="row">
-									<div class="col-md-2"><span>{{ article.article_label }}</span></div>
-									<div class="col-md-2 col-md-offset-2 like"><span :class="{forbidden: hasClick, disabled: hasLike}" @click="likeOrNot('like', $event)">赞 | <i>{{ article_like }}</i></span></div>
+									<div class="col-md-12"><span>副标签：{{ article.article_label | switchSubLabel }}</span></div>
+									<div class="col-md-2 col-md-offset-4 like"><span :class="{forbidden: hasClick, disabled: hasLike}" @click="likeOrNot('like', $event)">赞 | <i>{{ article_like }}</i></span></div>
 									<div class="col-md-2 dislike"><span :class="{forbidden: hasClick, disabled:hasDislike }" @click="likeOrNot('dislike', $event)">踩 | <i>{{ article_dislike }}</i></span></div>
 								</div>
 							</div>
@@ -152,6 +152,8 @@
 					// }
 					that.article_author = data.article_author
 					that.article = data
+
+					console.log(data)
 				});
 			},
 
@@ -397,6 +399,9 @@
 		padding: 30px;
 		background-color: #FFF;
 	}
+	.article-header h2{
+		text-align: center;
+	}
 	.article-meta {
 		color: #838383;
 		font-size: 14px
@@ -420,13 +425,13 @@
 	}
 	.article-body {
 		min-height: 400px;
+		word-wrap: break-word;
 	}
-	.article-footer .col-md-2:first-child span{
+	.article-footer .row div:first-child >span{
 		display: inline-block;
-		padding: 2px 5px;
-		font-size: 12px;
-		border-radius: 2px;
-		background-color: #E5E5E5;
+		padding: 4px 10px;
+		font-size: 14px;
+		color: #999;
 	}
 	.article-footer .col-md-2:nth-child(2) span,
 	.article-footer .col-md-2:nth-child(3) span {
@@ -505,6 +510,7 @@
 	}
 	.edit {
 		float: right;
+		margin-top: 15px;
 	}
 	.edit a:first-child {
 		margin-right: 10px;

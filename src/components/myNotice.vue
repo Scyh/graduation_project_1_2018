@@ -10,7 +10,7 @@
 			</li>
 			<template v-for="item in notice">
 				<li :class="item.notice_state=='notRead'?'notRead':''">
-					<router-link :to="'/'+item.notice_ByUser">
+					<router-link :to="'/'+item.notice_ByUser + '/publicHome' ">
 						{{ item.notice_ByUser }}
 					</router-link>
 					{{item.notice_type | switchNoticeType}}
@@ -75,8 +75,8 @@
 					user: that.userName
 				}, function(data) {
 
-					console.log(data);
-					console.log(data.length)
+					// console.log(data);
+					// console.log(data.length)
 					if (data.length > 0) {
 						let notReadCount = 0;
 						that.notice_user = data[0].notice_user;

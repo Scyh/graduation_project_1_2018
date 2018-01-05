@@ -115,7 +115,7 @@ export default {
 		// })
 		
 		// console.log($(".article-content").text())
-		// $(".article_content").html($(".article_content").text())
+		$(".article_content").html($(".article_content").text())
 	},
 	computed:{
 		pages: function(){
@@ -172,6 +172,7 @@ export default {
 		// 初始化文章
 		initArticles: function () {
 			let that = this;
+			that.articles = [];
 			$.get('http://localhost:3000/api/getArticle', {
 				pageCount: 1,
 				category: that.$route.params.category?that.$route.params.category:'all'
@@ -196,6 +197,7 @@ export default {
 		// 分页跳转
 		pageChange: function (index) {
 			let that = this;
+			that.articles = [];
 			that.currentPage = index;
 			$.get('http://localhost:3000/api/getArticle', {
 				pageCount: that.currentPage,

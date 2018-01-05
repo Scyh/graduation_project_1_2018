@@ -20,6 +20,7 @@ var Articleschema = new mongoose.Schema({
 		type: Number,
 		default: 0
 	},
+	article_label: String,
 	_comment_id: {
 		type: Schema.Types.ObjectId,
 		ref: 'Comment'
@@ -27,6 +28,10 @@ var Articleschema = new mongoose.Schema({
 	article_audit: {
 		type: String,
 		default: 'notAudit'
+	},
+	category: {
+		type: String,
+		require: true
 	}
 })
 
@@ -92,6 +97,18 @@ Articleschema.statics = {
 
 	fetchSortByPv(data) {
 		return this.find({},{'article_title': 1, '_id': 1, 'article_author': 1}).sort({'article_pv': -1}).limit(4).exec(data)
+	},
+
+	updateOldArticle(params, data) {
+		return this.update({"_id": params._id}, {$set: {
+				"article_title": params.article_title,
+				"article_md_content": params.article_md_content,
+				"article_content": params.article_content,
+				"article_label": params.article_label,
+				"category": params.category,
+				"article_audit": "notAudit"
+			}
+		})
 	}
 }
 

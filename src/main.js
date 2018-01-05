@@ -61,6 +61,25 @@ Vue.filter('translate', value => {
 	}
 })
 
+Vue.filter('switchSubLabel', value => {
+	let arr = (value+'').split(',');
+	let subLabelStr = '';
+	arr.forEach((item, index) => {
+		if (index == arr.length-1) {
+			return 
+		} else {
+			if (index == arr.length-2) {
+				subLabelStr += ` ${item} `
+			} else {
+				subLabelStr += ` ${item} / `
+			}
+			
+		}
+
+	})
+	return subLabelStr;
+});
+
 new Vue({
 	el: '#app',
 	router,

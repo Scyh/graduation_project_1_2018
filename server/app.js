@@ -198,15 +198,16 @@ app.get('/api/getPageCount', function(req, res, next) {
 
 // 获取 article_detail 接口
 app.get('/api/getArticleDetail', function(req, res, next) {
-  Article.findById(req.query._id, function(err, article) {
+  Article.findById(req.query._id, function(err, data) {
     if (err) {
       console.log(err)
-    } else {
+    } 
       // res.send({
       //   article: article
       // })
-      res.json(article)
-    }
+      console.log(data)
+      res.json(data)
+    
   })
 })
 
@@ -366,13 +367,14 @@ app.get('/api/getMyArticles', function(req, res, next) {
 })
 
 // 获取查看文章
-app.get('/api/getOneArticle', function(req, res, next) {
-  Article.findById(req.query.article_id).then(data => {
-    res.json(data);
-  }).catch(err => {
-    console.log(err)
-  })
-})
+// app.get('/api/getOneArticle', function(req, res, next) {
+//   Article.findById(req.query.article_id).then(data => {
+//     console.log(data)
+//     res.json(data);
+//   }).catch(err => {
+//     console.log(err)
+//   })
+// })
 
 // 删除文章
 app.post('/api/deleteArticle', function(req, res, next) {
@@ -392,15 +394,16 @@ app.post('/api/deleteArticle', function(req, res, next) {
 
 // 发表文章
 app.post('/api/publish', function(req, res, next) {
-
   let newArticle = new Article({
     article_title: req.body.title,
     article_publish_date: Date.parse(new Date),
     article_md_content: req.body.md_content,
     article_content: req.body.content,
     article_author: req.body.author,
+    article_label: req.body.subLabel
   });
   newArticle.save().then(data => {
+    console.log(data)
     res.send({
       status: 'success'
     });
@@ -409,6 +412,28 @@ app.post('/api/publish', function(req, res, next) {
     console.log('err')
   })
 })
+
+// 修改文章
+// app.post('/api/upadteOldArticle', function(req, res, next) {
+//   Article.updateOldArticle({
+//     _id: req.body.id,
+//     article_title: req.body.title,
+//     article_md_content: req.body.md_content,
+//     article_content: req.body.content,
+//     article_label: req.body.subLabel,
+//     category: req.body.category
+//   }).then(data => {
+//     console.log(data)
+//     res.send({
+//       status: 'success'
+//     })
+//   }).catch(err => {
+//     console.log(err)
+//     res.send({
+//       status: 'fail'
+//     })
+//   })
+// })
 
 // 初始化 个人通知tab
 app.get('/api/getMyNotice', function(req, res, next) {

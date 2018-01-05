@@ -48,4 +48,25 @@ export default {
 </script>
 
 <style>
+  /*添加的新标签的样式，必须为全局样式*/
+  .name {
+    max-width: 256px;
+    display: inline-block;
+    padding: 3px 8px;
+    margin-right: 25px;
+    background-color: #efefef;
+  }
+  .name::after {
+    content: url(./assets/cancle.png);
+    position: absolute;
+    display: inline-block;
+    top: 23px;
+    margin-left: 5px;
+  }
+  span:focus {
+    outline: none;
+  }
+  .article-body img {
+    width: 100%;
+  }
 </style>

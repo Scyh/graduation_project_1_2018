@@ -44,7 +44,7 @@
 			}
 		},
 		mounted: function () {
-			console.log(this.viewName);
+			// console.log(this.viewName);
 		},
 		methods: {
 			initAllArticles: function (data) {

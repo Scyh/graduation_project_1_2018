@@ -80,8 +80,7 @@ Userschema.statics = {
 			return this.update({"_id": params.id}, {$set: {"permission": 0}})
 		} else {
 			return this.update({"_id": params.id}, {$set: {"permission": 1}})
-		}
-		
+		}	
 	},
 
 	searchUser(username, data) {
