@@ -5,13 +5,15 @@ var bodyParser = require('body-parser');
 var svgCaptcha = require('svg-captcha');
 
 // 连接数据库
-var mongoose = require('./db.js');
-var db = mongoose();
-var User = require('./models/user.js');
-var Article = require('./models/article.js');
-var Comment = require('./models/comment.js');
-var Notice = require('./models/notice.js');
-var Announcement = require('./models/announcement.js');
+var mongoose = require('./db.js'),
+    db = mongoose(),
+    User = require('./models/user.js'),
+    Article = require('./models/article.js'),
+    Comment = require('./models/comment.js'),
+    Notice = require('./models/notice.js'),
+    Announcement = require('./models/announcement.js'),
+    ImgStorage = require('./models/imgStorage.js');
+
 var app = express();
 
 app.set('views', path.join(__dirname, 'views'));
@@ -21,7 +23,8 @@ app.set('view engine', 'ejs');
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
-  extended: false
+  extended: false,
+  limit: '10000kb'
 }));
 app.use(cookieParser());
 
@@ -413,27 +416,47 @@ app.post('/api/publish', function(req, res, next) {
   })
 })
 
+// 图片上传
+app.post('/api/img/add', function(req, res, next) {
+  let newImg = new ImgStorage({
+    lastModified: req.body.lastModified,
+    miniurl: req.body.miniurl,
+    name: req.body.name,
+    author: req.body.author
+  })
+  newImg.save().then(data => {
+    console.log(data)
+  }).catch(err => {
+    console.log(err)
+  })
+
+})
+
+
+// 图片删除
+
+
 // 修改文章
-// app.post('/api/upadteOldArticle', function(req, res, next) {
-//   Article.updateOldArticle({
-//     _id: req.body.id,
-//     article_title: req.body.title,
-//     article_md_content: req.body.md_content,
-//     article_content: req.body.content,
-//     article_label: req.body.subLabel,
-//     category: req.body.category
-//   }).then(data => {
-//     console.log(data)
-//     res.send({
-//       status: 'success'
-//     })
-//   }).catch(err => {
-//     console.log(err)
-//     res.send({
-//       status: 'fail'
-//     })
-//   })
-// })
+app.post('/api/upadteOldArticle', function(req, res, next) {
+  Article.updateOldArticle({
+    _id: req.body.id,
+    article_title: req.body.title,
+    article_md_content: req.body.md_content,
+    article_content: req.body.content,
+    article_label: req.body.subLabel,
+    category: req.body.category
+  }).then(data => {
+    // console.log(data)
+    res.send({
+      status: 'success'
+    })
+  }).catch(err => {
+    console.log(err)
+    res.send({
+      status: 'fail'
+    })
+  })
+})
 
 // 初始化 个人通知tab
 app.get('/api/getMyNotice', function(req, res, next) {
@@ -690,6 +713,8 @@ app.post('/api/admin/hasAudited', function(req, res, next) {
       })
    })
 })
+
+//  审核不通过，应当通知文章作者
 
 // 获取公告
 app.get('/api/admin/getAnnouncements', function(req, res, next) {

@@ -44,7 +44,6 @@
 		data() {
 			return {
 				article_checked: {},
-				article_content: ''
 			}
 		},	// data end
 		mounted() {
@@ -53,7 +52,6 @@
 				console.log(data)
 			})
 		},	// mounted end
-		
 		methods: {
 			init (id) {
 				let that = this;
@@ -61,9 +59,13 @@
 				$.get('http://localhost:3000/api/getArticleDetail', {
 					_id: id
 				}, function(data) {
-					console.log(data)
-					
+					// console.log(data)
 					that.article_checked = data;
+
+					let el = document.createElement('div');
+					$(el).html(data.article_content);
+					that.article_checked.article_content =  $(el).text();
+
 					// that.article_content = data.article_content
 					// for (let i in data) {
 					// 	that.article_checked[i] = data[i];

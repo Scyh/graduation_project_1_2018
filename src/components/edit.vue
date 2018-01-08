@@ -35,7 +35,7 @@
 					<div id="edit-content">
 						<div class="row">
 							<div class="col-md-12">
-								<mavon-editor :value='value'></mavon-editor>
+								<mavon-editor :value='value' @imgAdd="imgAdd"></mavon-editor>
 							</div>
 						</div>
 					</div>
@@ -90,12 +90,15 @@
 				let that = this,
 					title = $("#article_title").val().trim(),
 					md_content = $(".auto-textarea-input").val(),
-					content = $(".v-show-content-html").html().trim(),
+
+					content = $(".v-show-content-html").html(),
+
 					category = $(".category").val(),
 					author = sessionStorage.username,
 					subLabel = '';
 
-					console.log($(".v-show-content").text())
+					console.log(content)
+
 
 				if ($(".newLabel").find(".name").length > 0) {
 					console.log()
@@ -124,7 +127,6 @@
 
 					// 判断是发表新文章还是编辑旧文章
 					if (this.isReEdit) {
-						console.log(1)
 						$.post('http://localhost:3000/api/upadteOldArticle', {
 							id: that.$route.query.id,
 							title: title,
@@ -156,7 +158,6 @@
 					}
 
 				}
-
 			},	// publish end
 
 
@@ -168,9 +169,9 @@
 				// 	$(".name").focus()
 				// 	return 
 				// }
-				let span = `<span class='name' contenteditable='true'></span>`;
+				let span = `<span class='name' @keydown='fn' contenteditable='true'></span>`;
 				$(event.target).before(span);
-				$(".name").focus().on('blur', (ev) => {
+				$(".name").focus().on('blur', ev => {
 
 					// 判断是否为空，为空则移除
 					if ($(ev.target).text() == '') {
@@ -181,6 +182,10 @@
 					if ($addNew.prevAll('.name').length < 5) {
 						$addNew.show()
 					}
+				}).on('keydown', ev => {
+					if (ev.keyCode == 13) {
+						return false
+					}
 				})
 
 				if ($addNew.prevAll('.name').length > 4) {
@@ -189,37 +194,56 @@
 			},	// addNewLabel end
 
 			getOldArticle(id) {
+				let that = this;
 				$.get('http://localhost:3000/api/getArticleDetail', {
 					_id: id
 				}, function(data) {
-					console.log(data)
+					// console.log(data)
 					$("#article_title").val(data.article_title);
-					$(".auto-textarea-input").val(data.article_md_content);
-					// $(".v-show-content-html").html(data.article_content)
+					// $(".auto-textarea-input").val(data.article_md_content);
+					that.value = data.article_md_content
 					$(".category").val(data.category)
 	
 					let article_labelArr =  data.article_label.split(',')
 					article_labelArr.forEach((item, index) => {
+						
 						if (index == article_labelArr.length-1) {
 							return
 						}
+
 						let span = `<span class='name' contenteditable='true'>${item}</span>`;
 						$(".addNew").before(span);
 						$(".name").focus().on('blur', (ev) => {
 
-						// 判断是否为空，为空则移除
-						if ($(ev.target).text() == '') {
-							console.log()
-							$(ev.target).parent().children().eq($(ev.target).index()).remove()
-						}
+							// 判断是否为空，为空则移除
+							if ($(ev.target).text() == '') {
+								console.log()
+								$(ev.target).parent().children().eq($(ev.target).index()).remove()
+							}
 
-						if ($(".addNew").prevAll('.name').length < 5) {
-							$(".addNew").show()
-						}
-					})
+							if ($(".addNew").prevAll('.name').length < 5) {
+								$(".addNew").show()
+							}
+						}).on('keydown', ev => {
+							if (ev.keyCode == 13) {
+								console.log(1)
+								return false
+							}
+						})
 					})
 				});
-			}
+			},
+
+			imgAdd(pos, $file) {
+				$.post('http://localhost:3000/api/img/add', {
+					lastModified: $file.lastModified,
+					miniurl: $file.miniurl,
+					name: $file.name,
+					author: sessionStorage.username
+				}, function(data, textStatus, xhr) {
+					/*optional stuff to do after success */
+				});
+			},
 
 		},	// methods end
 		components: {

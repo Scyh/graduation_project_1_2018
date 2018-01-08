@@ -122,14 +122,11 @@
 			this.initArticle();
 			this.initComment();
 		},
-		updated(event) {
-			$(".article-body").html($(".article-body").text())
-		},
 		beforeDestroy() {
 			// console.log(this.$route)
 			if (this.$route.path == '/edit/mdEditor') {
-				console.log('重新编辑');
-				console.log(this.article._id)
+				// console.log('重新编辑');
+				// console.log(this.article._id)
 				bus.$emit('reEdit', this.article._id)
 			}
 		},
@@ -150,10 +147,14 @@
 					// for (let i in data) {
 					// 	that.article[i] = data[i]
 					// }
-					that.article_author = data.article_author
-					that.article = data
+					that.article_author = data.article_author;
+					that.article = data;
 
-					console.log(data)
+					let el = document.createElement('div');
+					$(el).html(data.article_content);
+					that.article.article_content =  $(el).text();
+
+
 				});
 			},
 

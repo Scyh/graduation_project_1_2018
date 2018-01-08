@@ -350,7 +350,6 @@
 	        	} else {
 	        		this.NoticeCount = '';
 	        	}
-	        	
 	        },
 		},
 		components: {

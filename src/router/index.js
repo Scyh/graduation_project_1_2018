@@ -87,7 +87,7 @@ const router = new Router({
 router.beforeEach((to, from, next) => {
   const nextRoute = ['personalHome'];
   if (nextRoute.indexOf(to.name) >= 0) {
-    console.log("进入个人主页");
+    // console.log("进入个人主页");
     //判断是否登录
     let temp = sessionStorage.username.toString();
     if (temp == '' || temp == 'undefined' || temp == 'null') {

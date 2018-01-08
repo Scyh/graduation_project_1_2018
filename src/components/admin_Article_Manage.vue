@@ -21,7 +21,11 @@
 						<th>{{ item.article_publish_date | getDate }}</th>
 						<th>
 							{{ item.article_audit | translate }}
-							<span class="glyphicon glyphicon-paperclip audit" v-if="item.article_audit == 'notAudit'" @click="audit($event)"></span>
+							<template  v-if="item.article_audit == 'notAudit'" >
+								<span class="glyphicon glyphicon-floppy-saved audit" @click="audit($event)"></span>
+								<span class="glyphicon glyphicon-floppy-remove audit" @click="cannotAudit($event)"></span>
+							</template>
+							
 						</th>
 						<th>
 							<button class="btn btn-info" data-toggle="modal" data-target="#adminCheckArticleModal" @click="transfer($event)">查看</button>
@@ -67,7 +71,7 @@
 		    <div class="modal-dialog modal-sm" role="document">
 		        <div class="modal-content">
 		     		<div class="modal-body">
-		     			<p>确认删除？</p>
+		     			<p>确认当前操作？</p>
 		     		</div>
 		     		<div class="modal-footer">
 		     			<button type="button" class="btn btn-default" id="cancleDelArticle" data-dismiss="modal">取消</button>
@@ -147,10 +151,12 @@
 				}
 			},
 
+			// 将文章 _id 传递给 确认模态框
 			transfer(event) {
 				bus.$emit('transferArticle_id', $(event.target).parent().parent().prop('id'))
 			},
 
+			// 审核通过
 			audit(event) {
 				let that = this;
 				$.post('http://localhost:3000/api/admin/hasAudited', {
@@ -165,14 +171,25 @@
 				});
 			},	// audit end
 
+			// 审核失败 直接删除？
+			cannotAudit(event) {
+				this.confirm(event);
+			},	// cannotAudit
+
+			// 确认删除
 			confirm(event) {
 				$("#confirmModal").modal('toggle').find('#confirmDelArticle').attr('data-id', $(event.target).data().id);
 			},	// confir end
 
+			// 删除文章
 			deleteArticle(event) {
+				this.del($(event.target).data().id)
+			},	// delete end
+
+			del(id) {
 				let that = this;
 				$.post('http://localhost:3000/api/deleteArticle', {
-					_id: $(event.target).data().id
+					_id: id
 				}, function(data, textStatus, xhr) {
 					if (data.status == 'success') {
 						alert("删除成功");
@@ -183,10 +200,11 @@
 						$("#cancleDelArticle").trigger('click');
 					}
 				});
-			},	// delete end
+			}
 
 		},	// methods end
 		beforeDestroy() {
+			// 关闭事件监听，阻止多次触发
 			bus.$off('type')
 		},
 		components: {
