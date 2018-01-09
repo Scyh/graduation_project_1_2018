@@ -51,7 +51,7 @@ Userschema.statics = {
 		return this.find({
 			'username': params.username,
 			'password': params.password
-		}).count().exec(data);
+		}, {'permission': 1}).exec(data);
 	},
 
 	uniqueUserName: function(params, data) {

@@ -24,6 +24,10 @@ export default {
   mounted: function() {
     // console.log(!this.isEdit && !this.isAdmin)
   },
+  destoryed() {
+    sessionStorage.forbidden = false
+    sessionStorage.removeItem('forbidden')
+  },
   watch: {
     $route (to) {
       if (to.name == 'articles') {
@@ -73,6 +77,6 @@ span:focus {
 /*防止图片过大，溢出屏幕*/
 .article-body img,
 #adminCheckArticleModal .modal-body img {
-  width: 100%;
+  max-width: 100%;
 }
 </style>

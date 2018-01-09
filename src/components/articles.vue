@@ -287,8 +287,8 @@ export default {
 		position: relative;
 		left: -30px;
 		display: inline-block;
-		width: 10px;
-		height: 30px;
+		width: 5px;
+    	height: 24px;
 		background-color: #009A61;
 	}
 	/*.article_img {

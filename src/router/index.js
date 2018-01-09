@@ -77,10 +77,10 @@ const router = new Router({
       path: '/announcement',
       component: announcement
     },
-    // {
-    // 	path: '*',
-    // 	redirect: '/articles'
-    // }
+    {
+    	path: '*',
+    	redirect: '/'
+    }
   ]
 })
 
@@ -108,6 +108,24 @@ router.beforeEach((to, from, next) => {
   // } else {
   //   sessionStorage.admin == 'notAdmin';
   //   router.app.$store.dispatch('adminLogOut');
+  // }
+  // let reg = /^\/edit/;
+  // if (reg.test(to.path)) {
+  //   if (sessionStorage.username == '' || sessionStorage.username == undefined || sessionStorage.username == 'undefined') {
+  //     router.push({path: '/'})
+  //     setTimeout(()=> {
+  //       alert("请登录");
+  //     },10)
+  //   }
+
+  //   if  (sessionStorage.forbidden == 'true') {
+  //     console.log(from)
+  //     router.push({path: '/', query: {page: 1}})
+  //     // router.push({path: 'articles', query: {page: 1}})
+  //     // setTimeout(()=> {
+  //     //   alert("当前用户已被禁言");
+  //     // },10)
+  //   }
   // }
 
 

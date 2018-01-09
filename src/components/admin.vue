@@ -27,16 +27,20 @@
 				<dl>
 					<dt @click="fn($event)" title="message" id="message"><span class="glyphicon glyphicon-tags"></span>留言</dt>
 				</dl>
+				<dl>
+					<dt @click="fn($event)" title="tipOff" id="tipOff"><span class=" glyphicon glyphicon-info-sign"></span>举报</dt>
+				</dl>
 			</div>
 			<div class="col-md-10 menu-right">
 				<div class="menu-right-top">
 					{{ currentPath }}
 				</div>
 				<div class="menu-right-body">
-					<adminUserInfo v-if="currentContent == 'userManage' "></adminUserInfo>
-					<adminArticle v-if="currentContent == 'articleManage' "></adminArticle>
-					<adminAnnouncement v-if="currentContent == 'announcement' "></adminAnnouncement>
-					<adminMessage v-if="currentContent == 'message' "></adminMessage>
+					<admin-user-info v-if="currentContent == 'userManage' "></admin-user-info>
+					<admin-article v-if="currentContent == 'articleManage' "></admin-article>
+					<admin-announcement v-if="currentContent == 'announcement' "></admin-announcement>
+					<admin-message v-if="currentContent == 'message' "></admin-message>
+					<admin-tip-off v-if="currentContent == 'tipOff' "></admin-tip-off>
 				</div>
 			</div>
 		</div>
@@ -47,7 +51,7 @@
 	import adminArticle from './admin_Article_Manage.vue'
 	import adminAnnouncement from './admin_announcement.vue'
 	import adminMessage from './admin_message.vue'
-
+	import adminTipOff from './admin_tipOff.vue'
 	import bus from '../bus.js'
 
 	export default {
@@ -103,7 +107,8 @@
 			adminUserInfo,
 			adminArticle,
 			adminAnnouncement,
-			adminMessage
+			adminMessage,
+			adminTipOff
 		}
 
 	}

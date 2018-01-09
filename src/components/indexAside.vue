@@ -54,7 +54,6 @@
 			initAnnouncement() {
 				let that = this;
 				$.get('http://localhost:3000/api/getAnnouncementAndHotArticle', function(data) {
-					console.log(data.hotArticle)
 					if (data.announcement && data.hotArticle) {
 						that.announcement = data.announcement;
 						that.hotArticle = data.hotArticle

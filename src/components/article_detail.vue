@@ -22,6 +22,7 @@
 									<div class="col-md-12"><span>副标签：{{ article.article_label | switchSubLabel }}</span></div>
 									<div class="col-md-2 col-md-offset-4 like"><span :class="{forbidden: hasClick, disabled: hasLike}" @click="likeOrNot('like', $event)">赞 | <i>{{ article_like }}</i></span></div>
 									<div class="col-md-2 dislike"><span :class="{forbidden: hasClick, disabled:hasDislike }" @click="likeOrNot('dislike', $event)">踩 | <i>{{ article_dislike }}</i></span></div>
+									<div class="tip-off" @click="tipOff">举报</div>
 								</div>
 							</div>
 						</article>
@@ -57,7 +58,6 @@
 								<div v-else>
 									<p>尚未有评论！赶快来添加你的评论吧~</p>	
 								</div>
-
 							</div>
 						</div>
 					</div>
@@ -67,11 +67,15 @@
 					</div>
 				</div>
 			</div>
+
+			<cus-tip-off-modal :articleId="article._id"></cus-tip-off-modal>
+
 		</div>
 </template>
 <script>
 	import { mapGetters } from 'vuex'
 	import cusAside from './publicHomeAside.vue'
+	import cusTipOffModal from './tipOff_modal.vue'
 	import bus from '../bus.js'
 
 	export default {
@@ -129,6 +133,11 @@
 				// console.log(this.article._id)
 				bus.$emit('reEdit', this.article._id)
 			}
+		},
+
+		destroyed() {
+			// 更新pv
+			this.updatePv(this.article._id)
 		},
 		watch: {
 			$route() {
@@ -192,14 +201,16 @@
 				});
 			},
 
-			// 点赞 
+			// 点赞或踩
 			likeOrNot: function (type, event) {
 				let that = this
 				// console.log(($(event.currentTarget).parent().find('i').html() * 1) + 1)
 
 				if (sessionStorage.username == undefined || sessionStorage.username == '' || sessionStorage.username == 'undefined')  {
-        			console.log("未登录");
-        			alert("请登录")
+        			// console.log("未登录");
+        			alert("请登录");
+      			} else if (sessionStorage.forbidden == 'true') {
+      				alert("当前用户已被禁言");
       			} else {
 					if ($(event.currentTarget).hasClass('forbidden')) {
 						// 已经点击过
@@ -214,10 +225,11 @@
 							that.addNotice(that.article.article_author,'dislike')
 						}
 
-					}
-      			}
+					}	
+				}
 			},	// likeOrNot end
 
+			// 点赞或踩
 			updateLikeOrNot: function (type) {
 				let that = this;
 				$.post('http://localhost:3000/api/likeOrNot', {
@@ -240,28 +252,33 @@
 
 			// 发表评论
 			reply: function (event) {
-				let that = this;
-				let reply = $(".reply").val();
-				// 捕获 replyTo
-				let reg = /\[reply\]([\s\S]*?)\[\/reply\]/;
-				if (reply.match(reg) == null || reply.match(reg) == 'null') {
-					// 不是回复评论，直接添加。需要给 文章的作者 添加 新消息通知
-					if (reply == '') {
-						$(".reply-footer span").html("请输入字符");
-					} else {
-						$(".reply-footer span").html("");
-						that.replyFn(reply);
-						that.addNotice(that.article.article_author,'newComment')
-					}
-				} else {
-					let replyTo = reply.match(reg)[1];
-					// 添加评论的同时，需要 给 replyTo 添加 新消息通知
-					let tempStr = '@' + replyTo + '&nbsp;&nbsp;' + reply.slice(reply.indexOf('[/reply]') + 8).trim();
-					// console.log(tempStr)
-					that.replyFn(tempStr);
-					that.addNotice(replyTo,'newCommentReply')
 
+				let that = this;
+				if (sessionStorage.forbidden == 'true') {
+					alert("当前用户已被禁言")
+				} else {
+					let reply = $(".reply").val();
+					// 捕获 replyTo
+					let reg = /\[reply\]([\s\S]*?)\[\/reply\]/;
+					if (reply.match(reg) == null || reply.match(reg) == 'null') {
+						// 不是回复评论，直接添加。需要给 文章的作者 添加 新消息通知
+						if (reply == '') {
+							$(".reply-footer span").html("请输入字符");
+						} else {
+							$(".reply-footer span").html("");
+							that.replyFn(reply);
+							that.addNotice(that.article.article_author,'newComment')
+						}
+					} else {
+						let replyTo = reply.match(reg)[1];
+						// 添加评论的同时，需要 给 replyTo 添加 新消息通知
+						let tempStr = '@' + replyTo + '&nbsp;&nbsp;' + reply.slice(reply.indexOf('[/reply]') + 8).trim();
+						// console.log(tempStr)
+						that.replyFn(tempStr);
+						that.addNotice(replyTo,'newCommentReply')
+					}
 				}
+
 			},	// reply end
 
 			replyFn: function (content) {
@@ -355,7 +372,7 @@
 				});
 			},	// deleteArticle end
 
-			// 通知
+			// 添加通知
 			addNotice: function (toUser,type) {
 				let that = this;
 				$.post('http://localhost:3000/api/addNotice', {
@@ -382,10 +399,26 @@
 				this.$router.replace({path: '/edit/mdEditor', query: {id: this.article._id}})
 
 			},
+
+			// 更新pv
+			updatePv(id) {
+				$.post('http://localhost:3000/api/incPv', {
+				_id: id
+				}, function(data, textStatus, xhr) {
+					if (data.status == 'success') return
+					else console.log("updatePv err")
+				});
+			},
+
+			// 举报
+			tipOff() {
+				$("#tipOffModal").modal('toggle')
+			}
 		},
 
 		components:{
-			cusAside
+			cusAside,
+			cusTipOffModal
 		},
 
 	}
@@ -427,6 +460,17 @@
 	.article-body {
 		min-height: 400px;
 		word-wrap: break-word;
+	}
+	.article-footer {
+		position: relative;
+	}
+	.article-footer .tip-off {
+		position: absolute;
+		right: 0;
+		bottom: 10px;
+		color: #999;
+		font-size: 12px;
+		cursor: pointer;
 	}
 	.article-footer .row div:first-child >span{
 		display: inline-block;

@@ -48,9 +48,12 @@
               <span class="dropdown">
                 <span class="glyphicon glyphicon-pencil markdown" data-toggle="dropdown"></span>
               <ul class="dropdown-menu">
-                <li><router-link to="/edit/mdEditor">写博客<span><img src="../assets/blog.png"></span></router-link></li>
+                <!-- <li><router-link to="/edit/mdEditor">写博客<span><img src="../assets/blog.png"></span></router-link></li>
                 <li><router-link to="/edit/askQuestions">提问题<span><img src="../assets/ask.png"></span></router-link></li>
-                <li><router-link to="/edit/leaveMessage">去留言<span><img src="../assets/message.png"></span></router-link></li>
+                <li><router-link to="/edit/leaveMessage">去留言<span><img src="../assets/message.png"></span></router-link></li> -->
+                <li @click="toWrite"><span>写博客</span></li>
+                <li><span>提问题</span></li>
+                <li><span>去留言</span></li>
               </ul>
             </span>
             <button class="btn btn-home" @click="goHome">{{ username }}</button>
@@ -133,6 +136,7 @@ export default {
     // 退出登录
     logOut: function() {
       sessionStorage.username = undefined;
+      sessionStorage.forbidden = false;
       this.$router.push({path: '/'});
       this.$store.dispatch('logOut');
       location.reload();
@@ -160,6 +164,16 @@ export default {
         
         // $(event.target).val('');
       }
+    },
+
+    toWrite() {
+      if (sessionStorage.forbidden == 'true') {
+        alert("当前用户已被禁言")
+        return 
+      } else {
+        this.$router.push({path: '/edit/mdEditor'})  
+      }
+      
     }
   },
   components: {
@@ -278,7 +292,26 @@ export default {
     cursor: pointer;
     padding: 15px 0;
   }
-  .dropdown-menu span{
+  .dropdown-menu li {
+    cursor: pointer;
+    padding: 5px 0;
+  }
+  .dropdown-menu li:first-child::after {
+    content: url(../assets/blog.png);
+  }
+  .dropdown-menu li:nth-child(2)::after {
+    content: url(../assets/ask.png);
+  }
+  .dropdown-menu li:last-child::after {
+    content: url(../assets/message.png);
+  }
+  .dropdown-menu li::after {
+    display: inline-block;
+    position: relative;
+    top: 2px;
+    left: 10px;
+  }
+  .dropdown-menu li span{
     margin-left: 10px;
   }
   @media (max-width: 1200px) {

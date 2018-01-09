@@ -3,16 +3,17 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var svgCaptcha = require('svg-captcha');
+var fs = require('fs');
 
 // 连接数据库
 var mongoose = require('./db.js'),
-    db = mongoose(),
-    User = require('./models/user.js'),
-    Article = require('./models/article.js'),
-    Comment = require('./models/comment.js'),
-    Notice = require('./models/notice.js'),
-    Announcement = require('./models/announcement.js'),
-    ImgStorage = require('./models/imgStorage.js');
+  db = mongoose(),
+  User = require('./models/user.js'),
+  Article = require('./models/article.js'),
+  Comment = require('./models/comment.js'),
+  Notice = require('./models/notice.js'),
+  Announcement = require('./models/announcement.js'),
+  TipOff = require('./models/tipOff.js');
 
 var app = express();
 
@@ -27,6 +28,8 @@ app.use(bodyParser.urlencoded({
   limit: '10000kb'
 }));
 app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'uploadFile'))); //静态文件目录
+
 
 // 解决跨域
 app.all('*', function(req, res, next) {
@@ -43,23 +46,40 @@ app.get('/api/checkUser', function(req, res, next) {
   User.checkUser({
     username: req.query.username,
     password: req.query.password
-  }, function(err, data) {
-    if (err) {
-      console.log(err);
+  }).then(data => {
+    console.log(data)
+    if ((data.length * 1) > 0) {
+      res.send({
+        status: 'success',
+        userData: data
+      })
     } else {
-      if ((data * 1) > 0) {
-        // console.log("用户存在");
-        res.send({
-          status: 'success'
-        })
-      } else {
-        // 用户不存在
-        res.send({
-          status: 'fail'
-        })
-      }
+      res.send({
+        status: 'fail'
+      })
     }
+  }).catch(err => {
+    console.log("err: " + err)
   })
+
+  // , function(err, data) {
+  //   if (err) {
+  //     console.log(err);
+  //   } else {
+  //     if ((data * 1) > 0) {
+  //       // console.log("用户存在");
+  //       console.log(data)
+  //       res.send({
+  //         status: 'success'
+  //       })
+  //     } else {
+  //       // 用户不存在
+  //       res.send({
+  //         status: 'fail'
+  //       })
+  //     }
+  //   }
+  // }
 });
 
 // 验证码
@@ -204,13 +224,13 @@ app.get('/api/getArticleDetail', function(req, res, next) {
   Article.findById(req.query._id, function(err, data) {
     if (err) {
       console.log(err)
-    } 
-      // res.send({
-      //   article: article
-      // })
-      console.log(data)
-      res.json(data)
-    
+    }
+    // res.send({
+    //   article: article
+    // })
+    console.log(data)
+    res.json(data)
+
   })
 })
 
@@ -395,6 +415,22 @@ app.post('/api/deleteArticle', function(req, res, next) {
     })
 })
 
+// 更新pve
+app.post('/api/incPv', function(req, res, next) {
+  Article.incPv(req.body._id).then(data => {
+    console.log(data);
+    res.send({
+      status: 'success'
+    })
+  }).catch(err => {
+    console.log("err:" + err)
+    res.send({
+      status: 'fail'
+    })
+  })
+})
+
+
 // 发表文章
 app.post('/api/publish', function(req, res, next) {
   let newArticle = new Article({
@@ -418,18 +454,38 @@ app.post('/api/publish', function(req, res, next) {
 
 // 图片上传
 app.post('/api/img/add', function(req, res, next) {
-  let newImg = new ImgStorage({
-    lastModified: req.body.lastModified,
-    miniurl: req.body.miniurl,
-    name: req.body.name,
-    author: req.body.author
-  })
-  newImg.save().then(data => {
-    console.log(data)
-  }).catch(err => {
-    console.log(err)
-  })
+  // let newImg = new ImgStorage({
+  //   lastModified: req.body.lastModified,
+  //   miniurl: req.body.miniurl,
+  //   name: req.body.name,
+  //   author: req.body.author
+  // })
+  // newImg.save().then(data => {
+  //   console.log(data)
+  // }).catch(err => {
+  //   console.log(err)
+  // })
 
+  var dataBuffer = new Buffer(req.body.miniurl, 'base64');
+  // let imgName = req.body.name
+
+  // 图片文件名  文章作者名+lastModified+文件类型 
+  let imgName = req.body.author + req.body.lastModified + '.' + req.body.type
+  console.log(imgName);
+  fs.writeFile(__dirname + '/uploadFile/' + imgName, dataBuffer, err => {
+    if (err) {
+      console.log(err);
+      res.send({
+        status: 'fail'
+      })
+    } else {
+      console.log('upload saved')
+      res.send({
+        imgUrl: 'http://localhost:3000/' + imgName,
+        status: 'success'
+      })
+    }
+  })
 })
 
 
@@ -569,15 +625,15 @@ app.get('/api/search', function(req, res, next) {
 app.get('/api/getAnnouncementAndHotArticle', function(req, res, next) {
   Announcement.getFourAnnouncements()
     .then(announcement => {
-    Article.fetchSortByPv().then(hotArticle => {
-      res.send({
-        announcement: announcement,
-        hotArticle: hotArticle
+      Article.fetchSortByPv().then(hotArticle => {
+        res.send({
+          announcement: announcement,
+          hotArticle: hotArticle
+        })
       })
+    }).catch(err => {
+      console.log(err)
     })
-  }).catch(err => {
-    console.log(err)
-  })
 })
 
 //  公告页初始化
@@ -602,8 +658,6 @@ app.get('/api/test', function(req, res, next) {
 
 
 
-
-
 /*
  * 管理员部分接口
  */
@@ -625,16 +679,16 @@ app.get('/api/admin/getAllUserInfo', function(req, res, next) {
 // 删除用户
 app.post('/api/admin/deleteUser', function(req, res, next) {
   User.deleteUser(req.body.id).then(data => {
-    if (data.result.n == 1 && data.result.ok ==1) {
+    if (data.result.n == 1 && data.result.ok == 1) {
       res.send({
         status: 'success'
       })
     }
   }).catch(err => {
     console.log('err: ' + err);
-      res.send({
-        status: 'fail'
-      })
+    res.send({
+      status: 'fail'
+    })
   })
 })
 
@@ -644,7 +698,7 @@ app.post('/api/admin/permission', function(req, res, next) {
     id: req.body.id,
     permission: req.body.permission
   }).then(data => {
-    if (data.n ==1 && data.nModified ==1) {
+    if (data.n == 1 && data.nModified == 1) {
       res.send({
         status: 'success'
       })
@@ -696,7 +750,7 @@ app.get('/api/admin/getArticle', function(req, res, next) {
 
 // 通过审核
 app.post('/api/admin/hasAudited', function(req, res, next) {
-   Article.audit(req.body.id).then(data => {
+  Article.audit(req.body.id).then(data => {
     if (data.n == 1 && data.nModified == 1 && data.ok == 1) {
       res.send({
         status: 'success'
@@ -706,12 +760,12 @@ app.post('/api/admin/hasAudited', function(req, res, next) {
         status: 'fail'
       })
     }
-   }).catch(err => {
-      console.log('err:' + err);
-      res.send({
-        status: 'fail'
-      })
-   })
+  }).catch(err => {
+    console.log('err:' + err);
+    res.send({
+      status: 'fail'
+    })
+  })
 })
 
 //  审核不通过，应当通知文章作者
@@ -740,21 +794,21 @@ app.post('/api/admin/delAnnouncement', function(req, res, next) {
     .then(data => {
       // console.log(data)
       let result = data.result
-      if (result.n == 1  && result.ok ==1) {
+      if (result.n == 1 && result.ok == 1) {
         res.send({
           status: 'success'
         })
       } else {
         res.send({
           status: 'fail'
-        })  
+        })
       }
-  }).catch(err => {
+    }).catch(err => {
       console.log(err);
       res.send({
         status: 'fail'
       })
-  })
+    })
 })
 
 // 发表公告

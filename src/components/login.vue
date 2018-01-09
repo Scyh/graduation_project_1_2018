@@ -66,8 +66,14 @@
               } else {
 
               // 普通用户登录
-                sessionStorage.username = username;  
+                sessionStorage.username = username;
                 that.$store.dispatch("logIn");
+                let userPermission = data.userData[0].permission;
+                if (userPermission < 1) {
+                  sessionStorage.forbidden =  true;
+                } else {
+                  sessionStorage.forbidden =  false;
+                }
                 $(".close").trigger('click');
                 location.reload();
               }
@@ -82,8 +88,6 @@
           .fail(function() {
             console.log("error");
           })
-          .always(function() {
-          });
         }
       },
 

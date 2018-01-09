@@ -35,7 +35,7 @@
 					<div id="edit-content">
 						<div class="row">
 							<div class="col-md-12">
-								<mavon-editor :value='value' @imgAdd="imgAdd"></mavon-editor>
+								<mavon-editor id="md" :value='value' @imgAdd="imgAdd" ref=md></mavon-editor>
 							</div>
 						</div>
 					</div>
@@ -66,15 +66,18 @@
 				isReEdit: false,	// 是否是编辑旧文章
 			}
 		},
-		beforeCreate() {
-			if (sessionStorage.username == undefined || sessionStorage.username == 'undefined' || sessionStorage.username == '') {
-				alert("尚未登录")
-				this.$router.push('/')
-			}
+		beforeMount() {
+			// if (sessionStorage.username == undefined || sessionStorage.username == 'undefined' || sessionStorage.username == '') {
+			// 	alert("尚未登录")
+			// 	this.$router.push('/')
+			// 	console.log(sessionStorage.forbidden)
+			// } else if (sessionStorage.forbidden == 'true') {
+			// 	alert("当前已被禁言")
+			// 	this.$router.push('/')
+			// }
 		},
 		mounted() {
 			this.$store.dispatch('isEdit');
-
 			if (this.$route.query.id) {
 				// console.log(this.$route.query.id)
 				this.isReEdit = true;
@@ -90,15 +93,10 @@
 				let that = this,
 					title = $("#article_title").val().trim(),
 					md_content = $(".auto-textarea-input").val(),
-
 					content = $(".v-show-content-html").html(),
-
 					category = $(".category").val(),
 					author = sessionStorage.username,
 					subLabel = '';
-
-					console.log(content)
-
 
 				if ($(".newLabel").find(".name").length > 0) {
 					console.log()
@@ -160,7 +158,6 @@
 				}
 			},	// publish end
 
-
 			// 添加新的副标签
 			addNewLabel(event) {
 				let $newLabel = $(".newLabel")
@@ -204,7 +201,7 @@
 					that.value = data.article_md_content
 					$(".category").val(data.category)
 	
-					let article_labelArr =  data.article_label.split(',')
+					let article_labelArr =  (data.article_label + '').split(',')
 					article_labelArr.forEach((item, index) => {
 						
 						if (index == article_labelArr.length-1) {
@@ -234,16 +231,29 @@
 				});
 			},
 
+
+			// 添加图片
 			imgAdd(pos, $file) {
+				let that = this;
+				console.log()
+				// console.log($file.type.slice($file.type.lastIndexOf('/') +1,$file.type.length))
+				// console.log($file.miniurl.replace(/^data:image\/\w+;base64,/, ''))
 				$.post('http://localhost:3000/api/img/add', {
 					lastModified: $file.lastModified,
-					miniurl: $file.miniurl,
+					type: $file.type.slice($file.type.lastIndexOf('/') +1,$file.type.length),
+					miniurl: $file.miniurl.replace(/^data:image\/\w+;base64,/, ''),
 					name: $file.name,
 					author: sessionStorage.username
 				}, function(data, textStatus, xhr) {
-					/*optional stuff to do after success */
+					if (data.status == 'success') {
+						// console.log(data.imgUrl);
+						// console.log(that.$refs.md)
+						that.$refs.md.$img2Url(pos, data.imgUrl)
+					} else {
+						alert('上传失败')
+					}
 				});
-			},
+			},	// imgAdd end
 
 		},	// methods end
 		components: {
