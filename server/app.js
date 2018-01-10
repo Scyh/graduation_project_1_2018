@@ -13,7 +13,8 @@ var mongoose = require('./db.js'),
   Comment = require('./models/comment.js'),
   Notice = require('./models/notice.js'),
   Announcement = require('./models/announcement.js'),
-  TipOff = require('./models/tipOff.js');
+  TipOff = require('./models/tipOff.js'),
+  Message = require('./models/message.js');
 
 var app = express();
 
@@ -442,7 +443,7 @@ app.post('/api/publish', function(req, res, next) {
     article_label: req.body.subLabel
   });
   newArticle.save().then(data => {
-    console.log(data)
+    // console.log(data)
     res.send({
       status: 'success'
     });
@@ -488,10 +489,6 @@ app.post('/api/img/add', function(req, res, next) {
   })
 })
 
-
-// 图片删除
-
-
 // 修改文章
 app.post('/api/upadteOldArticle', function(req, res, next) {
   Article.updateOldArticle({
@@ -512,6 +509,37 @@ app.post('/api/upadteOldArticle', function(req, res, next) {
       status: 'fail'
     })
   })
+})
+
+// 举报文章
+app.post('/api/tipOff', function(req, res, next) {
+  let body = req.body;
+  let newTipOff = new TipOff({
+    tip_off_content: body.tip_off_content,
+    tip_off_by: body.tip_off_by,
+    tip_off_to: body.tip_off_to,
+    tip_off_date: Date.parse(new Date),
+    tip_off_article_title: body.article_title,
+    tip_off_article_id: body.article_id
+  })
+  newTipOff.save()
+    .then(data => {
+      if (data._id) {
+        res.send({
+          status: 'success'
+        })
+      } else {
+        res.send({
+          status: 'fail'
+        })
+      }
+
+    }).catch(err => {
+      console.log(err);
+      res.send({
+        status: 'fail'
+      })
+    })
 })
 
 // 初始化 个人通知tab
@@ -648,6 +676,57 @@ app.get('/api/initAnnouncement', function(req, res, next) {
     })
 })
 
+// 获取留言
+app.get('/api/getMsg', function(req, res, next) {
+  
+  Message.fetchMsg(req.query.page)
+    .then(data => {
+      console.log(count)
+      if (data.length > 0) {
+        res.send({
+          status: 'success',
+          msg: data
+        })
+      } else {
+        res.send({
+          status: 'success',
+          msg: []
+        })  
+      }
+    }).catch(err => {
+      console.log(err);
+      res.send({
+        status: 'fail'
+      })
+    })
+  
+})
+
+// 留言
+app.post('/api/leaveMsg', function(req, res, next) {
+  let newMsg = new Message({
+    msg_by: req.body.msg_by,
+    msg_content: req.body.msg_content,
+    msg_date: Date.parse(new Date())
+  })
+  newMsg.save()
+    .then(data => {
+      if (data._id) {
+        res.send({
+          status: 'success'
+        })
+      } else {
+        res.send({
+          status: 'fail'
+        })
+      }
+    }).catch(err => {
+      console.log(err);
+      res.send({
+          status: 'fail'
+        })
+    })
+})
 
 // test 
 app.get('/api/test', function(req, res, next) {
@@ -831,7 +910,19 @@ app.post('/api/admin/announcementPublish', function(req, res, next) {
   })
 })
 
-
+// 获取举报信息
+app.get('/api/admin/getTipOff', function(req, res, next) {
+  TipOff.adminFetchSome(req.query.page)
+    .then(data => {
+      console.log(data);
+      res.json(data)
+    }).catch(err => {
+      console.log(err)
+      res.send({
+        status: 'fail'
+      })
+    })
+})
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -69,7 +69,7 @@ export default {
 		}
 	},
 	created: function () {
-		let that = this;
+		// let that = this;
 		// bus.$on('fn', function (data) {
 		// 		that.articles = [];
 		// 		for (let i in data) {
@@ -96,10 +96,10 @@ export default {
 			if (this.$route.path == '/articles' && !this.$route.query.page) {
 				this.$router.replace({path: 'articles', query: {page: 1}})
 			}
-			this.initPagination();
 			this.initArticles();
+			this.initPagination();
 
-			if (this.$route.query.page != undefined) {
+			if (this.$route.query.page != undefined || this.$route.query.page != null) {
 				this.pageChange(this.$route.query.page);
 			}
 		}
@@ -161,7 +161,7 @@ export default {
 				}				
 			} else {
 				this.initPagination();
-				this.initArticles();
+				// this.initArticles();
 				this.pageChange(this.$route.query.page);
 				this.$store.dispatch('notSearch');
 			}
@@ -171,8 +171,8 @@ export default {
 
 		// 初始化文章
 		initArticles: function () {
+			this.articles = []
 			let that = this;
-			that.articles = [];
 			$.get('http://localhost:3000/api/getArticle', {
 				pageCount: 1,
 				category: that.$route.params.category?that.$route.params.category:'all'
@@ -197,20 +197,19 @@ export default {
 		// 分页跳转
 		pageChange: function (index) {
 			let that = this;
-			that.articles = [];
 			that.currentPage = index;
 			$.get('http://localhost:3000/api/getArticle', {
 				pageCount: that.currentPage,
 				category: that.$route.params.category?that.$route.params.category:'all'
 			}, function(data) {
-				
+				// console.log(data)
 				// window.scroll(0,0)
 				// console.log(data)
 				data.forEach((item, index) => {
 					// console.log(item.article_content)
 					item.article_content = that.html(item.article_content)
 				})
-
+				that.articles = [];
 				that.articles = data;
 			});
 
@@ -223,6 +222,7 @@ export default {
 				// 向前翻页
 				if (this.currentPage > 1) {
 					this.currentPage --;
+					that.articles = [];
 					this.pageChange(this.currentPage)
 				} else {
 					return 
@@ -233,8 +233,9 @@ export default {
 				console.log(this.currentPage)
 				// console.log(this.pages[4])
 				console.log(this.pages)
-				if (this.currentPage < this.pages[3]) {
+				if (this.currentPage < this.pages[4]) {
 					this.currentPage ++;
+					that.articles = [];
 					this.pageChange(this.currentPage)
 				} else {
 					return 

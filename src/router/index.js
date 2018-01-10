@@ -8,6 +8,7 @@ import edit from '../components/edit.vue'
 import personalHome from '../components/personalHome.vue'
 import publicHome from '../components/publicHome.vue'
 import announcement from '../components/announcement.vue'
+import messageBoard from '../components/messageBoard.vue'
 import admin from '../components/admin.vue'
 import store from '../store/index.js'
 import adminUserInfo from '../components/admin_User_Manage.vue'
@@ -59,23 +60,35 @@ const router = new Router({
       path: '/questions',
       component: question
     },
+
     // 查看自己或者别人的主页
     {
       path: '/:username/articles/:id',
       // component: personalArticleDetail
       component: article_detail
     },
+
     // 通过类别查看文章
     {
       path: '/:category/:username/articles/:id'
     },
+
+    // 编辑页面
     {
       path: '/edit/:class',
       component: edit
     },
+
+    // 公告页
     {
       path: '/announcement',
       component: announcement
+    },
+
+    // 留言板页面
+    {
+      path: '/messageBoard',
+      component: messageBoard
     },
     {
     	path: '*',

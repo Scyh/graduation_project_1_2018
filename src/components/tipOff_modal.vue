@@ -49,16 +49,39 @@
 
 			// 添加举报原因
 			addReason(event) {
-				if ($("#tipOffContent").val().indexOf($(event.target).html()) > -1) {
+				let $tipOffContent = $("#tipOffContent");
+				if ($tipOffContent.val().indexOf($(event.target).html()) > -1) {
 					return
 				}
-				$("#tipOffContent").val($("#tipOffContent").val() + ' ' + $(event.target).html() + ' ');
-				
+				$tipOffContent.val($tipOffContent.val() + ' ' + $(event.target).html() + ' ');
 			},
 
 			// 确认举报
 			confirmTipOff() {
-				console.log($(".tip-off-modal").attr('articleid'))
+				let tipOffContent = $("#tipOffContent").val().trim();
+				let $modal = $(".tip-off-modal"),
+					article_id = $modal.attr('articleid'),
+					article_title = $modal.attr('articletitle'),
+					article_author = $modal.attr('articleauthor');
+
+				if (tipOffContent == '') {
+					return
+				}
+
+				$.post('http://localhost:3000/api/tipOff', {
+					tip_off_content: tipOffContent,
+					tip_off_by: sessionStorage.username,
+					tip_off_to: article_author,
+					article_id: article_id,
+					article_title: article_title,
+				}, function(data, textStatus, xhr) {
+					if (data.status == 'success') {
+						alert("举报成功")
+						$("#tipOffContent").val("")
+						$(".close").trigger("click");
+					}
+				});
+				
 				
 			},
 

@@ -29,7 +29,9 @@ var tipOffschema = new Schema({
 })
 
 tipOffschema.statics = {
-
+	adminFetchSome(page, data) {
+		return this.find({}).limit(6).skip((page-1) * 6).exec(data)
+	}
 }
 
 

@@ -49,9 +49,12 @@
 		mounted() {
 			bus.$on('transferArticle_id', data => {
 				this.init(data)
-				console.log(data)
+				// console.log(data)
 			})
 		},	// mounted end
+		destroyed() {
+			bus.$off('transferArticle_id')
+		},
 		methods: {
 			init (id) {
 				let that = this;

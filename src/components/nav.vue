@@ -51,9 +51,9 @@
                 <!-- <li><router-link to="/edit/mdEditor">写博客<span><img src="../assets/blog.png"></span></router-link></li>
                 <li><router-link to="/edit/askQuestions">提问题<span><img src="../assets/ask.png"></span></router-link></li>
                 <li><router-link to="/edit/leaveMessage">去留言<span><img src="../assets/message.png"></span></router-link></li> -->
-                <li @click="toWrite"><span>写博客</span></li>
+                <li @click="toWrite('blog')"><span>写博客</span></li>
                 <li><span>提问题</span></li>
-                <li><span>去留言</span></li>
+                <li @click="toWrite('message')"><span>去留言</span></li>
               </ul>
             </span>
             <button class="btn btn-home" @click="goHome">{{ username }}</button>
@@ -166,12 +166,21 @@ export default {
       }
     },
 
-    toWrite() {
+    toWrite(type) {
       if (sessionStorage.forbidden == 'true') {
         alert("当前用户已被禁言")
         return 
       } else {
-        this.$router.push({path: '/edit/mdEditor'})  
+        console.log(type)
+        switch (type) {
+          case 'blog':
+            this.$router.push({path: '/edit/mdEditor'})  
+            break;
+          case 'message':
+            this.$router.push({path: '/messageBoard'})  
+            break;
+        }
+        
       }
       
     }

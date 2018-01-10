@@ -68,7 +68,7 @@
 				</div>
 			</div>
 
-			<cus-tip-off-modal :articleId="article._id"></cus-tip-off-modal>
+			<cus-tip-off-modal :articleId="article._id" :articleTitle="article.article_title" :articleAuthor="article.article_author"></cus-tip-off-modal>
 
 		</div>
 </template>
@@ -315,6 +315,7 @@
 					},400);
 			},	// animate
 
+			// 计算评论剩余字符
 			computedCharacter: function (event) {
 				let length = $(event.target).val().toString().length;
 				$(event.target).parent().next().find('span').html("还剩" + (1000-length) + "个字符可以输入")
@@ -394,10 +395,10 @@
 				location.reload()
 			},	// reload end
 
+			// 重新编辑
 			reEdit() {
 				// console.log(this.article._id)
 				this.$router.replace({path: '/edit/mdEditor', query: {id: this.article._id}})
-
 			},
 
 			// 更新pv
@@ -412,7 +413,14 @@
 
 			// 举报
 			tipOff() {
-				$("#tipOffModal").modal('toggle')
+				if (sessionStorage.username == '' ||  sessionStorage.username == undefined) {
+					alert("请先登录")
+					return 
+				} else if (sessionStorage.forbidden == 'true') {
+					alert("当前用户已被禁言")
+				} else {
+					$("#tipOffModal").modal('toggle')
+				}
 			}
 		},
 

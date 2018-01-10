@@ -18,7 +18,7 @@
 			</template>
 			<template v-else>
 				<p class="hasNoArticle">
-					<span class="glyphicon glyphicon-th-list"></span>尚未发表文章！
+					<span class="glyphicon glyphicon-th-list"></span>尚未有文章！
 				</p>
 			</template>
 
