@@ -61,11 +61,6 @@
             "comment_author" : "shenchaoyue",
             "comment_date" : "1513850532000",
             "comment_content" : "按时大飒飒大师的"
-        }, 
-        {
-            "comment_author" : "shen",
-            "comment_date" : "1513922659000",
-            "comment_content" : "asdasdasd"
         }
     ]
 }
@@ -74,11 +69,14 @@
 {
     "_id" : ObjectId("5a20c93e2fd18cd6910735f5"),
     "_article_id" : "5a20c93e2fd18cd6910735f5",
-    "article_like" : 0,
-    "article_like_user" : [],
-    "article_dislike" : 1,
+    "article_like" : 10,
+    "article_like_user" : [ 
+        null
+    ],
+    "article_dislike" : 3,
     "article_dislike_user" : [ 
-        "shenchaoyue"
+        "shenchaoyue", 
+        null
     ],
     "article_comment" : [ 
         {
@@ -245,11 +243,49 @@
             "comment_author" : "shen",
             "comment_date" : "1513922060000",
             "comment_content" : "这里是评论这里是评论这里是评论这里是评论这里是评论这里是评论"
+        }, 
+        {
+            "comment_author" : "shen",
+            "comment_date" : "1515482346000",
+            "comment_content" : "aaaa"
+        }, 
+        {
+            "comment_author" : "shen",
+            "comment_date" : "1515482352000",
+            "comment_content" : "@shen&nbsp;&nbsp;aaaaa"
         }
     ],
     "article_dislike_user" : [],
     "article_like_user" : [],
     "article_dislike" : 0,
     "article_like" : 0,
+    "__v" : 0
+}
+
+/* 10 */
+{
+    "_id" : ObjectId("5a45a3541dbd2301d01f7194"),
+    "_article_id" : "5a250c41a56fbdc3ff478b96",
+    "article_comment" : [],
+    "article_dislike_user" : [],
+    "article_like_user" : [ 
+        "shenchaoyue"
+    ],
+    "article_dislike" : 0,
+    "article_like" : 1,
+    "__v" : 0
+}
+
+/* 11 */
+{
+    "_id" : ObjectId("5a4f2777db20a610b8faffc1"),
+    "_article_id" : "5a4f214e7e0003208076a2a2",
+    "article_comment" : [],
+    "article_dislike_user" : [],
+    "article_like_user" : [ 
+        "shen"
+    ],
+    "article_dislike" : 0,
+    "article_like" : 1,
     "__v" : 0
 }

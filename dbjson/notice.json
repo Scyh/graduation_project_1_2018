@@ -1,0 +1,50 @@
+/* 1 */
+{
+    "_id" : ObjectId("5a38ab20392e851bd20bfa03"),
+    "_notice_user_id" : "5a336fa72263b2234c6947c3",
+    "notice_user" : "shen",
+    "notice" : [ 
+        {
+            "notice_state" : "notRead",
+            "notice_date" : "1514513236000",
+            "notice_ByUser" : "shenchaoyue",
+            "notice_type" : "like",
+            "notice_title" : "这里是第21篇article，我们来聊聊 html",
+            "notice_title_id" : "5a250c41a56fbdc3ff478b96"
+        }, 
+        {
+            "notice_state" : "notRead",
+            "notice_date" : "1515136887000",
+            "notice_ByUser" : "shen",
+            "notice_type" : "like",
+            "notice_title" : "asd",
+            "notice_title_id" : "5a4f214e7e0003208076a2a2"
+        }, 
+        {
+            "notice_state" : "notRead",
+            "notice_date" : "1515482352000",
+            "notice_ByUser" : "shen",
+            "notice_type" : "newCommentReply",
+            "notice_title" : "这里是第二篇article，我们来聊聊 Node.js",
+            "notice_title_id" : "5a20c92d2fd18cd6910735ed"
+        }
+    ],
+    "__v" : 51
+}
+
+/* 2 */
+{
+    "_id" : ObjectId("5a3c5970c0aa4214dc227486"),
+    "notice_user" : "shenchaoyue",
+    "notice" : [ 
+        {
+            "notice_state" : "notRead",
+            "notice_date" : "1515482346000",
+            "notice_ByUser" : "shen",
+            "notice_type" : "newComment",
+            "notice_title" : "这里是第二篇article，我们来聊聊 Node.js",
+            "notice_title_id" : "5a20c92d2fd18cd6910735ed"
+        }
+    ],
+    "__v" : 2
+}

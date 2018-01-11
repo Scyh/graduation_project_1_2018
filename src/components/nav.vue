@@ -18,9 +18,9 @@
               <!-- Collect the nav links, forms, and other content for toggling -->  
               <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">  
                 <ul class="nav navbar-nav">  
-                  <li><router-link :class="{active: currentRoute=='articles'}" to="/articles?page=1">文章</router-link></li>
-                  <li><router-link :class="{active: currentRoute=='questions'}"  to="/questions">问答</router-link></li>
-                  <li><router-link :class="{active: currentRoute=='video'}"  to="/video">视频</router-link></li>
+                  <li><router-link :class="{active: isArticle}" to="/articles?page=1">文章</router-link></li>
+                  <li><router-link :class="{active: currentRoute=='questions'}"  to="/questions?page=1">问答</router-link></li>
+                  <li><router-link :class="{active: currentRoute=='video'}"  to="/video?page=1">视频</router-link></li>
                   <li><a href="#">专栏</a></li>
                   <li><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">发现<span class="caret"></span></a>
                     <ul class="dropdown-menu">
@@ -56,7 +56,8 @@
                 <li @click="toWrite('message')"><span>去留言</span></li>
               </ul>
             </span>
-            <button class="btn btn-home" @click="goHome">{{ username }}</button>
+
+            <button :class="[{ btn_active: isPersonalHome}, 'btn', 'btn-home']" @click="goHome">{{ username }}</button>
               <button class="btn btn-logOut" @click="logOut">退出登录</button>
             </template>
 
@@ -118,15 +119,23 @@ export default {
         this.$store.dispatch('logIn');
       }
     this.currentRoute = this.$route.path.slice(1);
+    console.log(this.$route);
   },
   computed: {
     ...mapGetters([
         'hasLogIn'
-    ])
+    ]),
+
+    isArticle() {
+      return this.$route.fullPath.indexOf('article')>-1?true:false
+    },
+
+    isPersonalHome() {
+      return this.$route.name == 'personalHome'?true:false
+    }
   },
   watch: {
     $route () {
-      
       // 当前路由页
       this.currentRoute = this.$route.path.slice(1);
     }
@@ -143,7 +152,7 @@ export default {
     },
 
     goHome: function() {
-      console.log(1)
+      
       this.$router.push({path: '/' + this.username + '/home', params: {username: this.username}})
     },
 
@@ -295,6 +304,9 @@ export default {
   }
   .active{
     color: #41b886 !important;
+  }
+  .btn_active {
+    background-color: #41b886 !important;
   }
   .markdown {
     margin-right: 15px;

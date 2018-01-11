@@ -40,10 +40,10 @@
 
 /* 5 */
 {
-    "_id" : ObjectId("5a45fb9281579c24940a7cf8"),
-    "announcement_title" : "这是公告标题555",
-    "announcement_content" : "这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容",
-    "announcement_date" : 1514535826000.0,
+    "_id" : ObjectId("5a4dd8025d7a9e1fc0af548c"),
+    "announcement_title" : "新公告",
+    "announcement_content" : "打发斯蒂芬阿斯蒂芬阿萨德阿萨德阿萨德阿萨德f",
+    "announcement_date" : 1515051010000.0,
     "announcement_author" : "admin",
     "__v" : 0
 }
