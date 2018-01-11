@@ -53,14 +53,15 @@
 			}
 		},
 		mounted() {
-			this.init(this.currentPage)
+			this.init(this.currentPage, 4)
 		},
 		methods: {
 
-			init(page) {
+			init(page, itemShow) {
 				let that = this;
 				$.get('http://localhost:3000/api/getMsg',{
-					page: page
+					page: page,
+					itemShow: itemShow
 				}, function(data) {
 					console.log(data)
 					if (data.status == 'success') {
@@ -77,7 +78,7 @@
 			// 加载更多
 			loadMore() {
 				this.currentPage ++;
-				this.init(this.currentPage);
+				this.init(this.currentPage, 4);
 			},
 
 			// 留言
@@ -94,6 +95,9 @@
 					console.log(data)
 					alert("留言成功");
 					that.reset();
+					that.msg = [];
+					that.currentPage = 1;
+					that.init(that.currentPage, 4);
 				});
 			},
 

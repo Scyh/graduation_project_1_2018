@@ -115,7 +115,6 @@
 		},
 		destroyed() {
 			// this.isPublish = false;
-			console.log('destroyed')
 			bus.$off('announcement')
 		},
 		components: {

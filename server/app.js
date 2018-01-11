@@ -678,20 +678,24 @@ app.get('/api/initAnnouncement', function(req, res, next) {
 
 // 获取留言
 app.get('/api/getMsg', function(req, res, next) {
-  
-  Message.fetchMsg(req.query.page)
-    .then(data => {
-      console.log(count)
+  Message.fetchAllLength().then(length => {
+    console.log(Math.ceil(length / req.query.itemShow));
+    Message.fetchMsg({
+      page: req.query.page,
+      itemShow: req.query.itemShow
+    }).then(data => {
       if (data.length > 0) {
         res.send({
           status: 'success',
-          msg: data
+          msg: data,
+          allPages: Math.ceil(length / req.query.itemShow)
         })
       } else {
         res.send({
           status: 'success',
-          msg: []
-        })  
+          msg: [],
+          allPages: 0
+        })
       }
     }).catch(err => {
       console.log(err);
@@ -699,7 +703,9 @@ app.get('/api/getMsg', function(req, res, next) {
         status: 'fail'
       })
     })
-  
+
+  })
+
 })
 
 // 留言
@@ -723,8 +729,8 @@ app.post('/api/leaveMsg', function(req, res, next) {
     }).catch(err => {
       console.log(err);
       res.send({
-          status: 'fail'
-        })
+        status: 'fail'
+      })
     })
 })
 
@@ -914,13 +920,58 @@ app.post('/api/admin/announcementPublish', function(req, res, next) {
 app.get('/api/admin/getTipOff', function(req, res, next) {
   TipOff.adminFetchSome(req.query.page)
     .then(data => {
-      console.log(data);
+      // console.log(data);
       res.json(data)
     }).catch(err => {
       console.log(err)
       res.send({
         status: 'fail'
       })
+    })
+})
+
+// 留言状态操作，hasRead已读 / notRead未读
+app.post('/api/admin/operateMsgStatus', function(req, res, next) {
+  Message.operateMsgStatus(req.body.msgArr)
+    .then(data => {
+      // console.log(Array.from(JSON.parse(req.body.msgArr)).length)
+      if (data.n > 0 && data.ok == 1) {
+        res.send({
+          status: 'success'
+        })
+      } else {
+        res.send({
+          status: 'fail'
+        })
+      }
+    }).catch(err => {
+      console.log(err)
+      res.send({
+        status: 'fail'
+      })
+    })
+})
+
+// 删除留言
+app.post('/api/admin/delMsg', function(req, res, next) {
+  Message.delMsg(req.body.msgArr)
+    .then(data => {
+      console.log(data)
+      if (data.result.n > 0 && data.result.ok > 0) {
+        res.send({
+          status: 'success'
+        })
+      } else {
+        res.send({
+          status: 'fail'
+        })
+      }
+      
+    }).catch(err => {
+      console.log(err);
+      res.send({
+          status: 'fail'
+        })
     })
 })
 

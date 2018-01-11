@@ -47,6 +47,19 @@ Vue.filter('switchNoticeType', function(value) {
 	}
 })
 
+Vue.filter('switchMsgStatusType', function(value) {
+	switch(value) {
+		case 'notRead':
+			return "未读";
+			break;
+		case 'hasRead':
+			return "已读";
+			break
+		default:
+			return "未读"
+	}
+})
+
 Vue.filter('introduceDecoration', function(value) {
 	return "“ " + value + " ”"
 });
