@@ -13,7 +13,15 @@
                   <span class="icon-bar"></span>  
                   <span class="icon-bar"></span>  
                 </button>  
-                <a class="navbar-brand" href="#/articles?page=1">Scy</a>  
+                <!-- <a class="navbar-brand" href="#/articles?page=1">Scy</a> -->
+                <a class="navbar-brand" href="#/articles?page=1">
+                  <span>Scy</span>
+                  <span>Scy</span>
+                  <span>Scy</span>
+                  <span>Scy</span>
+                  <span>Scy</span>
+                  <span>Scy</span>
+                </a>  
               </div>  
               <!-- Collect the nav links, forms, and other content for toggling -->  
               <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">  
@@ -67,19 +75,19 @@
       <div class="row">
         <div class="col-lg-12">
           <ul class="nav-label">
-            <li><a href="#/articles?page=1">全部</a></li>
-            <li><router-link to="/html/article?page=1">html</router-link></li>
-            <li><router-link to="/css/article?page=1">css</router-link></li>
-            <li><router-link to="/javascript/article?page=1">javascript</router-link></li>
-            <li><router-link to="/css3/article?page=1">css3</router-link></li>
-            <li><router-link to="/html5/article?page=1">html5</router-link></li>
-            <li><router-link to="/jquery/article?page=1">jquery</router-link></li>
-            <li><router-link to="/bootstrap/article?page=1">bootstrap</router-link></li>
-            <li><router-link to="/webpack/article?page=1">webpack</router-link></li>
-            <li><router-link to="/vue/article?page=1">vue</router-link></li>
-            <li><router-link to="/react/article?page=1">react</router-link></li>
-            <li><router-link to="/nodejs/article?page=1">nodejs</router-link></li>
-            <li><router-link to="/mongodb/article?page=1">mongodb</router-link></li>
+            <li ><a href="#/articles?page=1" data-hide="ALL">全部</a></li>
+            <li><router-link to="/html/article?page=1" data-hide="HTML">html</router-link></li>
+            <li><router-link to="/css/article?page=1" data-hide="CSS">css</router-link></li>
+            <li><router-link to="/javascript/article?page=1" data-hide="JAVASCRIPT">javascript</router-link></li>
+            <li><router-link to="/css3/article?page=1" data-hide="CSS3">css3</router-link></li>
+            <li><router-link to="/html5/article?page=1" data-hide="HTML5">html5</router-link></li>
+            <li><router-link to="/jquery/article?page=1" data-hide="JQUERY">jquery</router-link></li>
+            <li><router-link to="/bootstrap/article?page=1" data-hide="BOOTSTRAP">bootstrap</router-link></li>
+            <li><router-link to="/webpack/article?page=1" data-hide="WEBPACK">webpack</router-link></li>
+            <li><router-link to="/vue/article?page=1" data-hide="VUE">vue</router-link></li>
+            <li><router-link to="/react/article?page=1" data-hide="REACT">react</router-link></li>
+            <li><router-link to="/nodejs/article?page=1" data-hide="NODEJS">nodejs</router-link></li>
+            <li><router-link to="/mongodb/article?page=1" data-hide="MONGODB">mongodb</router-link></li>
           </ul>
         </div>
       </div>
@@ -218,8 +226,51 @@ export default {
     border-bottom: 1px solid #EEE;
   }
   .navbar-brand {
-    font-size: 30px;
+    width: 40px;
+    height: 40px;
+    margin-left: -60px;
+    margin-top: -8px;
+    line-height: 40px;
+    font-size: 18px;
+    text-align: left;
     color: #000;
+    position: absolute;
+    transform-origin: center;
+    transform-style: preserve-3d;
+    transition: transform 1s linear;
+  }
+  .navbar-brand:hover {
+    transform: rotateX(360deg) rotateY(360deg);
+  }
+  .navbar-brand span {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    line-height: 40px;
+  }
+  .navbar-brand span:nth-child(1) {
+    transform: rotateX(0deg) translateZ(20px);
+    background-color: rgba(255,255,255,0.6);
+  }
+  .navbar-brand span:nth-child(2) {
+    transform: rotateX(-90deg) translateZ(20px);
+    background-color: rgba(255,255,255,255.6);
+  }
+  .navbar-brand span:nth-child(3) {
+    transform: rotateX(-180deg) translateZ(20px);
+    background-color: rgba(255,255,255,255.6);
+  }
+  .navbar-brand span:nth-child(4) {
+    transform: rotateX(-270deg) translateZ(20px);
+    background-color: rgba(255,255,255,255.6);
+  }
+  .navbar-brand span:nth-child(5) {
+    transform: rotateX(-90deg) translateZ(20px);
+    background-color: rgba(0,0,0,0.6);
+  }
+  .navbar-brand span:nth-child(6) {
+    transform: rotateX(90deg) translateZ(20px);
+    background-color: rgba(0,0,0,0.6);
   }
   ul.navbar-nav {
     font-size: 18px;
@@ -231,14 +282,33 @@ export default {
   }
   .nav-label li{
     display: inline-block;
+    position: relative;
+    text-align: center;
   }
   .nav-label li>a{
+    display: inline-block;
+    padding: 0 20px;
     color: #bbb;
-    padding: 20px;
-  }
-  .nav-label li>a:hover {
-    color: #757575;
     text-decoration: none;
+    transition: transform 0.2s ease-in;
+    transform-style: preserve-3d;
+    transform-origin: top;
+  }
+  .nav-label li > a::after {
+    content: attr(data-hide);
+    display: inline-block;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    color: #000;
+    background-color: #EEE;
+    transform-origin: top;
+    transform: rotateX(-90deg) translateY(0px);
+  }
+  .nav-label li:hover a{
+    transform: rotateX(90deg); 
   }
   .nav-label li:first-child a  {
     padding-left: 15px;

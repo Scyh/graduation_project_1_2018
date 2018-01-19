@@ -63,13 +63,13 @@ export default {
   margin-right: 25px;
   background-color: #efefef;
 }
-.name::after {
+/*.name::after {
   content: url(./assets/cancle.png);
   position: absolute;
   display: inline-block;
   top: 23px;
   margin-left: 5px;
-}
+}*/
 span:focus {
   outline: none;
 }
