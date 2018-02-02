@@ -3,12 +3,14 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-import './assets/css/bootstrap.min.css'
-import './assets/js/bootstrap.min'
-import './assets/css/normalize.css'
-import './assets/js/jquery-solarlunar.js'
 import store from './store/index.js'
+
+import './assets/css/bootstrap.min.css'
+import './assets/css/normalize.css'
 import './assets/css/cropper.min.css'
+import './assets/js/bootstrap.min'
+import './assets/js/jquery-solarlunar.js'
+
 import 'mavon-editor/dist/css/index.css'
 
 Vue.config.productionTip = false

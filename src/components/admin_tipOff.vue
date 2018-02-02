@@ -13,7 +13,9 @@
 			</thead>
 			<tbody>
 				<tr v-for="(item, index) in tipOffs" class="tip-off-content" :id="item.tip_off_article_id">
-					<th>{{ index + 1 }}</th>
+					<th>{{ index + 1 }}
+						<!-- <input type="checkbox" name="tipOff"> -->
+					</th>
 					<th>{{ item.tip_off_by }}</th>
 					<th>{{ item.tip_off_to }}</th>
 					<th data-toggle="modal" data-target="#adminCheckArticleModal" @click="transfer($event)">{{ item.tip_off_article_title }}</th>
@@ -70,6 +72,9 @@
 	}
 </script>
 <style scoped>
+	tbody > tr > th >input {
+		margin-left: 8px;
+	}
 	tbody > tr > th:nth-child(2),
 	tbody > tr > th:last-child {
 		color: #999;

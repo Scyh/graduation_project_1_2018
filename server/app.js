@@ -975,6 +975,19 @@ app.post('/api/admin/delMsg', function(req, res, next) {
     })
 })
 
+// 删除所有举报信息
+app.post('/api/admin/delAllTipOff', function(req, res, next) {
+  TipOff.remove({})
+    .then(data => {
+      res.send({
+        status: 'success'
+      })
+    }).catch( err => {
+      console.log(err);
+
+    })
+})
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');

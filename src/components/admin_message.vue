@@ -20,9 +20,8 @@
 					<td>{{ item.msg_by }}</td>
 					<td>{{ item.msg_content }}</td>
 					<td>{{ item.msg_date | getDate }}</td>
-					<td :status="item.msg_status">{{ item.msg_status | switchMsgStatusType }}</td>
+					<td :status="item.msg_status" :class="[item.msg_status=='hasRead'?'hasRead':'notRead']">{{ item.msg_status | switchMsgStatusType }}</td>
 					<!-- <td>
-
 						<button class="btn btn-danger">删除</button>
 					</td> -->
 				</tr>
@@ -217,6 +216,8 @@
 		position: relative;
 		left: 4px;
 		font-size: 18px;
-
+	}
+	.notRead {
+		color: #41B886;
 	}
 </style>

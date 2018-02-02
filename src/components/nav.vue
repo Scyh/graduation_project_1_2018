@@ -290,11 +290,11 @@ export default {
     padding: 0 20px;
     color: #bbb;
     text-decoration: none;
-    transition: transform 0.2s ease-in;
+    /*transition: transform 0.2s ease-in;
     transform-style: preserve-3d;
-    transform-origin: top;
+    transform-origin: top;*/
   }
-  .nav-label li > a::after {
+/*  .nav-label li > a::after {
     content: attr(data-hide);
     display: inline-block;
     position: absolute;
@@ -306,10 +306,10 @@ export default {
     background-color: #EEE;
     transform-origin: top;
     transform: rotateX(-90deg) translateY(0px);
-  }
-  .nav-label li:hover a{
+  }*/
+  /*.nav-label li:hover a{
     transform: rotateX(90deg); 
-  }
+  }*/
   .nav-label li:first-child a  {
     padding-left: 15px;
     color: #757575;
