@@ -44,6 +44,9 @@ Vue.filter('switchNoticeType', function(value) {
 		case 'newCommentReply':
 			return "回复了你的评论";
 			break;
+		case 'newAnswer':
+			return "回答了你的提问";
+			break;
 		default:
 			return "不知道干了啥";
 	}

@@ -27,9 +27,9 @@
               <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">  
                 <ul class="nav navbar-nav">  
                   <li><router-link :class="{active: isArticle}" to="/articles?page=1">文章</router-link></li>
-                  <li><router-link :class="{active: currentRoute=='questions'}"  to="/questions?page=1">问答</router-link></li>
+                  <li><router-link :class="{active: currentRoute=='questions'}"  to="/questions/latestQuestion">问答</router-link></li>
                   <li><router-link :class="{active: currentRoute=='video'}"  to="/video?page=1">视频</router-link></li>
-                  <li><a href="#">专栏</a></li>
+                  <!-- <li><a href="#">专栏</a></li>
                   <li><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">发现<span class="caret"></span></a>
                     <ul class="dropdown-menu">
                       <li><a href="#">技术圈</a></li>
@@ -37,7 +37,7 @@
                       <li><a href="#">广告链接</a></li>
                       <li><a href="#"></a></li>
                     </ul>
-                  </li>
+                  </li> -->
                 </ul>
               <span @click="search" class="search-img"><input type="text" class="search" placeholder="搜索问题或关键字" @keyup.enter="search"></span>
               </div><!-- /.navbar-collapse -->  

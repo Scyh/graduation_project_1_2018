@@ -2,101 +2,23 @@
 	<div class="section3">
 		<div class="container">
 			<div class="row">
-				<div class="col-md-8 col-lg-8">
+				<div class="col-sm-8 col-md-8 col-lg-8">
 					<main>
-						<article>
-							<div class="question_label">html</div>
-							<div class="question_title">这是文章的标题这是文章的标题这是文章的标题这是文章的标题</div>
-							<div class="question_push_date">发布时间</div>
-							<div class="question_author">作者</div>
-						</article>
-						<article>
-							<div class="question_label">html</div>
-							<div class="question_title">这是文章的标题这是文章的标题这是文章的标题这是文章的标题</div>
-							<div class="question_push_date">发布时间</div>
-							<div class="question_author">作者</div>
-						</article>
-						<article>
-							<div class="question_label">html</div>
-							<div class="question_title">这是文章的标题这是文章的标题这是文章的标题这是文章的标题</div>
-							<div class="question_push_date">发布时间</div>
-							<div class="question_author">作者</div>
-						</article>
-						<article>
-							<div class="question_label">html</div>
-							<div class="question_title">这是文章的标题这是文章的标题这是文章的标题这是文章的标题</div>
-							<div class="question_push_date">发布时间</div>
-							<div class="question_author">作者</div>
-						</article>
-						<article>
-							<div class="question_label">html</div>
-							<div class="question_title">这是文章的标题这是文章的标题这是文章的标题这是文章的标题</div>
-							<div class="question_push_date">发布时间</div>
-							<div class="question_author">作者</div>
-						</article>
-						<article>
-							<div class="question_label">html</div>
-							<div class="question_title">这是文章的标题这是文章的标题这是文章的标题这是文章的标题</div>
-							<div class="question_push_date">发布时间</div>
-							<div class="question_author">作者</div>
-						</article>
-						<article>
-							<div class="question_label">html</div>
-							<div class="question_title">这是文章的标题这是文章的标题这是文章的标题这是文章的标题</div>
-							<div class="question_push_date">发布时间</div>
-							<div class="question_author">作者</div>
-						</article>
-						<article>
-							<div class="question_label">html</div>
-							<div class="question_title">这是文章的标题这是文章的标题这是文章的标题这是文章的标题</div>
-							<div class="question_push_date">发布时间</div>
-							<div class="question_author">作者</div>
-						</article>
-						<article>
-							<div class="question_label">html</div>
-							<div class="question_title">这是文章的标题这是文章的标题这是文章的标题这是文章的标题</div>
-							<div class="question_push_date">发布时间</div>
-							<div class="question_author">作者</div>
-						</article>
-						<article>
-							<div class="question_label">html</div>
-							<div class="question_title">这是文章的标题这是文章的标题这是文章的标题这是文章的标题</div>
-							<div class="question_push_date">发布时间</div>
-							<div class="question_author">作者</div>
-						</article>
-						<article>
-							<div class="question_label">html</div>
-							<div class="question_title">这是文章的标题这是文章的标题这是文章的标题这是文章的标题</div>
-							<div class="question_push_date">发布时间</div>
-							<div class="question_author">作者</div>
-						</article>
-						<article>
-							<div class="question_label">html</div>
-							<div class="question_title">这是文章的标题这是文章的标题这是文章的标题这是文章的标题</div>
-							<div class="question_push_date">发布时间</div>
-							<div class="question_author">作者</div>
-						</article>
-						<article>
-							<div class="question_label">html</div>
-							<div class="question_title">这是文章的标题这是文章的标题这是文章的标题这是文章的标题</div>
-							<div class="question_push_date">发布时间</div>
-							<div class="question_author">作者</div>
-						</article>
-						<article>
-							<div class="question_label">html</div>
-							<div class="question_title">这是文章的标题这是文章的标题这是文章的标题这是文章的标题</div>
-							<div class="question_push_date">发布时间</div>
-							<div class="question_author">作者</div>
-						</article>
-						<article>
-							<div class="question_label">html</div>
-							<div class="question_title">这是文章的标题这是文章的标题这是文章的标题这是文章的标题</div>
-							<div class="question_push_date">发布时间</div>
-							<div class="question_author">作者</div>
-						</article>
+						<div>
+						  <!-- Nav tabs -->
+						  <ul class="nav nav-tabs" role="tablist">
+						  	<li role="presentation" data-ranking="latest" class="active" @click="toggle"><router-link to="/question/latestQuestion" data-toggle="tab">最新回答</router-link></li>
+							<li role="presentation" data-ranking="hot"  @click="toggle"><router-link to="/questions/hotQuestion">最热回答</router-link></li>
+						  </ul>
+
+						  <!-- Tab panes -->
+						  <div class="tab-content">								
+								<question-category :ranking="ranking"></question-category>
+						  </div>
+						</div>
 					</main>
 				</div>
-				<div class="clo-md-4 col-lg-4">
+				<div class="col-sm-4 clo-md-4 col-lg-4">
 					<aside>
 						<div class="widget">
 							<h3>侧栏标题</h3>
@@ -112,16 +34,25 @@
 
 <script>
 import $ from 'jquery'
+import 	questionCategory from './questionCategory.vue'
 
 export default {
 	data: function() {
 		return {
-			articles: {}
+			articles: {},
+			ranking: 'latest',
 		}
 	},
-	beforeCreate: function() {
-		console.log('beforeCreate');
+	methods: {
+		toggle(ev) {
+			$(".nav-tabs li").removeClass('active');
+			$(ev.currentTarget).toggleClass('active');
+			this.ranking = $(ev.currentTarget).data('ranking');
+		},
 	},
+	components: {
+		questionCategory,
+	}
 
 }
 </script>
@@ -129,6 +60,7 @@ export default {
 <style scoped>
 	.section3 {
 		padding-top: 60px;
+		padding-bottom: 52px;
 		background: url('../assets/bj.png');
 	}
 	.container main,
@@ -159,5 +91,16 @@ export default {
 	}
 	.widget {
 		padding: 15px;
+	}
+	.tab-content {
+		overflow: hidden;
+		min-height: 400px;
+	}
+	.nav-tabs {
+		padding-top: 15px;
+		margin-left: 10px;
+	}
+	a:hover {
+		background: 0 0!important;
 	}
 </style>

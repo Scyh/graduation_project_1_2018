@@ -14,7 +14,8 @@ var mongoose = require('./db.js'),
   Notice = require('./models/notice.js'),
   Announcement = require('./models/announcement.js'),
   TipOff = require('./models/tipOff.js'),
-  Message = require('./models/message.js');
+  Message = require('./models/message.js'),
+  Question = require('./models/questions.js');
 
 var app = express();
 
@@ -733,6 +734,19 @@ app.post('/api/leaveMsg', function(req, res, next) {
       })
     })
 })
+
+// 获取问题
+app.get('/api/getQuestion', (req, res, next) => {
+  Question.fetchQuestion({
+    type: req.query.type,
+    page: req.query.page
+  }).then(data => {
+    res.json(data)
+  }).catch(err => {
+    console.log(err)
+  })
+})
+
 
 // test 
 app.get('/api/test', function(req, res, next) {

@@ -12,6 +12,8 @@ import messageBoard from '../components/messageBoard.vue'
 import admin from '../components/admin.vue'
 import store from '../store/index.js'
 import adminUserInfo from '../components/admin_User_Manage.vue'
+import questionDetail from '../components/question_detail.vue'
+
 
 Vue.use(Router)
 
@@ -57,10 +59,15 @@ const router = new Router({
       component: admin
     },
     {
-      path: '/questions',
-      component: question
+      path: '/questions/:questionCategory',
+      component: question,
+      name: 'question'
     },
-
+    {
+      path: '/q/:id',
+      component: questionDetail
+    },
+    
     // 查看自己或者别人的主页
     {
       path: '/:username/articles/:id',
@@ -84,7 +91,6 @@ const router = new Router({
       path: '/announcement',
       component: announcement
     },
-
     // 留言板页面
     {
       path: '/messageBoard',

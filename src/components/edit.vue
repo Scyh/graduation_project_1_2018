@@ -24,10 +24,14 @@
 									</select>
 								</div>
 								<div class="col-md-10 title">
-									<input type="text" id="article_title" class="form-control" placeholder="请填写文章标题">
+									<input type="text" v-if="!isQuestion" id="article_title" class="form-control" placeholder="请填写文章标题">
+
+									<input type="text" v-else id="question_title" class="form-control" placeholder="请填写问题标题">
+
 								</div>
 								<div class="col-md-1">
-									<button class="btn btn-danger" id="publish" @click="publish()">发表文章</button>
+									<button class="btn btn-danger" v-if="!isQuestion" id="publish" @click="publish()">发表文章</button>
+									<button class="btn btn-danger" v-else id="publish" @click="">提问问题</button>
 								</div>
 							</div>
 						</div>
@@ -39,14 +43,13 @@
 							</div>
 						</div>
 					</div>
-					<div class="saveDraft">
+					<div class="saveDraft" v-if="!isQuestion">
 						<div class="row">
 							<div class="col-md-12">
 								<label>文章副标签：</label>
 								<div class="newLabel">
 									<label class="addNew" @click='addNewLabel($event)'>添加标签</label>
-								</div>
-								
+								</div>		
 							</div>
 						</div>
 					</div>
@@ -60,6 +63,18 @@
 	import bus from '../bus.js'
 
 	export default {
+		props: {
+
+			// 提问问题页面
+			isQuestion: {
+				default: true
+			},
+
+			// 回答问题
+			answerQuestion: {
+				default: false
+			}
+		},
 		data() {
 			return {
 				value: '',
@@ -83,6 +98,11 @@
 				this.isReEdit = true;
 				this.getOldArticle(this.$route.query.id);
 			}
+
+			// if (this.answerQuestion) {
+			// 	$(".fa-mavon-eye-slash").trigger('click')	
+			// }
+			
 		},
 		destroyed() {
 			// 不是编辑状态
