@@ -24,9 +24,6 @@
 
 <script>
   export default {
-    data: function() {
-      return {}
-    },
     mounted: function() {
       let that = this;
       $('#modalLogin').on('hide.bs.modal', function () {

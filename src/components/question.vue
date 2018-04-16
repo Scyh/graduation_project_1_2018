@@ -7,7 +7,7 @@
 						<div>
 						  <!-- Nav tabs -->
 						  <ul class="nav nav-tabs" role="tablist">
-						  	<li role="presentation" data-ranking="latest" class="active" @click="toggle"><router-link to="/question/latestQuestion" data-toggle="tab">最新回答</router-link></li>
+						  	<li role="presentation" data-ranking="latest" class="active" @click="toggle"><router-link to="/questions/latestQuestion" data-toggle="tab">最新回答</router-link></li>
 							<li role="presentation" data-ranking="hot"  @click="toggle"><router-link to="/questions/hotQuestion">最热回答</router-link></li>
 						  </ul>
 

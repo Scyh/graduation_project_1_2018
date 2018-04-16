@@ -79,4 +79,8 @@ span:focus {
 #adminCheckArticleModal .modal-body img {
   max-width: 100%;
 }
+
+.text-center {
+  text-align: center;
+}
 </style>

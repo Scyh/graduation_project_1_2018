@@ -14,7 +14,10 @@
 						{{ item.notice_ByUser }}
 					</router-link>
 					{{item.notice_type | switchNoticeType}}
-					<router-link :to="'/' + notice_user + '/articles/' + item.notice_title_id">
+					<router-link v-if="item.notice_catogory =='article'" :to="'/' + notice_user + '/articles/' + item.notice_title_id">
+						{{item.notice_title}}
+					</router-link>
+					<router-link v-else :to="'/q/' + item.notice_title_id">
 						{{item.notice_title}}
 					</router-link>
 				</li>

@@ -15,7 +15,8 @@ var mongoose = require('./db.js'),
   Announcement = require('./models/announcement.js'),
   TipOff = require('./models/tipOff.js'),
   Message = require('./models/message.js'),
-  Question = require('./models/questions.js');
+  Question = require('./models/questions.js'),
+  Answer = require('./models/answer.js');
 
 var app = express();
 
@@ -601,7 +602,6 @@ app.post('/api/addNotice', function(req, res, next) {
       notice_title: req.body.notice_title,
       notice_title_id: req.body.notice_title_id
     };
-    console.log(noticeObj);
 
     if ((data * 1) > 0) {
       // 有记录，直接更新notice
@@ -747,6 +747,80 @@ app.get('/api/getQuestion', (req, res, next) => {
   })
 })
 
+// 获取自己的提问
+app.get('/api/getMyQuestions', (req, res, next) => {
+  Question.fetchMyQuestion({
+    question_author: req.query.question_author,
+    audit: req.query.audit
+  }).then(data => {
+    console.log(data)
+    res.json(data)
+  }).catch(err => {
+    console.log(err)
+  })
+})
+
+// 获取单个问题
+app.get('/api/getQuestionDetail', (req, res, next) => {
+  Question.findById(req.query.question_id).then(data => {
+    res.json(data)
+  }).catch(err => {
+    console.log(err)
+  })
+})
+
+// 获取问题的答案
+app.get('/api/getQuestionAnswer', (req, res, next) => {
+  Answer.findByBelongsTo(req.query.question_id).then(data => {
+    res.json(data)
+  }).catch(err => {
+    console.log(err)
+  })
+})
+
+// 回答问题
+app.post('/api/answerQuestion', (req, res, next) => {
+  let newAnswer = new Answer({
+    answer_author: req.body.answer_author,
+    answer_text: req.body.answer_text,
+    answer_date: req.body.answer_date,
+    answer_belongsTo: req.body.answer_belongsTo
+  });
+
+  newAnswer.save().then(data => {
+    res.send({
+      'status': 'success',
+      newAnswer: data
+    })
+  }).catch(err => {
+    console.log(err)
+    res.send({'status': 'fail'});
+  }).then(() => {
+
+    Question.incAnswerCount(req.body.answer_belongsTo).then(data => {
+      console.log(data)
+    }).catch(err => {
+      console.log(err)
+    })
+  })
+})
+
+// 答案被采纳之后, 需要将问题更新成已解决
+app.post('/api/adoptQuestion', (req, res, next) => {
+  Answer.adoptAnswer(req.body.answer_id).then(data => {
+    res.send({'status': 'success'})
+  }).catch(err => {
+    res.send({'status': 'fail'})
+  }).then(() => {
+    
+    // Question.solved(req.body.question_id).then(data => {
+    //   console.log(data)
+    // }).catch(err => {
+    //   console.log(err)
+    // })
+
+  })
+})
 
 // test 
 app.get('/api/test', function(req, res, next) {
@@ -754,7 +828,6 @@ app.get('/api/test', function(req, res, next) {
   //   console.log(data)
   // })
 })
-
 
 
 /*

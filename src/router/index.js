@@ -61,11 +61,12 @@ const router = new Router({
     {
       path: '/questions/:questionCategory',
       component: question,
-      name: 'question'
+      name: 'questions'
     },
     {
       path: '/q/:id',
-      component: questionDetail
+      component: questionDetail,
+      name: 'question'
     },
     
     // 查看自己或者别人的主页

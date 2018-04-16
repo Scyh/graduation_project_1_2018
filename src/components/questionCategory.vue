@@ -2,8 +2,10 @@
 	<div class="questions">
 		<template v-for="question in questions">
 			<div class="question-item">
-				<div class="answer-count text-center">
-					<span>0</span><small>回答</small>
+				<div :class="[question.question_answer_count > 0 ? 'hasAnswer' : 'noAnswer' ,question.question_solve == 'yes' ? 'hasSolved' : '',   'answer-count', 'text-center']">
+					<span>{{ question.question_answer_count }}</span><small>{{
+						question.question_solve == 'yes' ? '解决' : '回答'
+					}}</small>
 				</div>
 				<div class="pv-count text-center">
 					<span>{{ question.question_pv }}</span><small>浏览</small>
@@ -34,7 +36,7 @@
 			'ranking': {
 				default: 'latest',
 				type: String
-			}
+			},
 		},
 		data() {
 			return {
@@ -152,5 +154,15 @@
 		position: absolute;
 		padding-left: 8px;
 		margin-top: 2px;
+	}
+
+	.noAnswer {
+		background-color: #AD3A37;
+	}
+	.hasAnswer {
+		background-color: #009A61;	
+	}
+	.hasSolved {
+		background-color: #808B87;
 	}
 </style>

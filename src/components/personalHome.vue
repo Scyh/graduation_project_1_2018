@@ -84,7 +84,9 @@
 						    <div role="tabpanel" class="tab-pane active" id="myArticles">
 								<myArticles :userName="currentUserName"></myArticles>
 							</div>
-						    <div role="tabpanel" class="tab-pane" id="myQuestions">这里是我的提问</div>
+						    <div role="tabpanel" class="tab-pane" id="myQuestions">
+						    	<myQuestions :userName="currentUserName"></myQuestions>
+						    </div>
 						    <div role="tabpanel" class="tab-pane" id="myMessage">
 						    	<myNotice :userName="currentUserName" @initTabHeaderbadge="initNoticeBadge"></myNotice>
 						    </div>
@@ -201,6 +203,8 @@
 	import cropper from 'cropper'
 	import myArticles from '../components/myArticles.vue'
 	import myNotice from '../components/myNotice.vue'
+	import myQuestions from '../components/myQuestions.vue'
+
 	export default {
 		data: function () {
 			return {
@@ -355,6 +359,7 @@
 		components: {
 			myArticles,
 			myNotice,
+			myQuestions,
 		}
 	}
 </script>

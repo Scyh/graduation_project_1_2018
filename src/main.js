@@ -47,6 +47,9 @@ Vue.filter('switchNoticeType', function(value) {
 		case 'newAnswer':
 			return "回答了你的提问";
 			break;
+		case 'adopt':
+			return "采纳了你的回答";
+			break;
 		default:
 			return "不知道干了啥";
 	}

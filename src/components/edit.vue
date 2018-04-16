@@ -3,7 +3,7 @@
 		<div class="row">
 			<div class="col-md-12">
 				<div id="edit">
-					<div id="edit-title">
+					<div id="edit-title" v-if="!answerQuestion">
 						<div class="row">
 							<div class="col-md-12">
 								<div class="col-md-1 label">
@@ -43,7 +43,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="saveDraft" v-if="!isQuestion">
+					<div class="saveDraft" v-if="!isQuestion || !answerQuestion">
 						<div class="row">
 							<div class="col-md-12">
 								<label>文章副标签：</label>
@@ -92,16 +92,26 @@
 			// }
 		},
 		mounted() {
-			this.$store.dispatch('isEdit');
+			if (!this.answerQuestion) {
+				this.$store.dispatch('isEdit');	
+			}
 			if (this.$route.query.id) {
 				// console.log(this.$route.query.id)
 				this.isReEdit = true;
 				this.getOldArticle(this.$route.query.id);
 			}
 
-			// if (this.answerQuestion) {
-			// 	$(".fa-mavon-eye-slash").trigger('click')	
-			// }
+			if (this.answerQuestion) {
+				$(".fa-mavon-eye-slash").trigger('click');
+				$(".v-note-panel").css({
+					flex: 'none',
+					minHeight: '200px'
+				});
+				$(".v-note-wrapper").css({
+					minHeight: '280px',
+					height: '280px'
+				});
+			}
 			
 		},
 		destroyed() {
@@ -192,7 +202,6 @@
 
 					// 判断是否为空，为空则移除
 					if ($(ev.target).text() == '') {
-						console.log()
 						$(ev.target).parent().children().eq($(ev.target).index()).remove()
 					}
 
@@ -330,7 +339,8 @@
 		margin: 10px -15px;
 	}
 	.v-note-wrapper {
-		height: 500px !important;
+		height: 500px;
+		z-index: 1 !important;
 		/*background-color: #EFEFEF;*/
 	}
 	/*.auto-textarea-wrapper .auto-textarea-input.no-border {

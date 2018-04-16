@@ -27,7 +27,7 @@
               <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">  
                 <ul class="nav navbar-nav">  
                   <li><router-link :class="{active: isArticle}" to="/articles?page=1">文章</router-link></li>
-                  <li><router-link :class="{active: currentRoute=='questions'}"  to="/questions/latestQuestion">问答</router-link></li>
+                  <li><router-link :class="{active: isQuestion}"  to="/questions/latestQuestion">问答</router-link></li>
                   <li><router-link :class="{active: currentRoute=='video'}"  to="/video?page=1">视频</router-link></li>
                   <!-- <li><a href="#">专栏</a></li>
                   <li><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">发现<span class="caret"></span></a>
@@ -112,7 +112,7 @@ export default {
   data () {
     return {
       currentRoute: '',
-      username: ''
+      username: sessionStorage.username
     }
   },
   mounted: function () {
@@ -127,9 +127,11 @@ export default {
         this.$store.dispatch('logIn');
       }
     this.currentRoute = this.$route.path.slice(1);
-    console.log(this.$route);
   },
   computed: {
+    // username() {
+    //   return sessionStorage.username
+    // },
     ...mapGetters([
         'hasLogIn'
     ]),
@@ -138,6 +140,13 @@ export default {
       return this.$route.fullPath.indexOf('article')>-1?true:false
     },
 
+    isQuestion() {
+      if (this.$route.name == 'question' || this.$route.fullPath.indexOf('question') > -1) {
+        return true;
+      } else {
+        return false
+      }
+    },
     isPersonalHome() {
       return this.$route.name == 'personalHome'?true:false
     }

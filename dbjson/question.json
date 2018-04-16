@@ -1,0 +1,207 @@
+/* 1 */
+{
+    "_id" : ObjectId("5ad043c6b3ebca550201c05e"),
+    "question_author" : "shen",
+    "question_title" : "js继承问题",
+    "question_text" : "关于js继承的几种方法，哪种方法在开发中用到的最多啊？",
+    "question_date" : NumberLong(1523598168498),
+    "question_solve" : "no",
+    "question_pv" : 10,
+    "question_audit" : "audited",
+    "question_catogery" : "javascript"
+}
+
+/* 2 */
+{
+    "_id" : ObjectId("5ad04400b3ebca550201c078"),
+    "question_author" : "shen",
+    "question_title" : "css 画三角形",
+    "question_text" : "怎么用css 的border属性 画三角形？？？？？？？怎么用css 的border属性 画三角形？？？？？？？怎么用css 的border属性 画三角形？？？？？？？怎么用css 的border属性 画三角形？？？？？？？怎么用css 的border属性 画三角形？？？？？？？怎么用css 的border属性 画三角形？？？？？？？怎么用css 的border属性 画三角形？？？？？？？怎么用css 的border属性 画三角形？？？？？？？",
+    "question_date" : NumberLong(1523598351498),
+    "question_solve" : "no",
+    "question_pv" : 9,
+    "question_audit" : "audited",
+    "question_catogery" : "css"
+}
+
+/* 3 */
+{
+    "_id" : ObjectId("5ad04466b3ebca550201c0a2"),
+    "question_author" : "shen",
+    "question_title" : "js作用域到底有哪些",
+    "question_text" : "js作用域到底有哪些js作用域到底有哪些js作用域到底有哪些js作用域到底有哪些js作用域到底有哪些js作用域到底有哪些js作用域到底有哪些js作用域到底有哪些js作用域到底有哪些js作用域到底有哪些js作用域到底有哪些",
+    "question_date" : NumberLong(1523598168498),
+    "question_solve" : "yes",
+    "question_pv" : 21,
+    "question_audit" : "audited",
+    "question_catogery" : "javascript"
+}
+
+/* 4 */
+{
+    "_id" : ObjectId("5ad04466b3ebca550201c0a4"),
+    "question_title" : "css 变形属性的运用",
+    "question_author" : "shen",
+    "question_text" : "css 变形属性的运用css 变形属性的运用css 变形属性的运用css 变形属性的运用css 变形属性的运用",
+    "question_date" : NumberLong(1523598351498),
+    "question_solve" : "no",
+    "question_pv" : 0,
+    "question_audit" : "audited",
+    "question_catogery" : "css"
+}
+
+/* 5 */
+{
+    "_id" : ObjectId("5ad044bfb3ebca550201c0ce"),
+    "question_title" : "js继承问题",
+    "question_author" : "zhang",
+    "question_text" : "关于js继承的几种方法，哪种方法在开发中用到的最多啊？",
+    "question_date" : NumberLong(1523598168498),
+    "question_solve" : "no",
+    "question_pv" : 31,
+    "question_audit" : "audited",
+    "question_catogery" : "javascript"
+}
+
+/* 6 */
+{
+    "_id" : ObjectId("5ad044bfb3ebca550201c0d0"),
+    "question_title" : "css 画三角形",
+    "question_author" : "zhang",
+    "question_text" : "怎么用css 的border属性 画三角形？？？？？？？怎么用css 的border属性 画三角形？？？？？？？怎么用css 的border属性 画三角形？？？？？？？怎么用css 的border属性 画三角形？？？？？？？怎么用css 的border属性 画三角形？？？？？？？怎么用css 的border属性 画三角形？？？？？？？怎么用css 的border属性 画三角形？？？？？？？怎么用css 的border属性 画三角形？？？？？？？",
+    "question_date" : NumberLong(1523598351498),
+    "question_solve" : "no",
+    "question_pv" : 15,
+    "question_audit" : "audited",
+    "question_catogery" : "css"
+}
+
+/* 7 */
+{
+    "_id" : ObjectId("5ad044bfb3ebca550201c0d2"),
+    "question_title" : "javascript作用域到底有哪些",
+    "question_author" : "shen",
+    "question_text" : "js作用域到底有哪些js作用域到底有哪些js作用域到底有哪些js作用域到底有哪些js作用域到底有哪些js作用域到底有哪些js作用域到底有哪些js作用域到底有哪些js作用域到底有哪些js作用域到底有哪些js作用域到底有哪些",
+    "question_date" : NumberLong(1523598168498),
+    "question_solve" : "no",
+    "question_pv" : 21,
+    "question_audit" : "audited",
+    "question_catogery" : "javascript"
+}
+
+/* 8 */
+{
+    "_id" : ObjectId("5ad044bfb3ebca550201c0d4"),
+    "question_title" : "css 变形属性的运用",
+    "question_author" : "shen",
+    "question_text" : "css 变形属性的运用css 变形属性的运用css 变形属性的运用css 变形属性的运用css 变形属性的运用",
+    "question_date" : NumberLong(1523598351498),
+    "question_solve" : "yes",
+    "question_pv" : 16,
+    "question_audit" : "audited",
+    "question_catogery" : "css"
+}
+
+/* 9 */
+{
+    "_id" : ObjectId("5ad04592b3ebca550201c119"),
+    "question_title" : "javascript的兼容",
+    "question_author" : "zhang",
+    "question_text" : "关于js继承的几种方法，哪种方法在开发中用到的最多啊？",
+    "question_date" : NumberLong(1523598168498),
+    "question_solve" : "no",
+    "question_pv" : 85,
+    "question_audit" : "audited",
+    "question_catogery" : "javascript"
+}
+
+/* 10 */
+{
+    "_id" : ObjectId("5ad04592b3ebca550201c11b"),
+    "question_title" : "css 画三角形",
+    "question_author" : "zhang",
+    "question_text" : "怎么用css 的border属性 画三角形？？？？？？？怎么用css 的border属性 画三角形？？？？？？？怎么用css 的border属性 画三角形？？？？？？？怎么用css 的border属性 画三角形？？？？？？？怎么用css 的border属性 画三角形？？？？？？？怎么用css 的border属性 画三角形？？？？？？？怎么用css 的border属性 画三角形？？？？？？？怎么用css 的border属性 画三角形？？？？？？？",
+    "question_date" : NumberLong(1523598351498),
+    "question_solve" : "no",
+    "question_pv" : 33,
+    "question_audit" : "audited",
+    "question_catogery" : "css"
+}
+
+/* 11 */
+{
+    "_id" : ObjectId("5ad04592b3ebca550201c11d"),
+    "question_title" : "js作用域到底有哪些",
+    "question_author" : "zhang",
+    "question_text" : "js作用域到底有哪些js作用域到底有哪些js作用域到底有哪些js作用域到底有哪些js作用域到底有哪些js作用域到底有哪些js作用域到底有哪些js作用域到底有哪些js作用域到底有哪些js作用域到底有哪些js作用域到底有哪些",
+    "question_date" : NumberLong(1523598168498),
+    "question_solve" : "no",
+    "question_pv" : 3,
+    "question_audit" : "audited",
+    "question_catogery" : "javascript"
+}
+
+/* 12 */
+{
+    "_id" : ObjectId("5ad04592b3ebca550201c11f"),
+    "question_title" : "css 变形属性的运用",
+    "question_author" : "zhang",
+    "question_text" : "css 变形属性的运用css 变形属性的运用css 变形属性的运用css 变形属性的运用css 变形属性的运用",
+    "question_date" : NumberLong(1523598351498),
+    "question_solve" : "no",
+    "question_pv" : 4,
+    "question_audit" : "audited",
+    "question_catogery" : "css"
+}
+
+/* 13 */
+{
+    "_id" : ObjectId("5ad04592b3ebca550201c121"),
+    "question_title" : "js继承问题",
+    "question_author" : "shen",
+    "question_text" : "关于js继承的几种方法，哪种方法在开发中用到的最多啊？",
+    "question_date" : NumberLong(1523598168498),
+    "question_solve" : "no",
+    "question_pv" : 21,
+    "question_audit" : "audited",
+    "question_catogery" : "javascript"
+}
+
+/* 14 */
+{
+    "_id" : ObjectId("5ad04592b3ebca550201c123"),
+    "question_title" : "css 画三角形",
+    "question_author" : "zhang",
+    "question_text" : "怎么用css 的border属性 画三角形？？？？？？？怎么用css 的border属性 画三角形？？？？？？？怎么用css 的border属性 画三角形？？？？？？？怎么用css 的border属性 画三角形？？？？？？？怎么用css 的border属性 画三角形？？？？？？？怎么用css 的border属性 画三角形？？？？？？？怎么用css 的border属性 画三角形？？？？？？？怎么用css 的border属性 画三角形？？？？？？？",
+    "question_date" : NumberLong(1523598351498),
+    "question_solve" : "no",
+    "question_pv" : 1,
+    "question_audit" : "audited",
+    "question_catogery" : "css"
+}
+
+/* 15 */
+{
+    "_id" : ObjectId("5ad04592b3ebca550201c125"),
+    "question_title" : "javascript作用域到底有哪些",
+    "question_author" : "shen",
+    "question_text" : "js作用域到底有哪些js作用域到底有哪些js作用域到底有哪些js作用域到底有哪些js作用域到底有哪些js作用域到底有哪些js作用域到底有哪些js作用域到底有哪些js作用域到底有哪些js作用域到底有哪些js作用域到底有哪些",
+    "question_date" : NumberLong(1523598168498),
+    "question_solve" : "no",
+    "question_pv" : 52,
+    "question_audit" : "audited",
+    "question_catogery" : "javascript"
+}
+
+/* 16 */
+{
+    "_id" : ObjectId("5ad04592b3ebca550201c127"),
+    "question_title" : "css 变形属性的运用",
+    "question_author" : "shen",
+    "question_text" : "css 变形属性的运用css 变形属性的运用css 变形属性的运用css 变形属性的运用css 变形属性的运用",
+    "question_date" : NumberLong(1523598351498),
+    "question_solve" : "no",
+    "question_pv" : 0,
+    "question_audit" : "audited",
+    "question_catogery" : "css"
+}
