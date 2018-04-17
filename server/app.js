@@ -1093,6 +1093,49 @@ app.post('/api/admin/delAllTipOff', function(req, res, next) {
     })
 })
 
+// 获取提问
+app.get('/api/admin/getQuestion', (req, res, next) => {
+  Question.adminFetchSome({
+    type: req.query.type,
+    page: req.query.page
+  }).then(data => {
+    res.json(data);
+  }).catch(err => {
+    console.log(err)
+  })
+})
+
+// 删除提问
+app.post('/api/admin/deleteQuestion', (req, res, next) => {
+  Question.deleteOne(req.body._id)
+  .then(data => {
+    res.send({status: 'success'})
+  }).catch(err => {
+    console.log(err)
+    res.send({status: 'fail'})
+  })
+})
+
+// 提问通过审核
+app.post('/api/admin/questionHasAudited', function(req, res, next) {
+  Question.audit(req.body.id).then(data => {
+    if (data.n == 1 && data.nModified == 1 && data.ok == 1) {
+      res.send({
+        status: 'success'
+      })
+    } else {
+      res.send({
+        status: 'fail'
+      })
+    }
+  }).catch(err => {
+    console.log('err:' + err);
+    res.send({
+      status: 'fail'
+    })
+  })
+})
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');

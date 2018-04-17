@@ -51,7 +51,6 @@ Articleschema.statics = {
 				'article_audit': 'audited'
 			}).limit(5).skip((params.pageCount - 1) * 5).exec(data);
 		}
-
 	},
 
 	// 获取文章数量

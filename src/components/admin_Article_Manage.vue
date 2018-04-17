@@ -1,6 +1,6 @@
 <template>
 	<div id="admin_Article_Manage">
-
+		<h4>Page：{{ currentPage }}</h4>
 		<table class="table">
 			<thead>
 				<tr>
@@ -48,12 +48,11 @@
 			        <span class="glyphicon glyphicon-chevron-left"></span>
 			    	</a>
 			    </li>
-			    <li class="jump-to">
-			    	<a href="javascript:void(0)" @click="change()" title="跳转">
+			    <!-- <li class="jump-to">
+			    	<a href="javascript:void(0)" @keyCode.enter="change()" title="跳转">
 			        <span><input type="text" placeholder="跳转"></span>
 			      </a>
-				    
-			    </li>
+			    </li> -->
 			    <li>
 				    <a href="javascript:void(0)" @click="change('next')" title="后一页">
 			        <span class="glyphicon glyphicon-chevron-right"></span>
@@ -81,14 +80,13 @@
 		    </div>
 		</div>	<!-- 确认删除 modal end-->
 
-
 		<admin-check-article-modal></admin-check-article-modal>
 
 	</div>
 </template>
 <script>
-	import bus from '../bus.js'
 	import adminCheckArticleModal from './admin_check_article_modal.vue'
+	import bus from '../bus.js'
 
 	export default {
 		data() {
@@ -104,11 +102,13 @@
 			this.currentPage = 1;
 			this.init('all', 1);
 			bus.$on('type', data => {
-				console.log("文章筛选" + data)
-				sessionStorage.articlePage = 1;
-				this.currentPage = sessionStorage.articlePage;
-				this.type = data;
-				this.init(data, this.currentPage);
+
+				if (data.name == 'article' ) {
+					sessionStorage.articlePage = 1;
+					this.currentPage = sessionStorage.articlePage;
+					this.type = data;
+					this.init(data.filter, this.currentPage);	
+				}
 			})
 		},
 		methods: {

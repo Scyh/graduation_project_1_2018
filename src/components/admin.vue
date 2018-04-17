@@ -15,14 +15,14 @@
 					<dt @click="fn($event)" title="userManage" id="userManage"><span class="glyphicon glyphicon-user"></span>用户管理</dt>
 				</dl>
 				<dl>
-					<dt @click="fn($event),articleFilter('all', $event)" title="articleManage" id="articleManage"><span class="glyphicon glyphicon-list"></span>文章管理</dt>
-					<dd @click="fn($event),articleFilter('audited', $event)" title="articleManage">已审核</dd>
-					<dd @click="fn($event),articleFilter('notAudit', $event)" title="articleManage">待审核</dd>
+					<dt @click="fn($event),typeFilter('all', $event)" title="articleManage" id="articleManage"><span class="glyphicon glyphicon-list"></span>文章管理</dt>
+					<dd @click="fn($event),typeFilter('audited', $event)" title="articleManage">已审核</dd>
+					<dd @click="fn($event),typeFilter('notAudit', $event)" title="articleManage">待审核</dd>
 				</dl>
 				<dl>
-					<dt @click="fn($event)" title="articleManage" id="articleManage"><span class="glyphicon glyphicon-list"></span>提问管理</dt>
-					<dd @click="fn($event)" title="articleManage">已审核</dd>
-					<dd @click="fn($event)" title="articleManage">待审核</dd>
+					<dt @click="fn($event),typeFilter('all', $event)" title="questionManage" id="questionManage"><span class="glyphicon glyphicon-list"></span>提问管理</dt>
+					<dd @click="fn($event),typeFilter('audit', $event)" title="questionManage">已审核</dd>
+					<dd @click="fn($event),typeFilter('notAudit', $event)" title="questionManage">待审核</dd>
 				</dl>
 				<dl>
 					<dt @click="fn($event),announcementPublish('manage', $event)" title="announcement" id="announcement"><span class="glyphicon glyphicon-bullhorn"></span>公告管理</dt>
@@ -43,6 +43,7 @@
 				<div class="menu-right-body">
 					<admin-user-info v-if="currentContent == 'userManage' "></admin-user-info>
 					<admin-article v-if="currentContent == 'articleManage' "></admin-article>
+					<admin-question v-if="currentContent == 'questionManage' "></admin-question>
 					<admin-announcement v-if="currentContent == 'announcement' "></admin-announcement>
 					<admin-message v-if="currentContent == 'message' "></admin-message>
 					<admin-tip-off v-if="currentContent == 'tipOff' "></admin-tip-off>
@@ -57,6 +58,7 @@
 	import adminAnnouncement from './admin_announcement.vue'
 	import adminMessage from './admin_message.vue'
 	import adminTipOff from './admin_tipOff.vue'
+	import adminQuestion from './admin_Question_Manage.vue'
 	import bus from '../bus.js'
 
 	export default {
@@ -95,11 +97,13 @@
 					this.currentContent = $(event.target).attr('title');
 				},
 
-			// 筛选文章
-			articleFilter(data, event) {
-				console.log(this.currentContent)
-				
-				bus.$emit('type', data)
+			// 筛选
+			typeFilter(data, event) {
+				if (this.currentContent == 'articleManage') {
+					bus.$emit('type', {'name': 'article', 'filter': data})
+				} else if (this.currentContent == 'questionManage') {
+					bus.$emit('type', {'name': 'question', 'filter': data})
+				}
 			},
 
 			// 公告操作
@@ -113,7 +117,8 @@
 			adminArticle,
 			adminAnnouncement,
 			adminMessage,
-			adminTipOff
+			adminTipOff,
+			adminQuestion
 		}
 
 	}

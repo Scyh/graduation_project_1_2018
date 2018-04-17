@@ -89,6 +89,57 @@ Questionschema.statics = {
 			}
 		}).exec(data)
 	},
+
+	// 管理员页面获取提问
+	adminFetchSome(params, data) {
+		switch (params.type) {
+			case 'all':
+				return this.find({}, {
+					'question_title': 1,
+					'question_author': 1,
+					'question_date': 1,
+					'question_audit': 1,
+					'question_solve': 1,
+				}).limit(8).skip((params.page - 1) * 8).exec(data);
+				break;
+			case 'audited':
+			case 'notAudit':
+				return this.find({'question_audit': params.type}, {
+					'question_title': 1,
+					'question_author': 1,
+					'question_date': 1,
+					'question_audit': 1,
+					'question_solve': 1,
+				}).limit(8).skip((params.page - 1) * 8).exec(data);
+				break;
+			default:
+				return this.find({}, {
+					'question_title': 1,
+					'question_author': 1,
+					'question_date': 1,
+					'question_audit': 1,
+					'question_solve': 1,
+				}).limit(8).skip((params.page - 1) * 8).exec(data);
+		}
+	},
+
+	// 提问删除
+	deleteOne: function(_id, data) {
+		return this.remove({
+			"_id": _id
+		}).exec(data)
+	},
+
+	// 审核通过
+	audit(id, data) {
+		return this.update({
+			"_id": id
+		}, {
+			$set: {
+				'question_audit': 'audited'
+			}
+		}).exec(data);
+	},
 }
 
 module.exports = Questionschema;
