@@ -60,7 +60,7 @@
                 <li><router-link to="/edit/askQuestions">提问题<span><img src="../assets/ask.png"></span></router-link></li>
                 <li><router-link to="/edit/leaveMessage">去留言<span><img src="../assets/message.png"></span></router-link></li> -->
                 <li @click="toWrite('blog')"><span>写博客</span></li>
-                <li><span>提问题</span></li>
+                <li @click="toWrite('question')"><span>提问题</span></li>
                 <li @click="toWrite('message')"><span>去留言</span></li>
               </ul>
             </span>
@@ -200,11 +200,13 @@ export default {
         console.log(type)
         switch (type) {
           case 'blog':
-            this.$router.push({path: '/edit/mdEditor'})  
+            this.$router.push({path: '/edit/mdEditor/A'})  
             break;
           case 'message':
             this.$router.push({path: '/messageBoard'})  
             break;
+          case 'question':
+            this.$router.push({path: '/edit/QmdEditor/Q'})
         }
         
       }

@@ -3,13 +3,17 @@ var mongoose = require('mongoose');
 var Questionschema = new mongoose.Schema({
 	question_title: String,
 	question_text: String,
+	question_author: String,
 	question_date: {
 		type: Number
 	},
-	question_solve: String,
+	question_solve: {
+		type: String,
+		default: 'no'
+	},
 	question_pv: {
 		type: Number,
-		default: 0,
+		default: 0
 	},
 	question_catogery: {
 		type: String,
@@ -18,6 +22,10 @@ var Questionschema = new mongoose.Schema({
 	question_answer_count: {
 		type: Number,
 		default: 0
+	},
+	question_audit: {
+		type: String,
+		default: 'notAudit'
 	}
 
 })
@@ -25,7 +33,7 @@ var Questionschema = new mongoose.Schema({
 Questionschema.statics = {
 	fetchQuestion(params, data) {
 		if (params.type == 'latest') {
-			return this.find({}, {
+			return this.find({'question_audit': 'audited'}, {
 				'question_author': 1,
 				'question_title': 1,
 				'question_date': 1,
@@ -58,7 +66,7 @@ Questionschema.statics = {
 			return this.find({'question_author': params.question_author}).exec(data);
 		} else {
 			return this.find({
-				'question_author': params.username,
+				'question_author': params.question_author,
 				'question_audit': params.audit
 			}).exec(data)
 		}	

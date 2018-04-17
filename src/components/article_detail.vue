@@ -20,13 +20,16 @@
 							<div class="article-footer">
 								<div class="row">
 									<div class="col-md-12"><span>副标签：{{ article.article_label | switchSubLabel }}</span></div>
-									<div class="col-md-2 col-md-offset-4 like"><span :class="{forbidden: hasClick, disabled: hasLike}" @click="likeOrNot('like', $event)">赞 | <i>{{ article_like }}</i></span></div>
-									<div class="col-md-2 dislike"><span :class="{forbidden: hasClick, disabled:hasDislike }" @click="likeOrNot('dislike', $event)">踩 | <i>{{ article_dislike }}</i></span></div>
-									<div class="tip-off" @click="tipOff">举报</div>
+
+									<template v-if="article.article_audit == 'audited'">
+										<div class="col-md-2 col-md-offset-4 like"><span :class="{forbidden: hasClick, disabled: hasLike}" @click="likeOrNot('like', $event)">赞 | <i>{{ article_like }}</i></span></div>
+										<div class="col-md-2 dislike"><span :class="{forbidden: hasClick, disabled:hasDislike }" @click="likeOrNot('dislike', $event)">踩 | <i>{{ article_dislike }}</i></span></div>
+										<div class="tip-off" @click="tipOff">举报</div>
+									</template>
 								</div>
 							</div>
 						</article>
-						<div class="article-comment">
+						<div v-if="article.article_audit == 'audited'" class="article-comment">
 							<div v-if="!hasLogIn">
 								<p>目前您尚未登录，请<b @click="logIn">登录</b>或<b @click="reg">注册</b>后进行评论</p>
 							</div>

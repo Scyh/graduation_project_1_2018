@@ -83,7 +83,7 @@ const router = new Router({
 
     // 编辑页面
     {
-      path: '/edit/:class',
+      path: '/edit/:class/:type',
       component: edit
     },
 

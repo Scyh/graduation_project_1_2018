@@ -20,6 +20,11 @@
 					<dd @click="fn($event),articleFilter('notAudit', $event)" title="articleManage">待审核</dd>
 				</dl>
 				<dl>
+					<dt @click="fn($event)" title="articleManage" id="articleManage"><span class="glyphicon glyphicon-list"></span>提问管理</dt>
+					<dd @click="fn($event)" title="articleManage">已审核</dd>
+					<dd @click="fn($event)" title="articleManage">待审核</dd>
+				</dl>
+				<dl>
 					<dt @click="fn($event),announcementPublish('manage', $event)" title="announcement" id="announcement"><span class="glyphicon glyphicon-bullhorn"></span>公告管理</dt>
 					<!-- <dd @click="fn($event),announcement('')">公告管理</dd> -->
 					<dd @click="fn($event),announcementPublish('publish', $event)" title="announcement">发布公告</dd>

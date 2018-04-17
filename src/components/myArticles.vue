@@ -60,10 +60,11 @@
 					for (let i in data) {
 						that.myArticles.push(data[i]);
 					}
+
+					// 初始化的时候 event 不存在，做个判断
 					if (event) {
 						$(event.target).addClass('activeFilter').siblings().removeClass('activeFilter')	
 					}
-					
 					
 				});
 			},

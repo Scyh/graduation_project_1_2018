@@ -94,7 +94,7 @@
 						</template>
 
 					</div>
-					<div class="answers-foot">
+					<div v-if="questionDetail.audit == 'audited'" class="answers-foot">
 						<div class="row">
 							<div class="col-lg-12 col-md-12">
 								<h3>撰写答案</h3>
@@ -156,6 +156,11 @@
 					$.get('http://localhost:3000/api/getQuestionDetail', {
 						question_id: question_id
 					}).then(data => {
+						console.log(data.question_text)
+						let div = document.createElement('div');
+						div.innerHTML = data.question_text;
+						data.question_text = div.innerText;
+						
 						that.questionDetail = data;
 						
 						// 判断问题是否被解决

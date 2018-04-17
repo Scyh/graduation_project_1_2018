@@ -735,6 +735,24 @@ app.post('/api/leaveMsg', function(req, res, next) {
     })
 })
 
+// 上传提问
+app.post('/api/askQuestion', (req, res, next) => {
+  let newQuestion = new Question({
+    question_author: req.body.question_author,
+    question_title: req.body.question_title,
+    question_text: req.body.question_text,
+    question_date: new Date().valueOf(),
+    question_catogery: req.body.question_catogery,
+  });
+
+  newQuestion.save().then(data => {
+    console.log(data)
+    res.send({status: 'success'})
+  }).catch(err => {
+    res.send({status: 'fail'})
+  })
+})
+
 // 获取问题
 app.get('/api/getQuestion', (req, res, next) => {
   Question.fetchQuestion({

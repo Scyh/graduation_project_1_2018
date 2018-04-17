@@ -31,7 +31,7 @@
 								</div>
 								<div class="col-md-1">
 									<button class="btn btn-danger" v-if="!isQuestion" id="publish" @click="publish()">发表文章</button>
-									<button class="btn btn-danger" v-else id="publish" @click="">提问问题</button>
+									<button class="btn btn-danger" v-else id="publish" @click="askQuestion">提问问题</button>
 								</div>
 							</div>
 						</div>
@@ -43,7 +43,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="saveDraft" v-if="!isQuestion || !answerQuestion">
+					<div class="saveDraft" v-if="!isQuestion && !answerQuestion">
 						<div class="row">
 							<div class="col-md-12">
 								<label>文章副标签：</label>
@@ -65,11 +65,6 @@
 	export default {
 		props: {
 
-			// 提问问题页面
-			isQuestion: {
-				default: true
-			},
-
 			// 回答问题
 			answerQuestion: {
 				default: false
@@ -79,6 +74,11 @@
 			return {
 				value: '',
 				isReEdit: false,	// 是否是编辑旧文章
+			}
+		},
+		computed: {
+			isQuestion() {
+				return this.$route.params.type && this.$route.params.type == 'Q';
 			}
 		},
 		beforeMount() {
@@ -140,7 +140,7 @@
 
 				if (title == '') {
 					$("#article_title").focus();
-				} else if (content == '') {
+				} else if (content.trim() == '') {
 					$(".auto-textarea-input").focus()
 				} else if (category == '') {
 					// alert("请选择文章类别,下方可添加文章副标签");
@@ -260,7 +260,6 @@
 				});
 			},
 
-
 			// 添加图片
 			imgAdd(pos, $file) {
 				let that = this;
@@ -284,6 +283,36 @@
 				});
 			},	// imgAdd end
 
+			askQuestion() {
+				let that = this,
+					title = $("#question_title").val().trim(),
+					md_content = $(".auto-textarea-input").val(),
+					content = $(".v-show-content-html").html(),
+					category = $(".category").val(),
+					author = sessionStorage.username;
+					if (title == '') {
+						$("#question_title").focus();
+					} else if (content.trim() == '') {
+						$(".auto-textarea-input").focus()
+					} else if (category == '') {
+	
+						// alert("请选择文章类别,下方可添加文章副标签");
+						$(".category").focus()
+					} else {
+						$.post('http://localhost:3000/api/askQuestion', {
+							question_author: sessionStorage.username,
+							question_title: title,
+							question_text: content,
+							question_catogery: category
+							}).then(data => {
+								alert('提问成功,审核中');
+								that.$router.replace('/' + author + '/home');
+							}).catch(err => {
+								alert('提问失败！')
+							})
+					}
+			}
+
 		},	// methods end
 		components: {
 			mavonEditor
@@ -302,9 +331,9 @@
 		font-size: 18px;
 		text-align: left;
 	}
-	.label select{
+	.label select {
 		color: #4f4f4f;
-		border: none;
+		border: 1px solid transparent;
 		width: 120px;
 		background-color: #EFEFEF;
 		line-height: 30px;
@@ -356,5 +385,10 @@
 		position: relative;
 		top: 2px;
 		margin-right: 3px;
+	}
+	
+	.label select:focus,
+	.title input:focus {
+		border: 1px solid red !important;
 	}
 </style>
